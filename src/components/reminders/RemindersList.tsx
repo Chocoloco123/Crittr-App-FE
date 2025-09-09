@@ -46,6 +46,7 @@ interface Reminder {
 interface RemindersListProps {
   petId?: string
   petName?: string
+  reminders: Reminder[]
   onNewReminder: () => void
   onEditReminder: (reminder: Reminder) => void
   onDeleteReminder: (reminderId: string) => void
@@ -126,12 +127,12 @@ const mockReminders: Reminder[] = [
 export default function RemindersList({ 
   petId, 
   petName,
+  reminders,
   onNewReminder, 
   onEditReminder, 
   onDeleteReminder, 
   onToggleReminder 
 }: RemindersListProps) {
-  const [reminders] = useState<Reminder[]>(mockReminders)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterType, setFilterType] = useState<string>('all')
   const [filterStatus, setFilterStatus] = useState<string>('all')
@@ -149,8 +150,9 @@ export default function RemindersList({
       return true
     })
     .sort((a, b) => {
-      // Sort by active status first, then by time
+      // Sort by active status first, then by creation date (newest first), then by time
       if (a.isActive !== b.isActive) return a.isActive ? -1 : 1
+      if (a.createdAt !== b.createdAt) return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       return a.time.localeCompare(b.time)
     })
 
@@ -293,8 +295,15 @@ export default function RemindersList({
       </div>
 
       {/* Reminders List */}
-      <div className="space-y-4">
-        {filteredReminders.length === 0 ? (
+      <div className="bg-white rounded-lg border border-gray-200">
+        <div className="p-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">
+            All Reminders ({filteredReminders.length})
+          </h3>
+        </div>
+        <div className="max-h-96 overflow-y-auto">
+          <div className="p-4 space-y-4">
+            {filteredReminders.length === 0 ? (
           <div className="text-center py-12">
             <Bell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No reminders found</h3>
@@ -411,6 +420,8 @@ export default function RemindersList({
             )
           })
         )}
+          </div>
+        </div>
       </div>
     </div>
   )

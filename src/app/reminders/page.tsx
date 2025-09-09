@@ -1,10 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useSession, signOut } from 'next-auth/react'
+import Link from 'next/link'
+import { 
+  Bell, 
+  Settings, 
+  User,
+  LogOut,
+  Home,
+  Shield
+} from 'lucide-react'
 import RemindersList from '@/components/reminders/RemindersList'
 import ReminderForm from '@/components/reminders/ReminderForm'
-import Header from '@/components/layout/Header'
 
 interface Reminder {
   id: string
@@ -21,11 +30,60 @@ interface Reminder {
 }
 
 export default function RemindersPage() {
+  const { data: session, status } = useSession()
+  const [mounted, setMounted] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
-  const [reminders, setReminders] = useState<Reminder[]>([])
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' })
+  }
+  const [reminders, setReminders] = useState<Reminder[]>([
+    {
+      id: '1',
+      title: 'Morning Feeding',
+      description: 'Feed Buddy his breakfast',
+      petId: '1',
+      petName: 'Buddy',
+      reminderType: 'feeding',
+      time: '08:00',
+      frequency: 'daily',
+      isActive: true,
+      createdAt: '2024-01-15T08:00:00Z',
+      lastTriggered: '2024-01-15T08:00:00Z'
+    },
+    {
+      id: '2',
+      title: 'Evening Medication',
+      description: 'Give Luna her heart medication',
+      petId: '2',
+      petName: 'Luna',
+      reminderType: 'medication',
+      time: '20:00',
+      frequency: 'daily',
+      isActive: true,
+      createdAt: '2024-01-14T20:00:00Z',
+      lastTriggered: '2024-01-14T20:00:00Z'
+    },
+    {
+      id: '3',
+      title: 'Weekly Weight Check',
+      description: 'Weigh Max and record in journal',
+      petId: '3',
+      petName: 'Max',
+      reminderType: 'weight',
+      time: '10:00',
+      frequency: 'weekly',
+      isActive: true,
+      createdAt: '2024-01-10T10:00:00Z'
+    }
+  ])
 
   const handleNewReminder = () => {
     setEditingReminder(null)
@@ -84,10 +142,93 @@ export default function RemindersPage() {
     setEditingReminder(null)
   }
 
+  if (!mounted || status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto mb-4"></div>
+          <p className="text-secondary">Loading reminders...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header */}
-      <Header />
+      <header className="bg-blue-50 backdrop-blur-md sticky top-0 z-50 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-4">
+              <Link 
+                href="/" 
+                className="flex items-center space-x-2 text-xl font-bold text-primary-600 hover:text-primary-700 transition-colors group"
+                aria-label="Crittr - Home"
+              >
+                <span className="text-3xl group-hover:scale-110 transition-transform">🐾</span>
+                <div className="flex flex-col">
+                  <span className="text-primary-600">Crittr</span>
+                </div>
+              </Link>
+              <div className="hidden md:flex items-center space-x-2 text-sm text-gray-500">
+                <Link href="/" className="flex items-center space-x-1 hover:text-primary-600 transition-colors">
+                  <Home className="h-4 w-4" />
+                  <span>Home</span>
+                </Link>
+                <span className="text-gray-400">/</span>
+                <span className="text-gray-900 font-medium">Reminders</span>
+              </div>
+            </div>
+            <div className="flex items-center space-x-1">
+              <button 
+                className="p-2 text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200"
+                aria-label="Notifications"
+              >
+                <Bell className="h-5 w-5" />
+              </button>
+              <button 
+                className="p-2 text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200"
+                aria-label="Settings"
+              >
+                <Settings className="h-5 w-5" />
+              </button>
+              {session ? (
+                <>
+                  <div className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200">
+                    <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                      <User className="h-4 w-4 text-primary-600" />
+                    </div>
+                    <span className="hidden sm:block">{session.user?.name || session.user?.email}</span>
+                  </div>
+                  <button 
+                    onClick={handleSignOut}
+                    className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
+                    aria-label="Sign out"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span className="hidden sm:block">Sign Out</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-lg">
+                    <Shield className="h-4 w-4" />
+                    <span className="hidden sm:block">Demo Mode</span>
+                  </div>
+                  <Link 
+                    href="/"
+                    className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+                    aria-label="Sign in"
+                  >
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:block">Sign In</span>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Title */}
@@ -157,6 +298,7 @@ export default function RemindersPage() {
           <RemindersList
             petId={selectedPetId || undefined}
             petName={selectedPetName || undefined}
+            reminders={reminders}
             onNewReminder={handleNewReminder}
             onEditReminder={handleEditReminder}
             onDeleteReminder={handleDeleteReminder}
