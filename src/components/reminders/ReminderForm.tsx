@@ -65,11 +65,20 @@ const frequencies = [
 ]
 
 const quickTimes = [
-  { label: 'Morning', time: '08:00', icon: Sun },
-  { label: 'Afternoon', time: '14:00', icon: Coffee },
-  { label: 'Evening', time: '18:00', icon: Moon },
-  { label: 'Night', time: '22:00', icon: Moon }
+  { label: 'Morning', time: '08:00', displayTime: '8:00 AM', icon: Sun },
+  { label: 'Afternoon', time: '14:00', displayTime: '2:00 PM', icon: Coffee },
+  { label: 'Evening', time: '18:00', displayTime: '6:00 PM', icon: Moon },
+  { label: 'Night', time: '22:00', displayTime: '10:00 PM', icon: Moon }
 ]
+
+// Helper function to convert 24-hour to 12-hour format
+const formatTime12Hour = (time24: string) => {
+  const [hours, minutes] = time24.split(':')
+  const hour = parseInt(hours)
+  const ampm = hour >= 12 ? 'PM' : 'AM'
+  const hour12 = hour % 12 || 12
+  return `${hour12}:${minutes} ${ampm}`
+}
 
 export default function ReminderForm({ petId, petName, onSave, onCancel, initialData }: ReminderFormProps) {
   const [title, setTitle] = useState(initialData?.title || '')
@@ -148,7 +157,7 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
                   <button
                     key={type.value}
                     onClick={() => setReminderType(type.value as Reminder['reminderType'])}
-                    className={`p-3 rounded-lg border-2 transition-all ${
+                    className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${
                       reminderType === type.value
                         ? 'border-purple-500 bg-purple-50'
                         : 'border-gray-200 hover:border-gray-300'
@@ -206,7 +215,7 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
                   <button
                     key={quick.time}
                     onClick={() => handleQuickTime(quick.time)}
-                    className={`p-3 rounded-lg border transition-all ${
+                    className={`p-3 rounded-lg border transition-all cursor-pointer ${
                       time === quick.time
                         ? 'border-purple-500 bg-purple-50 text-purple-700'
                         : 'border-gray-200 hover:border-gray-300 text-gray-700'
@@ -214,7 +223,7 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
                   >
                     <Icon className="h-4 w-4 mx-auto mb-1" />
                     <div className="text-xs font-medium">{quick.label}</div>
-                    <div className="text-xs">{quick.time}</div>
+                    <div className="text-xs">{quick.displayTime}</div>
                   </button>
                 )
               })}
@@ -241,7 +250,7 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
                   <button
                     key={freq.value}
                     onClick={() => setFrequency(freq.value as Reminder['frequency'])}
-                    className={`p-3 rounded-lg border-2 transition-all ${
+                    className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${
                       frequency === freq.value
                         ? 'border-purple-500 bg-purple-50'
                         : 'border-gray-200 hover:border-gray-300'
@@ -277,13 +286,13 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
         <div className="bg-gray-50 px-6 py-4 flex justify-end space-x-3">
           <button
             onClick={onCancel}
-            className="px-6 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-6 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2"
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 cursor-pointer"
           >
             <Bell className="h-4 w-4" />
             <span>Set Reminder</span>

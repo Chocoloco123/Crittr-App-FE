@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import RemindersList from '@/components/reminders/RemindersList'
 import ReminderForm from '@/components/reminders/ReminderForm'
+import Header from '@/components/layout/Header'
 
 interface Reminder {
   id: string
@@ -86,28 +87,34 @@ export default function RemindersPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-indigo-600">
-                🔔 Reminders
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600">
-                Never miss important pet care tasks
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-primary-600 mb-2">🔔 Reminders</h1>
+          <p className="text-gray-600">Never miss important pet care tasks</p>
+        </div>
+
         {/* Pet Selection */}
         <div className="mb-8">
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Pet</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Select Pet</h3>
+              <button
+                onClick={() => {
+                  setSelectedPetId('')
+                  setSelectedPetName('')
+                }}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
+                  selectedPetId === ''
+                    ? 'bg-primary-600 text-white'
+                    : 'bg-primary-100 text-primary-700 hover:bg-primary-200'
+                }`}
+              >
+                View All Pets
+              </button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
@@ -120,7 +127,7 @@ export default function RemindersPage() {
                     setSelectedPetId(pet.id)
                     setSelectedPetName(pet.name)
                   }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left ${
+                  className={`p-4 rounded-lg border-2 transition-all text-left cursor-pointer ${
                     selectedPetId === pet.id
                       ? 'border-purple-500 bg-purple-50'
                       : 'border-gray-200 hover:border-gray-300'
@@ -149,6 +156,7 @@ export default function RemindersPage() {
         >
           <RemindersList
             petId={selectedPetId || undefined}
+            petName={selectedPetName || undefined}
             onNewReminder={handleNewReminder}
             onEditReminder={handleEditReminder}
             onDeleteReminder={handleDeleteReminder}

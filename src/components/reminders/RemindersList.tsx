@@ -45,6 +45,7 @@ interface Reminder {
 
 interface RemindersListProps {
   petId?: string
+  petName?: string
   onNewReminder: () => void
   onEditReminder: (reminder: Reminder) => void
   onDeleteReminder: (reminderId: string) => void
@@ -124,6 +125,7 @@ const mockReminders: Reminder[] = [
 
 export default function RemindersList({ 
   petId, 
+  petName,
   onNewReminder, 
   onEditReminder, 
   onDeleteReminder, 
@@ -193,11 +195,16 @@ export default function RemindersList({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Reminders</h2>
-          <p className="text-gray-600">Never miss important pet care tasks</p>
+          <p className="text-gray-600">
+            {petId && petName 
+              ? `Showing reminders for ${petName}` 
+              : 'Showing reminders for all pets'
+            }
+          </p>
         </div>
         <button
           onClick={onNewReminder}
-          className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          className="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors cursor-pointer"
         >
           <Plus className="h-5 w-5" />
           <span>New Reminder</span>
@@ -243,16 +250,13 @@ export default function RemindersList({
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search reminders..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              />
-            </div>
+            <input
+              type="text"
+              placeholder="Search reminders..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm bg-white"
+            />
           </div>
 
           {/* Filter by Type */}
@@ -260,7 +264,7 @@ export default function RemindersList({
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent cursor-pointer"
             >
               <option value="all">All Types</option>
               <option value="feeding">Feeding</option>
@@ -278,7 +282,7 @@ export default function RemindersList({
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent cursor-pointer"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -303,7 +307,7 @@ export default function RemindersList({
             {!searchTerm && filterType === 'all' && filterStatus === 'all' && (
               <button
                 onClick={onNewReminder}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors cursor-pointer"
               >
                 Create First Reminder
               </button>
@@ -351,7 +355,7 @@ export default function RemindersList({
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => onToggleReminder(reminder.id)}
-                        className={`p-2 rounded-lg transition-colors ${
+                        className={`p-2 rounded-lg transition-colors cursor-pointer ${
                           reminder.isActive 
                             ? 'text-green-600 hover:text-green-800 hover:bg-green-50' 
                             : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
@@ -362,14 +366,14 @@ export default function RemindersList({
                       </button>
                       <button
                         onClick={() => onEditReminder(reminder)}
-                        className="p-2 text-gray-400 hover:text-purple-600 transition-colors"
+                        className="p-2 text-gray-400 hover:text-purple-600 transition-colors cursor-pointer"
                         title="Edit reminder"
                       >
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => onDeleteReminder(reminder.id)}
-                        className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                        className="p-2 text-gray-400 hover:text-red-600 transition-colors cursor-pointer"
                         title="Delete reminder"
                       >
                         <Trash2 className="h-4 w-4" />
