@@ -22,6 +22,7 @@ import {
 import JournalList from '@/components/journal/JournalList'
 import JournalEditor from '@/components/journal/JournalEditor'
 import AppNavigation from '@/components/layout/AppNavigation'
+import { DemoStorage } from '@/lib/demoStorage'
 
 interface JournalEntry {
   id: string
@@ -50,10 +51,24 @@ export default function JournalPage() {
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
+  const [entries, setEntries] = useState<JournalEntry[]>([])
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load journal entries from demo storage
+    const savedEntries = DemoStorage.getItem<JournalEntry[]>('journal-entries')
+    if (savedEntries) {
+      setEntries(savedEntries)
+    }
   }, [])
+
+  // Save entries to demo storage whenever entries change
+  useEffect(() => {
+    if (mounted) {
+      DemoStorage.setItem('journal-entries', entries)
+    }
+  }, [entries, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
@@ -70,10 +85,6 @@ export default function JournalPage() {
   }
 
   const handleSaveEntry = (entryData: Omit<JournalEntry, 'id' | 'createdAt' | 'updatedAt'>) => {
-    // In a real app, this would save to the backend
-    console.log('Saving entry:', entryData)
-    
-    // Mock save - generate ID and timestamps
     const newEntry: JournalEntry = {
       ...entryData,
       id: editingEntry?.id || `entry-${Date.now()}`,
@@ -81,17 +92,24 @@ export default function JournalPage() {
       updatedAt: new Date().toISOString()
     }
     
-    // Here you would typically update the Redux store or call an API
-    alert(`Entry "${entryData.title}" saved successfully!`)
+    if (editingEntry) {
+      // Update existing entry
+      setEntries(prev => prev.map(entry => 
+        entry.id === editingEntry.id ? newEntry : entry
+      ))
+    } else {
+      // Add new entry
+      setEntries(prev => [newEntry, ...prev])
+    }
     
+    alert(`Entry "${entryData.title}" saved successfully!`)
     setShowEditor(false)
     setEditingEntry(null)
   }
 
   const handleDeleteEntry = (entryId: string) => {
     if (confirm('Are you sure you want to delete this entry?')) {
-      // In a real app, this would delete from the backend
-      console.log('Deleting entry:', entryId)
+      setEntries(prev => prev.filter(entry => entry.id !== entryId))
       alert('Entry deleted successfully!')
     }
   }
@@ -240,6 +258,7 @@ export default function JournalPage() {
           transition={{ duration: 0.6 }}
         >
           <JournalList
+            entries={entries}
             petId={selectedPetId || undefined}
             onNewEntry={handleNewEntry}
             onEditEntry={handleEditEntry}

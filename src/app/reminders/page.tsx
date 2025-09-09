@@ -15,6 +15,7 @@ import {
 import RemindersList from '@/components/reminders/RemindersList'
 import ReminderForm from '@/components/reminders/ReminderForm'
 import AppNavigation from '@/components/layout/AppNavigation'
+import { DemoStorage } from '@/lib/demoStorage'
 
 interface Reminder {
   id: string
@@ -40,7 +41,20 @@ export default function RemindersPage() {
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load reminders from demo storage
+    const savedReminders = DemoStorage.getItem<Reminder[]>('reminders')
+    if (savedReminders) {
+      setReminders(savedReminders)
+    }
   }, [])
+
+  // Save reminders to demo storage whenever reminders change
+  useEffect(() => {
+    if (mounted) {
+      DemoStorage.setItem('reminders', reminders)
+    }
+  }, [reminders, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })

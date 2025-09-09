@@ -5,16 +5,31 @@ import { motion } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import AIAssistant from '@/components/ai/AIAssistant'
 import AppNavigation from '@/components/layout/AppNavigation'
+import { DemoStorage } from '@/lib/demoStorage'
 
 export default function AIAssistantPage() {
   const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
+  const [conversations, setConversations] = useState<any[]>([])
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load AI conversations from demo storage
+    const savedConversations = DemoStorage.getItem<any[]>('ai-conversations')
+    if (savedConversations) {
+      setConversations(savedConversations)
+    }
   }, [])
+
+  // Save conversations to demo storage whenever conversations change
+  useEffect(() => {
+    if (mounted) {
+      DemoStorage.setItem('ai-conversations', conversations)
+    }
+  }, [conversations, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })

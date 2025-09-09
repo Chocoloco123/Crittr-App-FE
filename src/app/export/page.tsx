@@ -5,16 +5,31 @@ import { motion } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import ExportFeatures from '@/components/export/ExportFeatures'
 import AppNavigation from '@/components/layout/AppNavigation'
+import { DemoStorage } from '@/lib/demoStorage'
 
 export default function ExportPage() {
   const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
+  const [exportHistory, setExportHistory] = useState<any[]>([])
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load export history from demo storage
+    const savedHistory = DemoStorage.getItem<any[]>('export-history')
+    if (savedHistory) {
+      setExportHistory(savedHistory)
+    }
   }, [])
+
+  // Save export history to demo storage whenever history changes
+  useEffect(() => {
+    if (mounted) {
+      DemoStorage.setItem('export-history', exportHistory)
+    }
+  }, [exportHistory, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })

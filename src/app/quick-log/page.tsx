@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import OneTapLogging from '@/components/logging/OneTapLogging'
 import AppNavigation from '@/components/layout/AppNavigation'
+import { DemoStorage } from '@/lib/demoStorage'
 
 interface QuickLog {
   id: string
@@ -25,7 +26,20 @@ export default function QuickLogPage() {
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load logs from demo storage on component mount
+    const savedLogs = DemoStorage.getItem<QuickLog[]>('quick-logs')
+    if (savedLogs) {
+      setLogs(savedLogs)
+    }
   }, [])
+
+  // Save logs to demo storage whenever logs change
+  useEffect(() => {
+    if (mounted) {
+      DemoStorage.setItem('quick-logs', logs)
+    }
+  }, [logs, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
@@ -42,6 +56,20 @@ export default function QuickLogPage() {
     // Show success message
     const activityName = logData.activityType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
     alert(`${activityName} logged successfully for ${logData.petName}!`)
+  }
+
+  const handleEditLog = (logId: string, updatedLog: Omit<QuickLog, 'id'>) => {
+    setLogs(prev => prev.map(log => 
+      log.id === logId 
+        ? { ...updatedLog, id: logId }
+        : log
+    ))
+    alert('Log updated successfully!')
+  }
+
+  const handleDeleteLog = (logId: string) => {
+    setLogs(prev => prev.filter(log => log.id !== logId))
+    alert('Log deleted successfully!')
   }
 
   if (!mounted || status === 'loading') {
@@ -61,43 +89,6 @@ export default function QuickLogPage() {
       <AppNavigation currentPage="Quick Log" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Pet Selection */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Pet</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
-                { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
-                { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
-                { id: '3', name: 'Max', type: 'Dog', breed: 'Labrador' }
-              ].map((pet) => (
-                <button
-                  key={pet.id}
-                  onClick={() => {
-                    setSelectedPetId(pet.id)
-                    setSelectedPetName(pet.name)
-                  }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left ${
-                    selectedPetId === pet.id
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {pet.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
-                      <p className="text-sm text-gray-600">{pet.breed}</p>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* One-Tap Logging Component */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -105,9 +96,10 @@ export default function QuickLogPage() {
           transition={{ duration: 0.6 }}
         >
           <OneTapLogging
-            petId={selectedPetId}
-            petName={selectedPetName}
+            logs={logs}
             onLogActivity={handleLogActivity}
+            onEditLog={handleEditLog}
+            onDeleteLog={handleDeleteLog}
           />
         </motion.div>
 

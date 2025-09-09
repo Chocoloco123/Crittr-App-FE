@@ -5,16 +5,31 @@ import { motion } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import Analytics from '@/components/analytics/Analytics'
 import AppNavigation from '@/components/layout/AppNavigation'
+import { DemoStorage } from '@/lib/demoStorage'
 
 export default function AnalyticsPage() {
   const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
+  const [analyticsData, setAnalyticsData] = useState<any>(null)
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load analytics data from demo storage
+    const savedData = DemoStorage.getItem<any>('analytics-data')
+    if (savedData) {
+      setAnalyticsData(savedData)
+    }
   }, [])
+
+  // Save analytics data to demo storage whenever data changes
+  useEffect(() => {
+    if (mounted && analyticsData) {
+      DemoStorage.setItem('analytics-data', analyticsData)
+    }
+  }, [analyticsData, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })

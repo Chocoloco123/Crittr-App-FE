@@ -25,14 +25,29 @@ import {
 } from 'lucide-react'
 import PetProfiles from '@/components/pets/PetProfiles'
 import AppNavigation from '@/components/layout/AppNavigation'
+import { DemoStorage } from '@/lib/demoStorage'
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
+  const [dashboardData, setDashboardData] = useState<any>(null)
 
   useEffect(() => {
     setMounted(true)
+    
+    // Load dashboard data from demo storage
+    const savedData = DemoStorage.getItem<any>('dashboard-data')
+    if (savedData) {
+      setDashboardData(savedData)
+    }
   }, [])
+
+  // Save dashboard data to demo storage whenever data changes
+  useEffect(() => {
+    if (mounted && dashboardData) {
+      DemoStorage.setItem('dashboard-data', dashboardData)
+    }
+  }, [dashboardData, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
