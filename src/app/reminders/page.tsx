@@ -15,7 +15,7 @@ import {
 import RemindersList from '@/components/reminders/RemindersList'
 import ReminderForm from '@/components/reminders/ReminderForm'
 import AppNavigation from '@/components/layout/AppNavigation'
-import { DemoStorage } from '@/lib/demoStorage'
+import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
 
 interface Reminder {
   id: string
@@ -38,28 +38,9 @@ export default function RemindersPage() {
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
-
-  useEffect(() => {
-    setMounted(true)
-    
-    // Load reminders from demo storage
-    const savedReminders = DemoStorage.getItem<Reminder[]>('reminders')
-    if (savedReminders) {
-      setReminders(savedReminders)
-    }
-  }, [])
-
-  // Save reminders to demo storage whenever reminders change
-  useEffect(() => {
-    if (mounted) {
-      DemoStorage.setItem('reminders', reminders)
-    }
-  }, [reminders, mounted])
-
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' })
-  }
-  const [reminders, setReminders] = useState<Reminder[]>([
+  
+  // Demo mock data for unauthenticated users
+  const mockReminders: Reminder[] = [
     {
       id: '1',
       title: 'Morning Feeding',
@@ -98,7 +79,18 @@ export default function RemindersPage() {
       isActive: true,
       createdAt: '2024-01-10T10:00:00Z'
     }
-  ])
+  ]
+
+  // Use optimized demo storage hook with mock data as default
+  const { data: reminders, addItem: addReminder, updateItem: updateReminder, removeItem: removeReminder } = useDemoStorageArray<Reminder>('reminders', mockReminders)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' })
+  }
 
   const handleNewReminder = () => {
     setEditingReminder(null)

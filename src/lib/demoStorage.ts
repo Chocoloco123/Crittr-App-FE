@@ -1,6 +1,7 @@
 /**
- * Demo Storage Utility
+ * Demo Storage Utility - SSR Friendly
  * Handles localStorage with 30-minute expiration for demo users
+ * Optimized for SEO and performance
  */
 
 const DEMO_STORAGE_PREFIX = 'crittr-demo-'
@@ -12,23 +13,31 @@ interface StoredData<T> {
   expiresAt: number
 }
 
+// Cache for SSR to prevent hydration mismatches
+const ssrCache = new Map<string, any>()
+
 export class DemoStorage {
   /**
-   * Check if we're in demo mode (no authenticated user)
+   * Check if we're in demo mode (SSR safe)
    */
   static isDemoMode(): boolean {
-    if (typeof window === 'undefined') return false
+    // During SSR, assume demo mode for better SEO
+    if (typeof window === 'undefined') return true
     
     // Check if there's a session in localStorage or if we're not authenticated
-    const session = localStorage.getItem('next-auth.session-token')
-    return !session
+    try {
+      const session = localStorage.getItem('next-auth.session-token')
+      return !session
+    } catch {
+      return true
+    }
   }
 
   /**
-   * Store data with 30-minute expiration
+   * Store data with 30-minute expiration (SSR safe)
    */
   static setItem<T>(key: string, data: T): void {
-    if (typeof window === 'undefined' || !this.isDemoMode()) return
+    if (!this.isDemoMode()) return
 
     const now = Date.now()
     const storedData: StoredData<T> = {
@@ -37,38 +46,62 @@ export class DemoStorage {
       expiresAt: now + EXPIRATION_TIME
     }
 
-    try {
-      localStorage.setItem(`${DEMO_STORAGE_PREFIX}${key}`, JSON.stringify(storedData))
-    } catch (error) {
-      console.error('Error storing demo data:', error)
+    // Store in SSR cache for immediate access
+    ssrCache.set(key, storedData)
+
+    // Store in localStorage if available
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(`${DEMO_STORAGE_PREFIX}${key}`, JSON.stringify(storedData))
+      } catch (error) {
+        console.error('Error storing demo data:', error)
+      }
     }
   }
 
   /**
-   * Retrieve data if not expired
+   * Retrieve data if not expired (SSR safe)
    */
   static getItem<T>(key: string): T | null {
-    if (typeof window === 'undefined' || !this.isDemoMode()) return null
+    if (!this.isDemoMode()) return null
 
-    try {
-      const stored = localStorage.getItem(`${DEMO_STORAGE_PREFIX}${key}`)
-      if (!stored) return null
-
-      const storedData: StoredData<T> = JSON.parse(stored)
+    // Check SSR cache first
+    const cached = ssrCache.get(key)
+    if (cached) {
       const now = Date.now()
+      if (now <= cached.expiresAt) {
+        return cached.data
+      } else {
+        ssrCache.delete(key)
+      }
+    }
 
-      // Check if data has expired
-      if (now > storedData.expiresAt) {
+    // Check localStorage if available
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem(`${DEMO_STORAGE_PREFIX}${key}`)
+        if (!stored) return null
+
+        const storedData: StoredData<T> = JSON.parse(stored)
+        const now = Date.now()
+
+        // Check if data has expired
+        if (now > storedData.expiresAt) {
+          this.removeItem(key)
+          return null
+        }
+
+        // Update SSR cache
+        ssrCache.set(key, storedData)
+        return storedData.data
+      } catch (error) {
+        console.error('Error retrieving demo data:', error)
         this.removeItem(key)
         return null
       }
-
-      return storedData.data
-    } catch (error) {
-      console.error('Error retrieving demo data:', error)
-      this.removeItem(key)
-      return null
     }
+
+    return null
   }
 
   /**

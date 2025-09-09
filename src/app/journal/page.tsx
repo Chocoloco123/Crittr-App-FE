@@ -22,7 +22,7 @@ import {
 import JournalList from '@/components/journal/JournalList'
 import JournalEditor from '@/components/journal/JournalEditor'
 import AppNavigation from '@/components/layout/AppNavigation'
-import { DemoStorage } from '@/lib/demoStorage'
+import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
 
 interface JournalEntry {
   id: string
@@ -51,24 +51,13 @@ export default function JournalPage() {
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
-  const [entries, setEntries] = useState<JournalEntry[]>([])
+  
+  // Use optimized demo storage hook
+  const { data: entries, addItem: addEntry, updateItem: updateEntry, removeItem: removeEntry } = useDemoStorageArray<JournalEntry>('journal-entries')
 
   useEffect(() => {
     setMounted(true)
-    
-    // Load journal entries from demo storage
-    const savedEntries = DemoStorage.getItem<JournalEntry[]>('journal-entries')
-    if (savedEntries) {
-      setEntries(savedEntries)
-    }
   }, [])
-
-  // Save entries to demo storage whenever entries change
-  useEffect(() => {
-    if (mounted) {
-      DemoStorage.setItem('journal-entries', entries)
-    }
-  }, [entries, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
@@ -94,12 +83,10 @@ export default function JournalPage() {
     
     if (editingEntry) {
       // Update existing entry
-      setEntries(prev => prev.map(entry => 
-        entry.id === editingEntry.id ? newEntry : entry
-      ))
+      updateEntry(editingEntry.id, newEntry)
     } else {
       // Add new entry
-      setEntries(prev => [newEntry, ...prev])
+      addEntry(newEntry)
     }
     
     alert(`Entry "${entryData.title}" saved successfully!`)
@@ -109,7 +96,7 @@ export default function JournalPage() {
 
   const handleDeleteEntry = (entryId: string) => {
     if (confirm('Are you sure you want to delete this entry?')) {
-      setEntries(prev => prev.filter(entry => entry.id !== entryId))
+      removeEntry(entryId)
       alert('Entry deleted successfully!')
     }
   }
@@ -251,6 +238,58 @@ export default function JournalPage() {
           </div>
         </div>
 
+        {/* Pet Selection */}
+        <div className="mb-8">
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Select Pet</h3>
+              <button
+                onClick={() => {
+                  setSelectedPetId('')
+                  setSelectedPetName('')
+                }}
+                className={`px-3 py-1 text-sm rounded-lg transition-colors ${
+                  selectedPetId === ''
+                    ? 'bg-indigo-100 text-indigo-700 border border-indigo-200'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                See All
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
+                { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
+                { id: '3', name: 'Max', type: 'Dog', breed: 'Labrador' }
+              ].map((pet) => (
+                <button
+                  key={pet.id}
+                  onClick={() => {
+                    setSelectedPetId(pet.id)
+                    setSelectedPetName(pet.name)
+                  }}
+                  className={`p-4 rounded-lg border-2 transition-all text-left ${
+                    selectedPetId === pet.id
+                      ? 'border-indigo-500 bg-indigo-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                      {pet.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
+                      <p className="text-sm text-gray-600">{pet.breed}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Journal Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -275,6 +314,10 @@ export default function JournalPage() {
           onSave={handleSaveEntry}
           onCancel={handleCancelEditor}
           initialData={editingEntry || undefined}
+          onPetChange={(petId, petName) => {
+            setSelectedPetId(petId)
+            setSelectedPetName(petName)
+          }}
         />
       )}
     </div>

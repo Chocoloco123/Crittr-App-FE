@@ -53,6 +53,7 @@ interface JournalEditorProps {
   onSave: (entry: Omit<JournalEntry, 'id' | 'createdAt' | 'updatedAt'>) => void
   onCancel: () => void
   initialData?: Partial<JournalEntry>
+  onPetChange?: (petId: string, petName: string) => void
 }
 
 const entryTypes = [
@@ -71,7 +72,8 @@ export default function JournalEditor({
   petName, 
   onSave, 
   onCancel, 
-  initialData 
+  initialData,
+  onPetChange 
 }: JournalEditorProps) {
   const [title, setTitle] = useState(initialData?.title || '')
   const [content, setContent] = useState(initialData?.content || '')
@@ -83,6 +85,8 @@ export default function JournalEditor({
   )
   const [isUploading, setIsUploading] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [selectedPetId, setSelectedPetId] = useState(petId || '')
+  const [selectedPetName, setSelectedPetName] = useState(petName || '')
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const editorRef = useRef<HTMLDivElement>(null)
@@ -103,11 +107,16 @@ export default function JournalEditor({
       return
     }
 
+    if (!selectedPetId) {
+      alert('Please select a pet for this journal entry')
+      return
+    }
+
     onSave({
       title: title.trim(),
       content: content.trim(),
-      petId: petId || '',
-      petName: petName || '',
+      petId: selectedPetId,
+      petName: selectedPetName,
       entryType,
       attachments
     })
@@ -296,6 +305,44 @@ export default function JournalEditor({
         </div>
 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+          {/* Pet Selection */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Select Pet
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {[
+                { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
+                { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
+                { id: '3', name: 'Max', type: 'Dog', breed: 'Labrador' }
+              ].map((pet) => (
+                <button
+                  key={pet.id}
+                  onClick={() => {
+                    setSelectedPetId(pet.id)
+                    setSelectedPetName(pet.name)
+                    onPetChange?.(pet.id, pet.name)
+                  }}
+                  className={`p-3 rounded-lg border-2 transition-all text-left ${
+                    selectedPetId === pet.id
+                      ? 'border-indigo-500 bg-indigo-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                      {pet.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
+                      <p className="text-sm text-gray-600">{pet.breed}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Entry Type Selection */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-3">

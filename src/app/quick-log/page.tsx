@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import OneTapLogging from '@/components/logging/OneTapLogging'
 import AppNavigation from '@/components/layout/AppNavigation'
-import { DemoStorage } from '@/lib/demoStorage'
+import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
 
 interface QuickLog {
   id: string
@@ -22,24 +22,13 @@ export default function QuickLogPage() {
   const [mounted, setMounted] = useState(false)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
-  const [logs, setLogs] = useState<QuickLog[]>([])
+  
+  // Use optimized demo storage hook
+  const { data: logs, addItem: addLog, updateItem: updateLog, removeItem: removeLog, isHydrated } = useDemoStorageArray<QuickLog>('quick-logs')
 
   useEffect(() => {
     setMounted(true)
-    
-    // Load logs from demo storage on component mount
-    const savedLogs = DemoStorage.getItem<QuickLog[]>('quick-logs')
-    if (savedLogs) {
-      setLogs(savedLogs)
-    }
   }, [])
-
-  // Save logs to demo storage whenever logs change
-  useEffect(() => {
-    if (mounted) {
-      DemoStorage.setItem('quick-logs', logs)
-    }
-  }, [logs, mounted])
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
@@ -51,7 +40,7 @@ export default function QuickLogPage() {
       id: `log-${Date.now()}`
     }
     
-    setLogs(prev => [newLog, ...prev])
+    addLog(newLog)
     
     // Show success message
     const activityName = logData.activityType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
@@ -59,16 +48,12 @@ export default function QuickLogPage() {
   }
 
   const handleEditLog = (logId: string, updatedLog: Omit<QuickLog, 'id'>) => {
-    setLogs(prev => prev.map(log => 
-      log.id === logId 
-        ? { ...updatedLog, id: logId }
-        : log
-    ))
+    updateLog(logId, updatedLog)
     alert('Log updated successfully!')
   }
 
   const handleDeleteLog = (logId: string) => {
-    setLogs(prev => prev.filter(log => log.id !== logId))
+    removeLog(logId)
     alert('Log deleted successfully!')
   }
 

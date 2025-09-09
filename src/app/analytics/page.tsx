@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import Analytics from '@/components/analytics/Analytics'
 import AppNavigation from '@/components/layout/AppNavigation'
-import { DemoStorage } from '@/lib/demoStorage'
+import { useDemoStorage } from '@/lib/hooks/useDemoStorage'
 
 export default function AnalyticsPage() {
   const { data: session, status } = useSession()
