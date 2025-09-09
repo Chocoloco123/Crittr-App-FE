@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useSession, signOut } from 'next-auth/react'
 import OneTapLogging from '@/components/logging/OneTapLogging'
+import AppNavigation from '@/components/layout/AppNavigation'
 
 interface QuickLog {
   id: string
@@ -15,9 +17,19 @@ interface QuickLog {
 }
 
 export default function QuickLogPage() {
+  const { data: session, status } = useSession()
+  const [mounted, setMounted] = useState(false)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
   const [logs, setLogs] = useState<QuickLog[]>([])
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' })
+  }
 
   const handleLogActivity = (logData: Omit<QuickLog, 'id'>) => {
     const newLog: QuickLog = {
@@ -32,25 +44,21 @@ export default function QuickLogPage() {
     alert(`${activityName} logged successfully for ${logData.petName}!`)
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-indigo-600">
-                ⚡ Quick Log
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600">
-                One-tap activity logging
-              </div>
-            </div>
-          </div>
+  if (!mounted || status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600 mx-auto mb-4"></div>
+          <p className="text-secondary">Loading quick log...</p>
         </div>
-      </header>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      {/* Header */}
+      <AppNavigation currentPage="Quick Log" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Pet Selection */}

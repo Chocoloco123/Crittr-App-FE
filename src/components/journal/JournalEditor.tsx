@@ -189,6 +189,73 @@ export default function JournalEditor({
     }
   }
 
+  const insertList = (type: 'ul' | 'ol') => {
+    console.log('insertList called with type:', type)
+    if (editorRef.current && typeof window !== 'undefined') {
+      editorRef.current.focus()
+      
+      // Try execCommand first (more reliable in some browsers)
+      const command = type === 'ul' ? 'insertUnorderedList' : 'insertOrderedList'
+      console.log('Trying execCommand:', command)
+      const success = document.execCommand(command, false, null)
+      console.log('execCommand success:', success)
+      
+      if (success) {
+        // execCommand worked, update content
+        console.log('execCommand worked, updating content')
+        setContent(editorRef.current.innerHTML)
+        return
+      }
+      
+      // Fallback: manual insertion
+      console.log('Using fallback manual insertion')
+      const selection = window.getSelection()
+      console.log('Selection:', selection, 'Range count:', selection?.rangeCount)
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0)
+        console.log('Range:', range)
+        
+        // Insert a line break first to ensure we're on a new line
+        const br = document.createElement('br')
+        range.insertNode(br)
+        range.setStartAfter(br)
+        range.setEndAfter(br)
+        
+        // Create list element
+        const list = document.createElement(type)
+        const item = document.createElement('li')
+        item.innerHTML = '&nbsp;' // Non-breaking space to make it editable
+        list.appendChild(item)
+        
+        // Insert after the line break
+        range.insertNode(list)
+        
+        // Position cursor in the list item
+        range.setStart(item, 0)
+        range.setEnd(item, 0)
+        selection.removeAllRanges()
+        selection.addRange(range)
+      } else {
+        // No selection, append to end
+        const list = document.createElement(type)
+        const item = document.createElement('li')
+        item.innerHTML = '&nbsp;'
+        list.appendChild(item)
+        editorRef.current.appendChild(list)
+        
+        // Focus on the new item
+        const range = document.createRange()
+        range.setStart(item, 0)
+        range.setEnd(item, 0)
+        selection?.removeAllRanges()
+        selection?.addRange(range)
+      }
+      
+      // Update content state
+      setContent(editorRef.current.innerHTML)
+    }
+  }
+
   const handleEditorInput = (e: React.FormEvent<HTMLDivElement>) => {
     const target = e.currentTarget
     setContent(target.innerHTML)
@@ -302,14 +369,14 @@ export default function JournalEditor({
               </button>
               <div className="w-px h-8 bg-gray-300 mx-1" />
               <button
-                onClick={() => toggleFormat('insertUnorderedList')}
+                onClick={() => insertList('ul')}
                 className="p-2 hover:bg-gray-200 rounded"
                 title="Bullet List"
               >
                 <List className="h-4 w-4" />
               </button>
               <button
-                onClick={() => toggleFormat('insertOrderedList')}
+                onClick={() => insertList('ol')}
                 className="p-2 hover:bg-gray-200 rounded"
                 title="Numbered List"
               >

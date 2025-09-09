@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { 
   Home, 
@@ -13,10 +14,14 @@ import {
   Users, 
   Shield,
   ArrowLeft,
-  Plus
+  Plus,
+  Settings,
+  User,
+  LogOut
 } from 'lucide-react'
 import JournalList from '@/components/journal/JournalList'
 import JournalEditor from '@/components/journal/JournalEditor'
+import AppNavigation from '@/components/layout/AppNavigation'
 
 interface JournalEntry {
   id: string
@@ -39,10 +44,20 @@ interface Attachment {
 }
 
 export default function JournalPage() {
+  const { data: session, status } = useSession()
+  const [mounted, setMounted] = useState(false)
   const [showEditor, setShowEditor] = useState(false)
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' })
+  }
 
   const handleNewEntry = () => {
     setEditingEntry(null)
@@ -87,32 +102,9 @@ export default function JournalPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Link 
-                href="/dashboard" 
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors px-3 py-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                <span className="text-sm font-medium">Back to Dashboard</span>
-              </Link>
-              <div className="w-px h-6 bg-gray-300"></div>
-              <h1 className="text-2xl font-bold text-blue-600">
-                📝 Crittr Journal
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-600">
-                Track your pet's health and activities
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AppNavigation currentPage="Journal" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Pet Selection */}
