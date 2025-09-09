@@ -21,7 +21,9 @@ import {
   Download,
   Edit,
   Trash2,
-  Eye
+  Eye,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react'
 
 interface JournalEntry {
@@ -45,6 +47,7 @@ interface Attachment {
 }
 
 interface JournalListProps {
+  entries: JournalEntry[]
   petId?: string
   onNewEntry: () => void
   onEditEntry: (entry: JournalEntry) => void
@@ -115,13 +118,17 @@ const mockEntries: JournalEntry[] = [
   }
 ]
 
-export default function JournalList({ petId, onNewEntry, onEditEntry, onDeleteEntry }: JournalListProps) {
-  const [entries] = useState<JournalEntry[]>(mockEntries)
+export default function JournalList({ entries, petId, onNewEntry, onEditEntry, onDeleteEntry }: JournalListProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterType, setFilterType] = useState<string>('all')
   const [sortBy, setSortBy] = useState<'date' | 'title'>('date')
+  const [currentPage, setCurrentPage] = useState(1)
+  const entriesPerPage = 5
 
-  const filteredEntries = entries
+  // Combine actual entries with mock data for demo purposes
+  const allEntries = [...entries, ...mockEntries]
+
+  const filteredEntries = allEntries
     .filter(entry => {
       if (petId && entry.petId !== petId) return false
       if (searchTerm && !entry.title.toLowerCase().includes(searchTerm.toLowerCase()) && 
@@ -135,6 +142,23 @@ export default function JournalList({ petId, onNewEntry, onEditEntry, onDeleteEn
       }
       return a.title.localeCompare(b.title)
     })
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredEntries.length / entriesPerPage)
+  const startIndex = (currentPage - 1) * entriesPerPage
+  const endIndex = startIndex + entriesPerPage
+  const paginatedEntries = filteredEntries.slice(startIndex, endIndex)
+
+  // Reset to first page when filters change
+  const handleFilterChange = (newFilter: string) => {
+    setFilterType(newFilter)
+    setCurrentPage(1)
+  }
+
+  const handleSearchChange = (newSearch: string) => {
+    setSearchTerm(newSearch)
+    setCurrentPage(1)
+  }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -183,7 +207,7 @@ export default function JournalList({ petId, onNewEntry, onEditEntry, onDeleteEn
                 type="text"
                 placeholder="Search entries..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
@@ -193,7 +217,7 @@ export default function JournalList({ petId, onNewEntry, onEditEntry, onDeleteEn
           <div className="sm:w-48">
             <select
               value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
+              onChange={(e) => handleFilterChange(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             >
               <option value="all">All Types</option>
@@ -224,7 +248,7 @@ export default function JournalList({ petId, onNewEntry, onEditEntry, onDeleteEn
 
       {/* Entries List */}
       <div className="space-y-4">
-        {filteredEntries.length === 0 ? (
+        {paginatedEntries.length === 0 ? (
           <div className="text-center py-12">
             <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No entries found</h3>
@@ -244,7 +268,7 @@ export default function JournalList({ petId, onNewEntry, onEditEntry, onDeleteEn
             )}
           </div>
         ) : (
-          filteredEntries.map((entry, index) => {
+          paginatedEntries.map((entry, index) => {
             const typeConfig = entryTypeConfig[entry.entryType]
             const Icon = typeConfig.icon
             
@@ -344,6 +368,53 @@ export default function JournalList({ petId, onNewEntry, onEditEntry, onDeleteEn
           })
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-700">
+              Showing {startIndex + 1} to {Math.min(endIndex, filteredEntries.length)} of {filteredEntries.length} entries
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="flex items-center space-x-1 px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                <span>Previous</span>
+              </button>
+              
+              <div className="flex items-center space-x-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-2 text-sm border rounded-lg ${
+                      currentPage === page
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'border-gray-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+              
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="flex items-center space-x-1 px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span>Next</span>
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
