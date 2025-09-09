@@ -91,6 +91,12 @@ export default function JournalEditor({
     setMounted(true)
   }, [])
 
+  useEffect(() => {
+    if (editorRef.current && content !== editorRef.current.innerHTML) {
+      editorRef.current.innerHTML = content
+    }
+  }, [content])
+
   const handleSave = () => {
     if (!title.trim() || !content.trim()) {
       alert('Please fill in both title and content')
@@ -163,7 +169,12 @@ export default function JournalEditor({
         range.collapse(false)
         selection.removeAllRanges()
         selection.addRange(range)
+      } else {
+        // If no selection, append to end
+        editorRef.current.innerHTML += text
       }
+      // Update content state
+      setContent(editorRef.current.innerHTML)
     }
   }
 
@@ -171,7 +182,16 @@ export default function JournalEditor({
     if (typeof document !== 'undefined') {
       document.execCommand(command, false)
       editorRef.current?.focus()
+      // Update content state after formatting
+      if (editorRef.current) {
+        setContent(editorRef.current.innerHTML)
+      }
     }
+  }
+
+  const handleEditorInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const target = e.currentTarget
+    setContent(target.innerHTML)
   }
 
   if (!mounted) {
@@ -310,16 +330,30 @@ export default function JournalEditor({
               >
                 <Clock className="h-4 w-4" />
               </button>
+              <button
+                onClick={() => insertText('❤️ ')}
+                className="p-2 hover:bg-gray-200 rounded"
+                title="Insert Heart"
+              >
+                <Heart className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => insertText('🐾 ')}
+                className="p-2 hover:bg-gray-200 rounded"
+                title="Insert Paw Print"
+              >
+                <PawPrint className="h-4 w-4" />
+              </button>
             </div>
 
             {/* Editor */}
             <div
               ref={editorRef}
               contentEditable
-              dangerouslySetInnerHTML={{ __html: content }}
-              onInput={(e) => setContent(e.currentTarget.innerHTML)}
-              className="border border-gray-300 border-t-0 rounded-b-lg p-4 min-h-[200px] focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              onInput={handleEditorInput}
+              className="border border-gray-300 border-t-0 rounded-b-lg p-4 min-h-[200px] focus:outline-none focus:ring-2 focus:ring-indigo-500 empty:before:content-[attr(data-placeholder)] empty:before:text-gray-400 empty:before:pointer-events-none"
               data-placeholder="Write your journal entry here..."
+              suppressContentEditableWarning={true}
             />
           </div>
 
