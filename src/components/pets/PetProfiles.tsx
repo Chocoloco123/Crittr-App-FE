@@ -27,6 +27,7 @@ interface Pet {
   name: string
   species: string
   breed?: string
+  sex?: string
   birthDate?: string
   weight?: number
   color?: string
@@ -62,6 +63,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       name: 'Buddy',
       species: 'dog',
       breed: 'Golden Retriever',
+      sex: 'male',
       birthDate: '2020-03-15',
       weight: 65.5,
       color: 'Golden',
@@ -73,6 +75,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       name: 'Luna',
       species: 'cat',
       breed: 'Maine Coon',
+      sex: 'female',
       birthDate: '2021-07-22',
       weight: 8.2,
       color: 'Black & White',
@@ -84,6 +87,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       name: 'Max',
       species: 'dog',
       breed: 'German Shepherd',
+      sex: 'male',
       birthDate: '2019-08-10',
       weight: 75.0,
       color: 'Black & Tan',
@@ -100,6 +104,12 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
     { value: 'reptile', label: 'Reptile', emoji: '🦎' },
     { value: 'small_mammal', label: 'Small Mammal', emoji: '🐰' },
     { value: 'other', label: 'Other', emoji: '🐾' }
+  ]
+
+  const sexOptions = [
+    { value: 'male', label: 'Male', emoji: '♂️' },
+    { value: 'female', label: 'Female', emoji: '♀️' },
+    { value: 'unknown', label: 'Unknown', emoji: '❓' }
   ]
 
   // Toast management
@@ -130,6 +140,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
           name: apiPet.name,
           species: apiPet.species,
           breed: apiPet.breed,
+          sex: apiPet.sex,
           birthDate: apiPet.birthDate,
           weight: apiPet.weight,
           color: apiPet.color,
@@ -156,6 +167,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
           name: petData.name,
           species: petData.species,
           breed: petData.breed,
+          sex: petData.sex,
           birthDate: petData.birthDate,
           weight: petData.weight,
           color: petData.color,
@@ -174,6 +186,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
         name: petData.name,
         species: petData.species as any,
         breed: petData.breed,
+        sex: petData.sex,
         birthDate: petData.birthDate,
         weight: petData.weight,
         color: petData.color,
@@ -220,6 +233,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
         name: petData.name,
         species: petData.species as any,
         breed: petData.breed,
+        sex: petData.sex,
         birthDate: petData.birthDate,
         weight: petData.weight,
         color: petData.color,
@@ -486,6 +500,13 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
                       {pet.breed && <span>• {pet.breed}</span>}
                     </div>
 
+                    {pet.sex && (
+                      <div className="flex items-center space-x-2 text-white">
+                        <Heart className="h-4 w-4" />
+                        <span className="capitalize">{pet.sex}</span>
+                      </div>
+                    )}
+
                     {pet.birthDate && (
                       <div className="flex items-center space-x-2 text-white">
                         <Calendar className="h-4 w-4" />
@@ -577,6 +598,7 @@ function PetModal({ isOpen, onClose, onSave, pet, speciesOptions, isDemoMode = f
     name: pet?.name || '',
     species: pet?.species || 'dog',
     breed: pet?.breed || '',
+    sex: pet?.sex || '',
     birthDate: pet?.birthDate || '',
     weight: pet?.weight?.toString() || '',
     color: pet?.color || '',
@@ -724,6 +746,29 @@ function PetModal({ isOpen, onClose, onSave, pet, speciesOptions, isDemoMode = f
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="Enter breed"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Sex
+              </label>
+              <div className="relative">
+                <select
+                  value={formData.sex}
+                  onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+                  className="w-full px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 appearance-none cursor-pointer"
+                >
+                  <option value="">Select sex</option>
+                  <option value="male">♂️ Male</option>
+                  <option value="female">♀️ Female</option>
+                  <option value="unknown">❓ Unknown</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <div>

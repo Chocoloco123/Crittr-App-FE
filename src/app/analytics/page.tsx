@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import Analytics from '@/components/analytics/Analytics'
 import AppNavigation from '@/components/layout/AppNavigation'
-import { useDemoStorage } from '@/lib/hooks/useDemoStorage'
+import { DemoStorage } from '@/lib/demoStorage'
 
 export default function AnalyticsPage() {
   const { data: session, status } = useSession()
@@ -55,7 +55,22 @@ export default function AnalyticsPage() {
         {/* Pet Selection */}
         <div className="mb-8">
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Pet</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Select Pet</h3>
+              <button
+                onClick={() => {
+                  setSelectedPetId('')
+                  setSelectedPetName('')
+                }}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  selectedPetId === ''
+                    ? 'bg-indigo-600 text-white border border-indigo-600'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'
+                }`}
+              >
+                View All Pets
+              </button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
@@ -65,8 +80,14 @@ export default function AnalyticsPage() {
                 <button
                   key={pet.id}
                   onClick={() => {
-                    setSelectedPetId(pet.id)
-                    setSelectedPetName(pet.name)
+                    // Toggle: if already selected, deselect; otherwise select
+                    if (selectedPetId === pet.id) {
+                      setSelectedPetId('')
+                      setSelectedPetName('')
+                    } else {
+                      setSelectedPetId(pet.id)
+                      setSelectedPetName(pet.name)
+                    }
                   }}
                   className={`p-4 rounded-lg border-2 transition-all text-left ${
                     selectedPetId === pet.id

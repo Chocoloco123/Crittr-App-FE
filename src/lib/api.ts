@@ -5,6 +5,7 @@ export interface Pet {
   name: string
   species: 'dog' | 'cat' | 'bird' | 'fish' | 'reptile' | 'small_mammal' | 'other'
   breed?: string
+  sex?: string
   birthDate?: string
   weight?: number
   color?: string
@@ -21,6 +22,7 @@ export interface PetCreate {
   name: string
   species: 'dog' | 'cat' | 'bird' | 'fish' | 'reptile' | 'small_mammal' | 'other'
   breed?: string
+  sex?: string
   birthDate?: string
   weight?: number
   color?: string

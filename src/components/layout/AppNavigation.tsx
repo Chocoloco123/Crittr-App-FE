@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { 
   Bell, 
   Settings, 
@@ -11,6 +12,7 @@ import {
   Home,
   Shield
 } from 'lucide-react'
+import NavigationDropdown from './NavigationDropdown'
 
 interface AppNavigationProps {
   currentPage: string
@@ -19,6 +21,7 @@ interface AppNavigationProps {
 export default function AppNavigation({ currentPage }: AppNavigationProps) {
   const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
@@ -27,6 +30,9 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
   }
+
+  // Don't show navigation dropdown on home page
+  const isHomePage = pathname === '/'
 
   if (!mounted || status === 'loading') {
     return (
@@ -80,6 +86,9 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
             </div>
           </div>
           <div className="flex items-center space-x-1">
+            {/* Navigation Dropdown - only show on non-home pages */}
+            {!isHomePage && <NavigationDropdown currentPage={currentPage} />}
+            
             <button 
               className="p-2 text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200"
               aria-label="Notifications"

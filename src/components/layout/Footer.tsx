@@ -44,7 +44,7 @@ export default function Footer() {
       
       <div className="container relative">
         {/* Main Footer Content */}
-        <div className="grid lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid lg:grid-cols-5 gap-8 mb-16">
           {/* Brand Section - Takes up 2 columns */}
           <div className="lg:col-span-2">
             <motion.div
@@ -104,74 +104,81 @@ export default function Footer() {
             </motion.div>
           </div>
 
-          {/* Links Sections */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <h4 className="text-lg font-semibold mb-6 text-gray-800">Product</h4>
-              <ul className="space-y-4">
-                {footerLinks.product.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className="text-gray-600 hover:text-primary-600 transition-colors text-base"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
+          {/* Links Sections - Grouped together */}
+          <div className="lg:col-span-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Product Section */}
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <h4 className="text-lg font-semibold mb-6 text-gray-800">Product</h4>
+                  <ul className="space-y-4">
+                    {footerLinks.product.map((link, index) => (
+                      <li key={index}>
+                        <a
+                          href={link.href}
+                          className="text-gray-600 hover:text-primary-600 transition-colors text-base"
+                        >
+                          {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
 
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h4 className="text-lg font-semibold mb-6 text-gray-800">Support</h4>
-              <ul className="space-y-4">
-                {footerLinks.support.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className="text-gray-600 hover:text-primary-600 transition-colors text-base"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
+              {/* Support Section */}
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  <h4 className="text-lg font-semibold mb-6 text-gray-800">Support</h4>
+                  <ul className="space-y-4">
+                    {footerLinks.support.map((link, index) => (
+                      <li key={index}>
+                        <a
+                          href={link.href}
+                          className="text-gray-600 hover:text-primary-600 transition-colors text-base"
+                        >
+                          {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
 
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <h4 className="text-lg font-semibold mb-6 text-gray-800">Legal</h4>
-              <ul className="space-y-4">
-                {footerLinks.legal.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.href}
-                      className="text-gray-600 hover:text-primary-600 transition-colors text-base"
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+              {/* Legal Section */}
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
+                  <h4 className="text-lg font-semibold mb-6 text-gray-800">Legal</h4>
+                  <ul className="space-y-4">
+                    {footerLinks.legal.map((link, index) => (
+                      <li key={index}>
+                        <a
+                          href={link.href}
+                          className="text-gray-600 hover:text-primary-600 transition-colors text-base"
+                        >
+                          {link.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </div>
+            </div>
           </div>
         </div>
 

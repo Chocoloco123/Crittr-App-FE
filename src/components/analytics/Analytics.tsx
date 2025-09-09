@@ -38,13 +38,13 @@ interface AnalyticsProps {
 
 const mockAnalyticsData: AnalyticsData = {
   weightTrend: [
-    { date: '2024-01-01', weight: 24.5 },
-    { date: '2024-01-08', weight: 24.8 },
-    { date: '2024-01-15', weight: 25.1 },
-    { date: '2024-01-22', weight: 24.9 },
-    { date: '2024-01-29', weight: 25.3 },
-    { date: '2024-02-05', weight: 25.0 },
-    { date: '2024-02-12', weight: 24.7 }
+    { date: '2024-01-01', weight: 54.0 },
+    { date: '2024-01-08', weight: 54.7 },
+    { date: '2024-01-15', weight: 55.3 },
+    { date: '2024-01-22', weight: 54.9 },
+    { date: '2024-01-29', weight: 55.8 },
+    { date: '2024-02-05', weight: 55.1 },
+    { date: '2024-02-12', weight: 54.5 }
   ],
   feedingFrequency: [
     { date: '2024-01-01', count: 3 },
@@ -86,6 +86,152 @@ export default function Analytics({ petId, petName }: AnalyticsProps) {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d')
   const [isLoading, setIsLoading] = useState(false)
 
+  // Generate pet-specific mock data based on petId
+  const getPetSpecificData = (petId: string): AnalyticsData => {
+    const baseData = mockAnalyticsData
+    
+    // Modify data based on pet selection
+    switch (petId) {
+      case '1': // Buddy - Golden Retriever
+        return {
+          ...baseData,
+          weightTrend: [
+            { date: '2024-01-01', weight: 54.0 },
+            { date: '2024-01-08', weight: 54.7 },
+            { date: '2024-01-15', weight: 55.3 },
+            { date: '2024-01-22', weight: 54.9 },
+            { date: '2024-01-29', weight: 55.8 },
+            { date: '2024-02-05', weight: 55.1 },
+            { date: '2024-02-12', weight: 54.5 }
+          ],
+          feedingFrequency: [
+            { date: '2024-01-01', count: 3 },
+            { date: '2024-01-02', count: 2 },
+            { date: '2024-01-03', count: 3 },
+            { date: '2024-01-04', count: 3 },
+            { date: '2024-01-05', count: 2 },
+            { date: '2024-01-06', count: 3 },
+            { date: '2024-01-07', count: 3 }
+          ],
+          exerciseMinutes: [
+            { date: '2024-01-01', minutes: 45 },
+            { date: '2024-01-02', minutes: 30 },
+            { date: '2024-01-03', minutes: 60 },
+            { date: '2024-01-04', minutes: 40 },
+            { date: '2024-01-05', minutes: 35 },
+            { date: '2024-01-06', minutes: 50 },
+            { date: '2024-01-07', minutes: 45 }
+          ]
+        }
+      case '2': // Luna - Maine Coon
+        return {
+          ...baseData,
+          weightTrend: [
+            { date: '2024-01-01', weight: 18.1 },
+            { date: '2024-01-08', weight: 18.5 },
+            { date: '2024-01-15', weight: 17.9 },
+            { date: '2024-01-22', weight: 18.3 },
+            { date: '2024-01-29', weight: 18.7 },
+            { date: '2024-02-05', weight: 18.1 },
+            { date: '2024-02-12', weight: 18.5 }
+          ],
+          feedingFrequency: [
+            { date: '2024-01-01', count: 4 },
+            { date: '2024-01-02', count: 3 },
+            { date: '2024-01-03', count: 4 },
+            { date: '2024-01-04', count: 3 },
+            { date: '2024-01-05', count: 4 },
+            { date: '2024-01-06', count: 3 },
+            { date: '2024-01-07', count: 4 }
+          ],
+          exerciseMinutes: [
+            { date: '2024-01-01', minutes: 20 },
+            { date: '2024-01-02', minutes: 15 },
+            { date: '2024-01-03', minutes: 25 },
+            { date: '2024-01-04', minutes: 18 },
+            { date: '2024-01-05', minutes: 22 },
+            { date: '2024-01-06', minutes: 16 },
+            { date: '2024-01-07', minutes: 24 }
+          ]
+        }
+      case '3': // Max - Labrador
+        return {
+          ...baseData,
+          weightTrend: [
+            { date: '2024-01-01', weight: 70.8 },
+            { date: '2024-01-08', weight: 71.7 },
+            { date: '2024-01-15', weight: 72.3 },
+            { date: '2024-01-22', weight: 71.2 },
+            { date: '2024-01-29', weight: 72.8 },
+            { date: '2024-02-05', weight: 72.1 },
+            { date: '2024-02-12', weight: 72.5 }
+          ],
+          feedingFrequency: [
+            { date: '2024-01-01', count: 2 },
+            { date: '2024-01-02', count: 2 },
+            { date: '2024-01-03', count: 2 },
+            { date: '2024-01-04', count: 2 },
+            { date: '2024-01-05', count: 2 },
+            { date: '2024-01-06', count: 2 },
+            { date: '2024-01-07', count: 2 }
+          ],
+          exerciseMinutes: [
+            { date: '2024-01-01', minutes: 60 },
+            { date: '2024-01-02', minutes: 45 },
+            { date: '2024-01-03', minutes: 75 },
+            { date: '2024-01-04', minutes: 50 },
+            { date: '2024-01-05', minutes: 55 },
+            { date: '2024-01-06', minutes: 65 },
+            { date: '2024-01-07', minutes: 70 }
+          ]
+        }
+      default:
+        return baseData
+    }
+  }
+
+  // Generate combined data for all pets
+  const getAllPetsData = (): AnalyticsData => {
+    const buddyData = getPetSpecificData('1')
+    const lunaData = getPetSpecificData('2')
+    const maxData = getPetSpecificData('3')
+    
+    // Combine weight trends (average)
+    const combinedWeightTrend = buddyData.weightTrend.map((buddyPoint, index) => ({
+      date: buddyPoint.date,
+      weight: (buddyPoint.weight + lunaData.weightTrend[index].weight + maxData.weightTrend[index].weight) / 3
+    }))
+    
+    // Combine feeding frequency (sum)
+    const combinedFeedingFrequency = buddyData.feedingFrequency.map((buddyPoint, index) => ({
+      date: buddyPoint.date,
+      count: buddyPoint.count + lunaData.feedingFrequency[index].count + maxData.feedingFrequency[index].count
+    }))
+    
+    // Combine exercise minutes (average)
+    const combinedExerciseMinutes = buddyData.exerciseMinutes.map((buddyPoint, index) => ({
+      date: buddyPoint.date,
+      minutes: (buddyPoint.minutes + lunaData.exerciseMinutes[index].minutes + maxData.exerciseMinutes[index].minutes) / 3
+    }))
+    
+    return {
+      weightTrend: combinedWeightTrend,
+      feedingFrequency: combinedFeedingFrequency,
+      medicationAdherence: buddyData.medicationAdherence, // Keep same for demo
+      exerciseMinutes: combinedExerciseMinutes,
+      symptomsCount: buddyData.symptomsCount // Keep same for demo
+    }
+  }
+
+  // Update analytics data when petId changes
+  useEffect(() => {
+    if (petId) {
+      setAnalyticsData(getPetSpecificData(petId))
+    } else {
+      setAnalyticsData(getAllPetsData())
+    }
+  }, [petId])
+
   const calculateStats = () => {
     const weightData = analyticsData.weightTrend
     const medicationData = analyticsData.medicationAdherence
@@ -116,9 +262,40 @@ export default function Analytics({ petId, petName }: AnalyticsProps) {
   const SimpleLineChart = ({ data, color = 'blue', height = 200 }: { data: any[], color?: string, height?: number }) => {
     if (!data || data.length === 0) return <div className="h-48 flex items-center justify-center text-gray-500">No data available</div>
 
-    const maxValue = Math.max(...data.map(d => d.weight || d.count || d.minutes || 0))
-    const minValue = Math.min(...data.map(d => d.weight || d.count || d.minutes || 0))
+    const values = data.map(d => d.weight || d.count || d.minutes || 0)
+    const maxValue = Math.max(...values)
+    const minValue = Math.min(...values)
     const range = maxValue - minValue || 1
+
+    // Handle case where all values are the same
+    if (range === 0) {
+      return (
+        <div className="relative" style={{ height }}>
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <line
+              x1="0"
+              y1="50"
+              x2="100"
+              y2="50"
+              stroke={`var(--color-${color}-500)`}
+              strokeWidth="2"
+            />
+            {data.map((point, index) => {
+              const x = (index / (data.length - 1)) * 100
+              return (
+                <circle
+                  key={index}
+                  cx={x}
+                  cy="50"
+                  r="2"
+                  fill={`var(--color-${color}-500)`}
+                />
+              )
+            })}
+          </svg>
+        </div>
+      )
+    }
 
     const points = data.map((point, index) => {
       const x = (index / (data.length - 1)) * 100
@@ -159,11 +336,16 @@ export default function Analytics({ petId, petName }: AnalyticsProps) {
     const maxValue = Math.max(...data.map(d => d.count || 0))
     const barWidth = 100 / data.length
 
+    // Handle case where maxValue is 0 to prevent NaN
+    if (maxValue === 0) {
+      return <div className="h-48 flex items-center justify-center text-gray-500">No data to display</div>
+    }
+
     return (
       <div className="relative" style={{ height }}>
         <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           {data.map((point, index) => {
-            const barHeight = (point.count / maxValue) * 100
+            const barHeight = Math.max(0, (point.count / maxValue) * 100) // Ensure non-negative
             const x = index * barWidth
             return (
               <rect
@@ -196,8 +378,15 @@ export default function Analytics({ petId, petName }: AnalyticsProps) {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Analytics & Trends</h2>
           <p className="text-gray-600">
-            Track your pet's health trends and patterns
-            {petName && <span className="text-indigo-600 font-medium"> for {petName}</span>}
+            {petName ? (
+              <>
+                Track <span className="text-indigo-600 font-medium">{petName}'s</span> health trends and patterns
+              </>
+            ) : (
+              <>
+                Track your <span className="text-indigo-600 font-medium">all pets'</span> combined health trends and patterns
+              </>
+            )}
           </p>
         </div>
         <div className="flex items-center space-x-3">
@@ -238,11 +427,11 @@ export default function Analytics({ petId, petName }: AnalyticsProps) {
             }`}>
               {stats.weightChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
               <span className="text-sm font-medium">
-                {stats.weightChange >= 0 ? '+' : ''}{stats.weightChange.toFixed(1)}kg
+                {stats.weightChange >= 0 ? '+' : ''}{stats.weightChange.toFixed(1)} lbs
               </span>
             </div>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">{stats.currentWeight}kg</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">{stats.currentWeight} lbs</h3>
           <p className="text-sm text-gray-600">Current Weight</p>
         </motion.div>
 

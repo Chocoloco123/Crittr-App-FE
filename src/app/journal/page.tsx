@@ -22,6 +22,7 @@ import {
 import JournalList from '@/components/journal/JournalList'
 import JournalEditor from '@/components/journal/JournalEditor'
 import AppNavigation from '@/components/layout/AppNavigation'
+import QuickNavigation from '@/components/layout/QuickNavigation'
 import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
 
 interface JournalEntry {
@@ -112,132 +113,6 @@ export default function JournalPage() {
       <AppNavigation currentPage="Journal" />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Pet Selection */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Pet</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
-                { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
-                { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
-                { id: '3', name: 'Max', type: 'Dog', breed: 'Labrador' }
-              ].map((pet) => (
-                <button
-                  key={pet.id}
-                  onClick={() => {
-                    setSelectedPetId(pet.id)
-                    setSelectedPetName(pet.name)
-                  }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left ${
-                    selectedPetId === pet.id
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {pet.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
-                      <p className="text-sm text-gray-600">{pet.breed}</p>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Navigation */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Navigation</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-              <Link href="/dashboard">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <Home className="h-5 w-5" />
-                  <span className="text-xs font-medium">Dashboard</span>
-                </motion.button>
-              </Link>
-              <Link href="/journal">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <Calendar className="h-5 w-5" />
-                  <span className="text-xs font-medium">Journal</span>
-                </motion.button>
-              </Link>
-              <Link href="/quick-log">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-green-100 hover:bg-green-200 text-green-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <Activity className="h-5 w-5" />
-                  <span className="text-xs font-medium">Quick Log</span>
-                </motion.button>
-              </Link>
-              <Link href="/reminders">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-purple-100 hover:bg-purple-200 text-purple-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <Bell className="h-5 w-5" />
-                  <span className="text-xs font-medium">Reminders</span>
-                </motion.button>
-              </Link>
-              <Link href="/analytics">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-orange-100 hover:bg-orange-200 text-orange-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <BarChart3 className="h-5 w-5" />
-                  <span className="text-xs font-medium">Analytics</span>
-                </motion.button>
-              </Link>
-              <Link href="/ai-assistant">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200 text-purple-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <Bot className="h-5 w-5" />
-                  <span className="text-xs font-medium">AI Assistant</span>
-                </motion.button>
-              </Link>
-              <Link href="/social">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-pink-100 hover:bg-pink-200 text-pink-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <Users className="h-5 w-5" />
-                  <span className="text-xs font-medium">Community</span>
-                </motion.button>
-              </Link>
-              <Link href="/export">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-red-100 hover:bg-red-200 text-red-700 p-3 rounded-lg text-center transition-colors flex flex-col items-center space-y-2"
-                >
-                  <BarChart3 className="h-5 w-5" />
-                  <span className="text-xs font-medium">Export</span>
-                </motion.button>
-              </Link>
-            </div>
-          </div>
-        </div>
-
         {/* Pet Selection */}
         <div className="mb-8">
           <div className="bg-white rounded-lg border border-gray-200 p-6">
