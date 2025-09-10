@@ -66,7 +66,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <span className="text-2xl font-bold text-primary-600">Crittr</span>
               </div>
               <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                Welcome back!
+                Welcome!
               </h2>
               <p className="text-gray-600">
                 Sign in with Google to start tracking your pet's health journey

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { FadeInUp, FadeIn, ScaleIn } from '@/components/ui/OptimizedMotion'
 import { 
   Calendar, 
@@ -9,14 +10,17 @@ import {
   Users, 
   Shield, 
   ArrowRight, 
-  Play, 
   PawPrint, 
   Star, 
   Sparkles
 } from 'lucide-react'
 import Image from 'next/image'
+import AuthModal from '@/components/auth/AuthModal'
 
 export default function HeroSection() {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  
+  const toggleAuthModal = () => setIsAuthModalOpen(!isAuthModalOpen)
   const features = [
     { icon: Calendar, text: 'Daily Journal Entries', emoji: '📝' },
     { icon: Heart, text: 'Health Monitoring', emoji: '❤️' },
@@ -73,16 +77,15 @@ export default function HeroSection() {
               ))}
             </FadeInUp>
 
-            {/* CTA Buttons */}
-            <FadeInUp delay={0.4} className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start">
-              <button className="btn btn-primary btn-lg px-8 py-4 text-lg font-semibold group">
+            {/* CTA Button */}
+            <FadeInUp delay={0.4} className="flex justify-center lg:justify-start mb-8">
+              <button 
+                onClick={toggleAuthModal}
+                className="btn btn-primary btn-lg px-8 py-4 text-lg font-semibold group"
+              >
                 <PawPrint className="h-5 w-5" />
                 Start Your Pet's Journal
                 <ArrowRight className="h-5 w-5" />
-              </button>
-              <button className="btn btn-secondary btn-lg px-8 py-4 text-lg font-semibold border-2 border-primary-200 hover:border-primary-300">
-                <Play className="h-5 w-5" />
-                Watch Demo
               </button>
             </FadeInUp>
 
@@ -143,6 +146,9 @@ export default function HeroSection() {
           </FadeInUp>
         </div>
       </div>
+      
+      {/* Auth Modal */}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </section>
   )
 }
