@@ -10,7 +10,7 @@ export default function HeroSection() {
     { icon: Heart, text: 'Health Monitoring', emoji: '❤️' },
     { icon: BarChart3, text: 'Trend Analysis', emoji: '📊' },
     { icon: Phone, text: 'Mobile Friendly', emoji: '📱' },
-    { icon: Users, text: 'Multi-Pet Support', emoji: '🐕🐱' },
+    { icon: Users, text: 'Multi-pet household-friendly', emoji: '🐕🐱' },
     { icon: Shield, text: 'Secure & Private', emoji: '🔒' },
   ]
 

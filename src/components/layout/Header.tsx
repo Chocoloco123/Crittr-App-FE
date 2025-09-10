@@ -107,10 +107,13 @@ export default function Header() {
                     <User className="h-4 w-4" />
                     <span>Dashboard</span>
                   </a>
-                  <div className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-primary-700">
+                  <a
+                    href="/settings"
+                    className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200 hover:shadow-sm"
+                  >
                     <User className="h-4 w-4" />
                     <span>{session.user?.email}</span>
-                  </div>
+                  </a>
                   <button
                     onClick={handleSignOut}
                     className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all duration-200 hover:shadow-sm"
@@ -199,10 +202,14 @@ export default function Header() {
                   {session ? (
                     // Authenticated user mobile
                     <>
-                      <div className="flex items-center space-x-2 px-4 py-3 text-sm font-medium text-gray-700">
+                      <a
+                        href="/settings"
+                        className="flex items-center space-x-2 px-4 py-3 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
                         <User className="h-4 w-4" />
                         <span>{session.user?.email}</span>
-                      </div>
+                      </a>
                       <button
                         onClick={() => {
                           handleSignOut()

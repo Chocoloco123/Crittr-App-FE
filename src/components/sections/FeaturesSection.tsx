@@ -101,7 +101,7 @@ export default function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-16 flex flex-col justify-center items-center"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <span className="text-4xl">🐾</span>
@@ -109,10 +109,10 @@ export default function FeaturesSection() {
               Everything you need
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
             <span className="text-gradient-primary">Complete Pet Care</span> Solution
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-center leading-relaxed">
             From daily logging to health insights, Crittr helps you provide 
             the best care for your beloved pets.
           </p>

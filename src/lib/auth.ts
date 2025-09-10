@@ -1,5 +1,6 @@
 import { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
+import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
 
@@ -8,15 +9,20 @@ const prisma = new PrismaClient()
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
+    }),
     EmailProvider({
-      server: {
-        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      server: process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD ? {
+        host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '587'),
         auth: {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASSWORD,
         },
-      },
+      } : undefined,
       from: process.env.SMTP_FROM || process.env.SMTP_USER || 'noreply@crittr.app',
     }),
   ],
@@ -31,15 +37,23 @@ export const authOptions: NextAuthOptions = {
       if (user.email) {
         try {
           const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000'
+          
+          // For Google users, we get additional profile data
+          const userData = {
+            email: user.email,
+            name: user.name || user.email.split('@')[0],
+            ...(account?.provider === 'google' && profile && {
+              image: profile.picture,
+              email_verified: profile.email_verified ? new Date().toISOString() : null
+            })
+          }
+          
           await fetch(`${backendUrl}/users/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              email: user.email,
-              name: user.name || user.email.split('@')[0]
-            })
+            body: JSON.stringify(userData)
           })
           console.log(`✅ User ${user.email} synced with backend`)
         } catch (error) {

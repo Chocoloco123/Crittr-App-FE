@@ -95,20 +95,24 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
             >
               <Bell className="h-5 w-5" />
             </button>
-            <button 
+            <Link
+              href="/settings"
               className="p-2 text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200"
               aria-label="Settings"
             >
               <Settings className="h-5 w-5" />
-            </button>
+            </Link>
             {session ? (
               <>
-                <div className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200">
+                <Link
+                  href="/settings"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200"
+                >
                   <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
                     <User className="h-4 w-4 text-primary-600" />
                   </div>
                   <span className="hidden sm:block">{session.user?.name || session.user?.email}</span>
-                </div>
+                </Link>
                 <button 
                   onClick={handleSignOut}
                   className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
