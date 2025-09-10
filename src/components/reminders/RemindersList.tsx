@@ -171,11 +171,59 @@ export default function RemindersList({
     const [hours, minutes] = reminder.time.split(':')
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(hours), parseInt(minutes))
     
-    if (today > now) {
-      return `Today at ${formatTime(reminder.time)}`
-    } else {
-      return `Tomorrow at ${formatTime(reminder.time)}`
+    // For 'once' frequency, use the createdAt date
+    if (reminder.frequency === 'once') {
+      const reminderDate = new Date(reminder.createdAt)
+      const reminderDateTime = new Date(reminderDate.getFullYear(), reminderDate.getMonth(), reminderDate.getDate(), parseInt(hours), parseInt(minutes))
+      
+      if (reminderDateTime > now) {
+        const diffDays = Math.ceil((reminderDateTime.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+        if (diffDays === 0) return `Today at ${formatTime(reminder.time)}`
+        if (diffDays === 1) return `Tomorrow at ${formatTime(reminder.time)}`
+        return `${diffDays} days at ${formatTime(reminder.time)}`
+      } else {
+        return 'Past due'
+      }
     }
+    
+    // For recurring frequencies (daily, weekly, monthly)
+    let nextDate = new Date(today)
+    
+    if (reminder.frequency === 'daily') {
+      if (today <= now) {
+        nextDate.setDate(nextDate.getDate() + 1)
+      }
+    } else if (reminder.frequency === 'weekly') {
+      // Find next occurrence on the same day of the week
+      const reminderDay = new Date(reminder.createdAt).getDay()
+      const currentDay = now.getDay()
+      
+      if (today > now) {
+        // Today's time hasn't passed yet
+        nextDate = today
+      } else {
+        // Find next week on the same day
+        const daysUntilNextWeek = (reminderDay - currentDay + 7) % 7
+        nextDate.setDate(nextDate.getDate() + (daysUntilNextWeek === 0 ? 7 : daysUntilNextWeek))
+      }
+    } else if (reminder.frequency === 'monthly') {
+      // Find next occurrence on the same date next month
+      if (today > now) {
+        nextDate = today
+      } else {
+        nextDate.setMonth(nextDate.getMonth() + 1)
+      }
+    }
+    
+    // Format the result
+    const diffDays = Math.ceil((nextDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+    
+    if (diffDays === 0) return `Today at ${formatTime(reminder.time)}`
+    if (diffDays === 1) return `Tomorrow at ${formatTime(reminder.time)}`
+    if (diffDays < 7) return `In ${diffDays} days at ${formatTime(reminder.time)}`
+    if (diffDays < 14) return `Next week at ${formatTime(reminder.time)}`
+    if (diffDays < 30) return `In ${Math.ceil(diffDays / 7)} weeks at ${formatTime(reminder.time)}`
+    return `In ${Math.ceil(diffDays / 30)} months at ${formatTime(reminder.time)}`
   }
 
   const getUpcomingReminders = () => {
