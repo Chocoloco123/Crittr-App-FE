@@ -83,7 +83,7 @@ export default function Header() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-1" role="navigation" aria-label="Main navigation">
+            <nav id="navigation" className="hidden md:flex items-center space-x-1" role="navigation" aria-label="Main navigation">
               {navItems.map((item) => (
                 <a 
                   key={item.href}

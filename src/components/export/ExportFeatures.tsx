@@ -174,8 +174,8 @@ export default function ExportFeatures({ petId, petName }: ExportFeaturesProps) 
         success('Export Complete', `PDF report generated successfully! ${selectedDataTypes.length} data types included.`, 3000)
       }
       
-    } catch (error) {
-      console.error('Export failed:', error)
+    } catch (err) {
+      console.error('Export failed:', err)
       error('Export Failed', 'Export failed. Please try again.', 3000)
     } finally {
       setIsExporting(false)

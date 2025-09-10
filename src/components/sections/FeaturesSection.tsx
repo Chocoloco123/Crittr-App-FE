@@ -15,9 +15,7 @@ import {
   Pill,
   Weight,
   Phone,
-  CheckCircle,
-  Monitor,
-  Sparkles
+  Monitor
 } from 'lucide-react'
 
 export default function FeaturesSection() {

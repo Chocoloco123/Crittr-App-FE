@@ -7,6 +7,7 @@ import { NotificationProvider } from "@/components/providers/NotificationProvide
 import StructuredData from "@/components/seo/StructuredData";
 import Footer from "@/components/layout/Footer";
 import FloatingChatbot from "@/components/ai/FloatingChatbot";
+import { PerformanceMonitor } from "@/components/ui/PerformanceMonitor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -116,10 +117,25 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className="antialiased" suppressHydrationWarning={true}>
+        {/* Skip Links for Accessibility */}
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
+        >
+          Skip to main content
+        </a>
+        <a 
+          href="#navigation" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-32 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
+        >
+          Skip to navigation
+        </a>
+        
+        <PerformanceMonitor />
         <AuthProvider>
           <ReduxProvider>
             <NotificationProvider>
-              <main className="content-area">
+              <main id="main-content" className="content-area">
                 {children}
               </main>
               <Footer />

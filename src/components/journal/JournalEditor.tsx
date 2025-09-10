@@ -147,8 +147,8 @@ export default function JournalEditor({
       }
       
       setAttachments(prev => [...prev, ...newAttachments])
-    } catch (error) {
-      console.error('Error uploading files:', error)
+    } catch (err) {
+      console.error('Error uploading files:', err)
       error('Upload Failed', 'Error uploading files. Please try again.', 4000)
     } finally {
       setIsUploading(false)
