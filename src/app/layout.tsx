@@ -6,6 +6,7 @@ import AuthProvider from "@/components/providers/AuthProvider";
 import { NotificationProvider } from "@/components/providers/NotificationProvider";
 import StructuredData from "@/components/seo/StructuredData";
 import Footer from "@/components/layout/Footer";
+import FloatingChatbot from "@/components/ai/FloatingChatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -122,6 +123,7 @@ export default function RootLayout({
                 {children}
               </main>
               <Footer />
+              <FloatingChatbot />
             </NotificationProvider>
           </ReduxProvider>
         </AuthProvider>

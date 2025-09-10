@@ -1,0 +1,19 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .stroke { stroke:#0C3B59; stroke-width:30; stroke-linecap:round; stroke-linejoin:round; }
+      .thin { stroke:#0C3B59; stroke-width:15; stroke-linecap:round; }
+    </style>
+  </defs>
+  <ellipse cx="512" cy="818" rx="276" ry="276" class="stroke" fill="#DFECF1"/>
+  <circle cx="248" cy="818" r="56" class="stroke" fill="#DFECF1"/>
+  <circle cx="776" cy="818" r="56" class="stroke" fill="#DFECF1"/>
+  <rect x="318" y="899" width="389" height="153" rx="76" ry="76" class="stroke" fill="#EEF7F9"/>
+  <rect x="216" y="143" width="593" height="512" rx="194" ry="194" class="stroke" fill="#FFFFFF"/>
+  <rect x="267" y="194" width="491" height="410" rx="168" ry="168" class="stroke" fill="#DFF5F3"/>
+  <circle cx="400" cy="409" r="35" fill="#0F2740"/>
+  <circle cx="624" cy="409" r="35" fill="#0F2740"/>
+  <path d="M 447 501 A 65 51 0 0 0 577 501" class="thin" fill="none"/>
+  <line x1="512" y1="113" x2="512" y2="31" stroke="#0C3B59" stroke-width="15" stroke-linecap="round"/>
+  <circle cx="512" cy="31" r="30" stroke="#0C3B59" stroke-width="15" fill="#9FE3E3"/>
+</svg>
