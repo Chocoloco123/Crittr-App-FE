@@ -26,11 +26,13 @@ import {
 import PetProfiles from '@/components/pets/PetProfiles'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { DemoStorage } from '@/lib/demoStorage'
+import AuthModal from '@/components/auth/AuthModal'
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
   const [dashboardData, setDashboardData] = useState<any>(null)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -52,6 +54,8 @@ export default function Dashboard() {
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
   }
+
+  const toggleAuthModal = () => setIsAuthModalOpen(!isAuthModalOpen)
 
   // Demo data for unauthenticated users
   const demoStats = [
@@ -210,12 +214,12 @@ export default function Dashboard() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
                       </Link>
-                      <Link 
-                        href="/auth/signin" 
+                      <button 
+                        onClick={toggleAuthModal}
                         className="inline-flex items-center px-8 py-4 text-blue-600 font-semibold hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-blue-200 hover:border-blue-300"
                       >
                         Sign In
-                      </Link>
+                      </button>
                     </>
                   ) : (
                     <Link 
@@ -446,6 +450,9 @@ export default function Dashboard() {
 
         </div>
       </main>
+
+      {/* Auth Modal */}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   )
 }

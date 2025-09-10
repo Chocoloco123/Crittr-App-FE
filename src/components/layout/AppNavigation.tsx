@@ -9,9 +9,11 @@ import {
   User,
   LogOut,
   Home,
-  Shield
+  Shield,
+  LogIn
 } from 'lucide-react'
 import NavigationDropdown from './NavigationDropdown'
+import AuthModal from '@/components/auth/AuthModal'
 
 interface AppNavigationProps {
   currentPage: string
@@ -20,6 +22,7 @@ interface AppNavigationProps {
 export default function AppNavigation({ currentPage }: AppNavigationProps) {
   const { data: session, status } = useSession()
   const [mounted, setMounted] = useState(false)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -29,6 +32,8 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' })
   }
+
+  const toggleAuthModal = () => setIsAuthModalOpen(!isAuthModalOpen)
 
   // Don't show navigation dropdown on home page
   const isHomePage = pathname === '/'
@@ -61,6 +66,7 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
   }
 
   return (
+    <>
     <header className="bg-blue-50 backdrop-blur-md sticky top-0 z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -110,12 +116,20 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
                     <span className="hidden sm:block">{session.user?.name || session.user?.email}</span>
                   </Link>
                 ) : (
-                  <div className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-lg cursor-not-allowed">
-                    <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                      <User className="h-4 w-4 text-gray-400" />
+                  <>
+                    <div className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-lg">
+                      <Shield className="h-4 w-4" />
+                      <span className="hidden sm:block">Demo Mode</span>
                     </div>
-                    <span className="hidden sm:block">Demo User</span>
-                  </div>
+                    <button
+                      onClick={toggleAuthModal}
+                      className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+                      aria-label="Sign in"
+                    >
+                      <LogIn className="h-4 w-4" />
+                      <span className="hidden sm:block">Sign In</span>
+                    </button>
+                  </>
                 )}
                 <button 
                   onClick={handleSignOut}
@@ -132,14 +146,14 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
                   <Shield className="h-4 w-4" />
                   <span className="hidden sm:block">Demo Mode</span>
                 </div>
-                <Link 
-                  href="/"
+                <button
+                  onClick={toggleAuthModal}
                   className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
                   aria-label="Sign in"
                 >
-                  <User className="h-4 w-4" />
+                  <LogIn className="h-4 w-4" />
                   <span className="hidden sm:block">Sign In</span>
-                </Link>
+                </button>
               </>
             )}
             
@@ -149,5 +163,9 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
         </div>
       </div>
     </header>
+
+    {/* Auth Modal */}
+    <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+  </>
   )
 }

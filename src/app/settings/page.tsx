@@ -72,12 +72,17 @@ export default function SettingsPage() {
     )
   }
 
-  if (!session) {
+  // Check if user is not authenticated or is a demo user
+  const isDemoUser = session?.user?.email?.includes('demo') || !session?.user?.email
+  
+  if (!session || isDemoUser) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-          <p className="text-gray-600 mb-6">You need to be signed in to access settings.</p>
+          <p className="text-gray-600 mb-6">
+            {!session ? 'You need to be signed in to access settings.' : 'Demo users cannot access account settings.'}
+          </p>
           <Link href="/auth/signin" className="btn btn-primary">
             Sign In
           </Link>
