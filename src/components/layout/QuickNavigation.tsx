@@ -60,14 +60,15 @@ export default function QuickNavigation({ currentPage }: QuickNavigationProps) {
       textColor: 'text-orange-700',
       description: 'Insights'
     },
-    {
-      href: '/ai-assistant',
-      icon: Bot,
-      label: 'AI Assistant',
-      color: 'bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200',
-      textColor: 'text-purple-700',
-      description: 'AI Help'
-    },
+    // TODO: Re-enable when AI Assistant is ready
+    // {
+    //   href: '/ai-assistant',
+    //   icon: Bot,
+    //   label: 'AI Assistant',
+    //   color: 'bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200',
+    //   textColor: 'text-purple-700',
+    //   description: 'AI Help'
+    // },
     {
       href: '/social',
       icon: Users,

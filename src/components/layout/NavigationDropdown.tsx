@@ -66,14 +66,15 @@ export default function NavigationDropdown({ currentPage }: NavigationDropdownPr
       bgColor: 'bg-orange-50 hover:bg-orange-100',
       description: 'Insights'
     },
-    {
-      href: '/ai-assistant',
-      icon: Bot,
-      label: 'AI Assistant',
-      color: 'text-purple-700',
-      bgColor: 'bg-gradient-to-r from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100',
-      description: 'AI Help'
-    },
+    // TODO: Re-enable when AI Assistant is ready
+    // {
+    //   href: '/ai-assistant',
+    //   icon: Bot,
+    //   label: 'AI Assistant',
+    //   color: 'text-purple-700',
+    //   bgColor: 'bg-gradient-to-r from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100',
+    //   description: 'AI Help'
+    // },
     {
       href: '/export',
       icon: ArrowRight,

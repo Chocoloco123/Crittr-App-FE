@@ -26,6 +26,7 @@ import {
   User,
   MapPin
 } from 'lucide-react'
+import { useNotify } from '@/components/providers/NotificationProvider'
 
 interface ExportData {
   petId: string
@@ -100,6 +101,7 @@ export default function ExportFeatures({ petId, petName }: ExportFeaturesProps) 
   const [endDate, setEndDate] = useState('')
   const [isExporting, setIsExporting] = useState(false)
   const [exportHistory, setExportHistory] = useState<any[]>([])
+  const { success, error } = useNotify()
 
   const handleDataTypeToggle = (dataType: string) => {
     setSelectedDataTypes(prev => 
@@ -124,12 +126,12 @@ export default function ExportFeatures({ petId, petName }: ExportFeaturesProps) 
 
   const handleExport = async () => {
     if (selectedDataTypes.length === 0) {
-      alert('Please select at least one data type to export')
+      error('Export Error', 'Please select at least one data type to export', 3000)
       return
     }
 
     if (!startDate || !endDate) {
-      alert('Please select a date range')
+      error('Export Error', 'Please select a date range', 3000)
       return
     }
 
@@ -152,8 +154,10 @@ export default function ExportFeatures({ petId, petName }: ExportFeaturesProps) 
       if (selectedFormat === 'pdf') {
         generatePDF(exportData)
       } else {
-        // For CSV and Excel, show alert (could be implemented later)
-        alert(`${selectedFormat.toUpperCase()} export functionality coming soon! For now, PDF export is available.`)
+        // For CSV and Excel, show notification (could be implemented later)
+        error('Coming Soon', `${selectedFormat.toUpperCase()} export functionality coming soon! For now, PDF export is available.`, 4000)
+        setIsExporting(false)
+        return
       }
       
       // Add to export history
@@ -167,12 +171,12 @@ export default function ExportFeatures({ petId, petName }: ExportFeaturesProps) 
       setExportHistory(prev => [newExport, ...prev])
       
       if (selectedFormat === 'pdf') {
-        alert(`PDF report generated successfully! ${selectedDataTypes.length} data types included.`)
+        success('Export Complete', `PDF report generated successfully! ${selectedDataTypes.length} data types included.`, 3000)
       }
       
     } catch (error) {
       console.error('Export failed:', error)
-      alert('Export failed. Please try again.')
+      error('Export Failed', 'Export failed. Please try again.', 3000)
     } finally {
       setIsExporting(false)
     }
