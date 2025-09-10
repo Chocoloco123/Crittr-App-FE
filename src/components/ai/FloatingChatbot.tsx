@@ -8,7 +8,8 @@ import {
   User,
   X,
   Minimize2,
-  Maximize2
+  Maximize2,
+  RefreshCw
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -42,13 +43,25 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const lastAssistantMessageRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const scrollToLastAssistantMessage = () => {
+    lastAssistantMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   useEffect(() => {
-    scrollToBottom()
+    const lastMessage = messages[messages.length - 1]
+    if (lastMessage && lastMessage.role === 'assistant') {
+      // Scroll to the beginning of the assistant's message
+      setTimeout(() => scrollToLastAssistantMessage(), 100)
+    } else {
+      // For user messages, scroll to bottom as usual
+      scrollToBottom()
+    }
   }, [messages])
 
   const sendMessage = async (content: string) => {
@@ -119,6 +132,8 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
   const clearChat = () => {
     setMessages([])
     setError(null)
+    setIsLoading(false)
+    setInputValue('')
   }
 
   const formatTime = (date: Date) => {
@@ -192,6 +207,13 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                   )}
                 </button>
                 <button
+                  onClick={clearChat}
+                  className="p-1 hover:bg-white/20 rounded transition-colors"
+                  title="Restart chat"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </button>
+                <button
                   onClick={() => setIsOpen(false)}
                   className="p-1 hover:bg-white/20 rounded transition-colors"
                 >
@@ -232,6 +254,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                       {messages.map((message, index) => (
                         <motion.div
                           key={message.id}
+                          ref={message.role === 'assistant' && index === messages.length - 1 ? lastAssistantMessageRef : null}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.2 }}
