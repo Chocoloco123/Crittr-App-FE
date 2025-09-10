@@ -7,7 +7,7 @@ import { NotificationProvider } from "@/components/providers/NotificationProvide
 import StructuredData from "@/components/seo/StructuredData";
 import Footer from "@/components/layout/Footer";
 import FloatingChatbot from "@/components/ai/FloatingChatbot";
-import { PerformanceMonitor } from "@/components/ui/PerformanceMonitor";
+import { PerformanceMonitor } from "../components/ui/PerformanceMonitor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -131,10 +131,10 @@ export default function RootLayout({
           Skip to navigation
         </a>
         
-        <PerformanceMonitor />
         <AuthProvider>
           <ReduxProvider>
             <NotificationProvider>
+              <PerformanceMonitor />
               <main id="main-content" className="content-area">
                 {children}
               </main>
