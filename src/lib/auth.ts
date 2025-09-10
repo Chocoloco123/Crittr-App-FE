@@ -1,6 +1,5 @@
 import { NextAuthOptions } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
-import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
 
@@ -9,11 +8,6 @@ const prisma = new PrismaClient()
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      allowDangerousEmailAccountLinking: true,
-    }),
     EmailProvider({
       server: process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD ? {
         host: process.env.SMTP_HOST,
@@ -37,23 +31,15 @@ export const authOptions: NextAuthOptions = {
       if (user.email) {
         try {
           const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000'
-          
-          // For Google users, we get additional profile data
-          const userData = {
-            email: user.email,
-            name: user.name || user.email.split('@')[0],
-            ...(account?.provider === 'google' && profile && {
-              image: profile.picture,
-              email_verified: profile.email_verified ? new Date().toISOString() : null
-            })
-          }
-          
           await fetch(`${backendUrl}/users/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userData)
+            body: JSON.stringify({
+              email: user.email,
+              name: user.name || user.email.split('@')[0]
+            })
           })
           console.log(`✅ User ${user.email} synced with backend`)
         } catch (error) {

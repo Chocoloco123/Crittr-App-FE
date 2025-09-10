@@ -16,6 +16,7 @@ import RemindersList from '@/components/reminders/RemindersList'
 import ReminderForm from '@/components/reminders/ReminderForm'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
+import { useNotify } from '@/components/providers/NotificationProvider'
 
 interface Reminder {
   id: string
@@ -38,6 +39,7 @@ export default function RemindersPage() {
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
+  const { success, error } = useNotify()
   
   // Demo mock data for unauthenticated users
   const mockReminders: Reminder[] = [
@@ -115,13 +117,13 @@ export default function RemindersPage() {
     
     if (editingReminder) {
       // Update existing reminder
-      setReminders(prev => prev.map(r => r.id === editingReminder.id ? newReminder : r))
+      updateReminder(editingReminder.id, newReminder)
+      success('Reminder Updated!', `"${reminderData.title}" updated successfully`, 4000)
     } else {
       // Add new reminder
-      setReminders(prev => [newReminder, ...prev])
+      addReminder(newReminder)
+      success('Reminder Created!', `"${reminderData.title}" created successfully`, 4000)
     }
-    
-    alert(`Reminder "${reminderData.title}" saved successfully!`)
     
     setShowForm(false)
     setEditingReminder(null)
@@ -131,17 +133,19 @@ export default function RemindersPage() {
     if (confirm('Are you sure you want to delete this reminder?')) {
       // In a real app, this would delete from the backend
       console.log('Deleting reminder:', reminderId)
-      setReminders(prev => prev.filter(r => r.id !== reminderId))
-      alert('Reminder deleted successfully!')
+      removeReminder(reminderId)
+      success('Reminder Deleted!', 'Reminder deleted successfully', 3000)
     }
   }
 
   const handleToggleReminder = (reminderId: string) => {
     // In a real app, this would update the backend
     console.log('Toggling reminder:', reminderId)
-    setReminders(prev => prev.map(r => 
-      r.id === reminderId ? { ...r, isActive: !r.isActive } : r
-    ))
+    const reminder = reminders.find(r => r.id === reminderId)
+    if (reminder) {
+      const updatedReminder = { ...reminder, isActive: !reminder.isActive }
+      updateReminder(reminderId, updatedReminder)
+    }
   }
 
   const handleCancelForm = () => {

@@ -160,30 +160,32 @@ export default function SettingsPage() {
               </button>
             </motion.div>
 
-            {/* Danger Zone */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white rounded-xl shadow-sm border border-red-200 p-6"
-            >
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                  <AlertTriangle className="h-5 w-5 text-red-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-red-900">Danger Zone</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Permanently delete your account and all associated data. This action cannot be undone.
-              </p>
-              <button
-                onClick={() => setShowDeleteModal(true)}
-                className="w-full bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center space-x-2"
+            {/* Danger Zone - Only show for non-demo users */}
+            {session?.user?.email !== 'demo@crittr.app' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white rounded-xl shadow-sm border border-red-200 p-6"
               >
-                <Trash2 className="h-4 w-4" />
-                <span>Delete Account</span>
-              </button>
-            </motion.div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-red-900">Danger Zone</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Permanently delete your account and all associated data. This action cannot be undone.
+                </p>
+                <button
+                  onClick={() => setShowDeleteModal(true)}
+                  className="w-full bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center space-x-2"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span>Delete Account</span>
+                </button>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

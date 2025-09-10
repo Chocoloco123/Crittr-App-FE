@@ -24,6 +24,7 @@ import {
   Moon,
   Coffee
 } from 'lucide-react'
+import { useNotify } from '@/components/providers/NotificationProvider'
 
 interface Reminder {
   id: string
@@ -64,12 +65,6 @@ const frequencies = [
   { value: 'monthly', label: 'Monthly', icon: Moon }
 ]
 
-const quickTimes = [
-  { label: 'Morning', time: '08:00', displayTime: '8:00 AM', icon: Sun },
-  { label: 'Afternoon', time: '14:00', displayTime: '2:00 PM', icon: Coffee },
-  { label: 'Evening', time: '18:00', displayTime: '6:00 PM', icon: Moon },
-  { label: 'Night', time: '22:00', displayTime: '10:00 PM', icon: Moon }
-]
 
 // Helper function to convert 24-hour to 12-hour format
 const formatTime12Hour = (time24: string) => {
@@ -91,10 +86,55 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
     initialData?.frequency || 'daily'
   )
   const [isActive, setIsActive] = useState(initialData?.isActive ?? true)
+  const [timeError, setTimeError] = useState('')
+  const { error } = useNotify()
+
+  // Validate time input
+  const validateTime = (timeValue: string) => {
+    if (!timeValue) {
+      setTimeError('Please select a time')
+      return false
+    }
+    
+    const [hours, minutes] = timeValue.split(':')
+    const hour = parseInt(hours)
+    const minute = parseInt(minutes)
+    
+    if (isNaN(hour) || isNaN(minute)) {
+      setTimeError('Invalid time format')
+      return false
+    }
+    
+    if (hour < 0 || hour > 23) {
+      setTimeError('Hour must be between 00 and 23')
+      return false
+    }
+    
+    if (minute < 0 || minute > 59) {
+      setTimeError('Minutes must be between 00 and 59')
+      return false
+    }
+    
+    setTimeError('')
+    return true
+  }
+
+  // Handle time change with validation
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const timeValue = e.target.value
+    setTime(timeValue)
+    validateTime(timeValue)
+  }
+
 
   const handleSave = () => {
-    if (!title.trim() || !time) {
-      alert('Please fill in title and time')
+    if (!title.trim()) {
+      error('Missing Information', 'Please fill in the title', 3000)
+      return
+    }
+
+    if (!validateTime(time)) {
+      error('Invalid Time', timeError || 'Please select a valid time', 3000)
       return
     }
 
@@ -110,9 +150,6 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
     })
   }
 
-  const handleQuickTime = (quickTime: string) => {
-    setTime(quickTime)
-  }
 
   return (
     <motion.div
@@ -204,38 +241,47 @@ export default function ReminderForm({ petId, petName, onSave, onCancel, initial
           {/* Time Selection */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-3">
-              Time *
+              Set Time *
             </label>
             
-            {/* Quick Time Buttons */}
-            <div className="grid grid-cols-4 gap-2 mb-4">
-              {quickTimes.map((quick) => {
-                const Icon = quick.icon
-                return (
-                  <button
-                    key={quick.time}
-                    onClick={() => handleQuickTime(quick.time)}
-                    className={`p-3 rounded-lg border transition-all cursor-pointer ${
-                      time === quick.time
-                        ? 'border-purple-500 bg-purple-50 text-purple-700'
-                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
-                    }`}
-                  >
-                    <Icon className="h-4 w-4 mx-auto mb-1" />
-                    <div className="text-xs font-medium">{quick.label}</div>
-                    <div className="text-xs">{quick.displayTime}</div>
-                  </button>
-                )
-              })}
-            </div>
-
             {/* Custom Time Input */}
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-            />
+            <div className="bg-gray-50 rounded-lg p-4">
+              <div className="text-sm text-gray-600 mb-3 text-center">
+                Enter the time for your reminder
+              </div>
+              <div className="flex items-center justify-center space-x-2">
+                <input
+                  type="time"
+                  value={time}
+                  onChange={handleTimeChange}
+                  className={`px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                    timeError 
+                      ? 'border-red-300 bg-red-50' 
+                      : 'border-gray-300'
+                  }`}
+                />
+                <span className="text-sm text-gray-500">(12-hour format)</span>
+              </div>
+
+              {/* Error Message */}
+              {timeError && (
+                <div className="mt-2 text-center">
+                  <span className="text-sm text-red-600">{timeError}</span>
+                </div>
+              )}
+
+              {/* Display Selected Time */}
+              {time && !timeError && (
+                <div className="mt-4 text-center">
+                  <div className="inline-flex items-center px-4 py-2 bg-purple-100 rounded-lg">
+                    <Clock className="h-4 w-4 text-purple-600 mr-2" />
+                    <span className="text-sm font-semibold text-purple-700">
+                      Selected: {formatTime12Hour(time)}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Frequency */}

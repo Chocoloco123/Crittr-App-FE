@@ -6,8 +6,6 @@ import {
   Bold, 
   Italic, 
   Underline, 
-  List, 
-  ListOrdered, 
   Link, 
   Image, 
   Camera,
@@ -26,6 +24,7 @@ import {
   Scissors,
   PawPrint
 } from 'lucide-react'
+import { useNotify } from '@/components/providers/NotificationProvider'
 
 interface JournalEntry {
   id: string
@@ -87,6 +86,7 @@ export default function JournalEditor({
   const [mounted, setMounted] = useState(false)
   const [selectedPetId, setSelectedPetId] = useState(petId || '')
   const [selectedPetName, setSelectedPetName] = useState(petName || '')
+  const { error } = useNotify()
   
   const fileInputRef = useRef<HTMLInputElement>(null)
   const editorRef = useRef<HTMLDivElement>(null)
@@ -103,12 +103,12 @@ export default function JournalEditor({
 
   const handleSave = () => {
     if (!title.trim() || !content.trim()) {
-      alert('Please fill in both title and content')
+      error('Missing Information', 'Please fill in both title and content', 3000)
       return
     }
 
     if (!selectedPetId) {
-      alert('Please select a pet for this journal entry')
+      error('Pet Required', 'Please select a pet for this journal entry', 3000)
       return
     }
 
@@ -149,7 +149,7 @@ export default function JournalEditor({
       setAttachments(prev => [...prev, ...newAttachments])
     } catch (error) {
       console.error('Error uploading files:', error)
-      alert('Error uploading files. Please try again.')
+      error('Upload Failed', 'Error uploading files. Please try again.', 4000)
     } finally {
       setIsUploading(false)
     }
@@ -198,72 +198,6 @@ export default function JournalEditor({
     }
   }
 
-  const insertList = (type: 'ul' | 'ol') => {
-    console.log('insertList called with type:', type)
-    if (editorRef.current && typeof window !== 'undefined') {
-      editorRef.current.focus()
-      
-      // Try execCommand first (more reliable in some browsers)
-      const command = type === 'ul' ? 'insertUnorderedList' : 'insertOrderedList'
-      console.log('Trying execCommand:', command)
-      const success = document.execCommand(command, false, null)
-      console.log('execCommand success:', success)
-      
-      if (success) {
-        // execCommand worked, update content
-        console.log('execCommand worked, updating content')
-        setContent(editorRef.current.innerHTML)
-        return
-      }
-      
-      // Fallback: manual insertion
-      console.log('Using fallback manual insertion')
-      const selection = window.getSelection()
-      console.log('Selection:', selection, 'Range count:', selection?.rangeCount)
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0)
-        console.log('Range:', range)
-        
-        // Insert a line break first to ensure we're on a new line
-        const br = document.createElement('br')
-        range.insertNode(br)
-        range.setStartAfter(br)
-        range.setEndAfter(br)
-        
-        // Create list element
-        const list = document.createElement(type)
-        const item = document.createElement('li')
-        item.innerHTML = '&nbsp;' // Non-breaking space to make it editable
-        list.appendChild(item)
-        
-        // Insert after the line break
-        range.insertNode(list)
-        
-        // Position cursor in the list item
-        range.setStart(item, 0)
-        range.setEnd(item, 0)
-        selection.removeAllRanges()
-        selection.addRange(range)
-      } else {
-        // No selection, append to end
-        const list = document.createElement(type)
-        const item = document.createElement('li')
-        item.innerHTML = '&nbsp;'
-        list.appendChild(item)
-        editorRef.current.appendChild(list)
-        
-        // Focus on the new item
-        const range = document.createRange()
-        range.setStart(item, 0)
-        range.setEnd(item, 0)
-        selection?.removeAllRanges()
-        selection?.addRange(range)
-      }
-      
-      // Update content state
-      setContent(editorRef.current.innerHTML)
-    }
-  }
 
   const handleEditorInput = (e: React.FormEvent<HTMLDivElement>) => {
     const target = e.currentTarget
@@ -413,21 +347,6 @@ export default function JournalEditor({
                 title="Underline"
               >
                 <Underline className="h-4 w-4" />
-              </button>
-              <div className="w-px h-8 bg-gray-300 mx-1" />
-              <button
-                onClick={() => insertList('ul')}
-                className="p-2 hover:bg-gray-200 rounded"
-                title="Bullet List"
-              >
-                <List className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => insertList('ol')}
-                className="p-2 hover:bg-gray-200 rounded"
-                title="Numbered List"
-              >
-                <ListOrdered className="h-4 w-4" />
               </button>
               <div className="w-px h-8 bg-gray-300 mx-1" />
               <button

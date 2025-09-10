@@ -35,14 +35,13 @@ export default function HeroSection() {
             >
               <div className="text-center lg:text-left mb-8">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-                <span className="text-4xl">🐾</span>
                 <div className="flex items-center gap-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium">
                   <Star className="h-4 w-4" />
                   <span>Trusted by 10,000+ Pet Parents</span>
                 </div>
               </div>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
-                  <span className="text-gradient-primary">Crittr</span>
+                  <span className="bg-gradient-to-r from-primary-500 to-pink-500 bg-clip-text text-transparent">Crittr</span>
                 </h1>
                 <p className="text-xl md:text-2xl text-gray-600 font-medium mb-6">Your pet's health companion</p>
               </div>

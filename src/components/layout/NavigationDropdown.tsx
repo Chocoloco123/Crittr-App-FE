@@ -5,14 +5,14 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  ChevronDown,
+  Menu,
+  X,
   Home, 
   Calendar, 
   Activity, 
   Bell, 
   BarChart3, 
   Bot, 
-  Users, 
   ArrowRight
 } from 'lucide-react'
 
@@ -75,14 +75,6 @@ export default function NavigationDropdown({ currentPage }: NavigationDropdownPr
       description: 'AI Help'
     },
     {
-      href: '/social',
-      icon: Users,
-      label: 'Community',
-      color: 'text-pink-700',
-      bgColor: 'bg-pink-50 hover:bg-pink-100',
-      description: 'Social'
-    },
-    {
       href: '/export',
       icon: ArrowRight,
       label: 'Export',
@@ -115,15 +107,14 @@ export default function NavigationDropdown({ currentPage }: NavigationDropdownPr
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200"
+        className="flex items-center justify-center w-10 h-10 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200"
         aria-label="Navigation menu"
       >
-        <span>Navigate</span>
-        <ChevronDown 
-          className={`h-4 w-4 transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
-          }`} 
-        />
+        {isOpen ? (
+          <X className="h-5 w-5" />
+        ) : (
+          <Menu className="h-5 w-5" />
+        )}
       </button>
 
       <AnimatePresence>
@@ -133,11 +124,10 @@ export default function NavigationDropdown({ currentPage }: NavigationDropdownPr
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden"
+            className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden backdrop-blur-sm"
           >
-            <div className="p-4">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Quick Navigation</h3>
-              <div className="grid grid-cols-2 gap-2">
+            <div className="p-6">
+              <div className="space-y-2">
                 {navigationItems.map((item) => {
                   const Icon = item.icon
                   const isCurrentPage = pathname === item.href
@@ -145,15 +135,40 @@ export default function NavigationDropdown({ currentPage }: NavigationDropdownPr
                   return (
                     <Link key={item.href} href={item.href}>
                       <motion.div
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={{ scale: 1.02, x: 4 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`p-3 rounded-lg ${item.bgColor} ${item.color} transition-all duration-200 flex flex-col items-center space-y-2 ${
-                          isCurrentPage ? 'ring-2 ring-indigo-500 ring-offset-1' : ''
+                        className={`group relative p-4 rounded-xl transition-all duration-300 flex items-center space-x-4 ${
+                          isCurrentPage 
+                            ? 'bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 shadow-sm' 
+                            : 'hover:bg-gray-50 hover:shadow-sm'
                         }`}
-                        title={item.description}
                       >
-                        <Icon className="h-5 w-5" />
-                        <span className="text-xs font-medium text-center">{item.label}</span>
+                        <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-200 ${
+                          isCurrentPage 
+                            ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white' 
+                            : 'bg-gray-100 group-hover:bg-gray-200 text-gray-600 group-hover:text-gray-800'
+                        }`}>
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-sm font-semibold transition-colors duration-200 ${
+                            isCurrentPage ? 'text-indigo-900' : 'text-gray-900 group-hover:text-gray-800'
+                          }`}>
+                            {item.label}
+                          </p>
+                          <p className={`text-xs transition-colors duration-200 ${
+                            isCurrentPage ? 'text-indigo-600' : 'text-gray-500 group-hover:text-gray-600'
+                          }`}>
+                            {item.description}
+                          </p>
+                        </div>
+                        
+                        {isCurrentPage && (
+                          <div className="flex-shrink-0">
+                            <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                          </div>
+                        )}
                       </motion.div>
                     </Link>
                   )

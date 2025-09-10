@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import OneTapLogging from '@/components/logging/OneTapLogging'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
+import { useNotify } from '@/components/providers/NotificationProvider'
 
 interface QuickLog {
   id: string
@@ -22,6 +23,7 @@ export default function QuickLogPage() {
   const [mounted, setMounted] = useState(false)
   const [selectedPetId, setSelectedPetId] = useState<string>('')
   const [selectedPetName, setSelectedPetName] = useState<string>('')
+  const { success, error } = useNotify()
   
   // Use optimized demo storage hook
   const { data: logs, addItem: addLog, updateItem: updateLog, removeItem: removeLog, isHydrated } = useDemoStorageArray<QuickLog>('quick-logs')
@@ -42,19 +44,23 @@ export default function QuickLogPage() {
     
     addLog(newLog)
     
-    // Show success message
+    // Show success notification
     const activityName = logData.activityType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
-    alert(`${activityName} logged successfully for ${logData.petName}!`)
+    success(
+      'Activity Logged!',
+      `${activityName} logged successfully for ${logData.petName}`,
+      4000
+    )
   }
 
   const handleEditLog = (logId: string, updatedLog: Omit<QuickLog, 'id'>) => {
     updateLog(logId, updatedLog)
-    alert('Log updated successfully!')
+    success('Log Updated!', 'Activity log updated successfully', 3000)
   }
 
   const handleDeleteLog = (logId: string) => {
     removeLog(logId)
-    alert('Log deleted successfully!')
+    success('Log Deleted!', 'Activity log deleted successfully', 3000)
   }
 
   if (!mounted || status === 'loading') {

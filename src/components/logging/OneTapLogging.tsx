@@ -17,8 +17,10 @@ import {
   Plus,
   Calendar,
   Camera,
-  FileText
+  FileText,
+  GraduationCap
 } from 'lucide-react'
+import { useNotify } from '@/components/providers/NotificationProvider'
 
 interface QuickLog {
   id: string
@@ -103,6 +105,14 @@ const quickActivities = [
     color: 'bg-pink-500',
     hoverColor: 'hover:bg-pink-600',
     description: 'Log grooming session'
+  },
+  {
+    id: 'training',
+    label: 'Training',
+    icon: GraduationCap,
+    color: 'bg-teal-500',
+    hoverColor: 'hover:bg-teal-600',
+    description: 'Log training session'
   }
 ]
 
@@ -115,6 +125,7 @@ export default function OneTapLogging({ petId, petName, logs = [], onLogActivity
   const [customTime, setCustomTime] = useState('')
   const [editingLog, setEditingLog] = useState<QuickLog | null>(null)
   const [showEditModal, setShowEditModal] = useState(false)
+  const { error } = useNotify()
 
   // Available pets for selection
   const availablePets = [
@@ -125,7 +136,7 @@ export default function OneTapLogging({ petId, petName, logs = [], onLogActivity
 
   const handleQuickLog = (activityId: string) => {
     if (!selectedPetId) {
-      alert('Please select a pet first')
+      error('Pet Required', 'Please select a pet first', 3000)
       return
     }
 
@@ -450,83 +461,81 @@ export default function OneTapLogging({ petId, petName, logs = [], onLogActivity
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activities</h3>
         <div className="space-y-3">
-          {logs.length > 0 ? (
-            // Show actual logged activities
-            logs.slice(0, 10).map((log) => {
-              const activity = quickActivities.find(a => a.id === log.activityType)
-              const Icon = activity?.icon || Clock
-              
-              return (
-                <div key={log.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                      <Icon className="h-4 w-4 text-indigo-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900 capitalize">
-                        {log.activityType.replace('_', ' ')}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {log.petName} • {formatTime(log.timestamp)}
-                      </p>
-                      {log.notes && (
-                        <p className="text-xs text-gray-500 mt-1 italic">"{log.notes}"</p>
-                      )}
-                    </div>
+          {/* Show actual logged activities first */}
+          {logs.map((log) => {
+            const activity = quickActivities.find(a => a.id === log.activityType)
+            const Icon = activity?.icon || Clock
+            
+            return (
+              <div key={log.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                    <Icon className="h-4 w-4 text-indigo-600" />
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <button 
-                      onClick={() => handleEditLog(log)}
-                      className="p-2 text-gray-400 hover:text-indigo-600 transition-colors"
-                      title="Edit log"
-                    >
-                      <FileText className="h-4 w-4" />
-                    </button>
-                    <button 
-                      onClick={() => handleDeleteLog(log.id)}
-                      className="p-2 text-gray-400 hover:text-red-600 transition-colors"
-                      title="Delete log"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
+                  <div>
+                    <p className="font-medium text-gray-900 capitalize">
+                      {log.activityType.replace('_', ' ')}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {log.petName} • {formatTime(log.timestamp)}
+                    </p>
+                    {log.notes && (
+                      <p className="text-xs text-gray-500 mt-1 italic">"{log.notes}"</p>
+                    )}
                   </div>
                 </div>
-              )
-            })
-          ) : (
-            // Show demo data when no logs exist
-            [
-              { activity: 'Feeding', time: '2 hours ago', pet: 'Buddy', notes: 'Ate all his kibble' },
-              { activity: 'Walk', time: '4 hours ago', pet: 'Luna', notes: '30 minute walk in the park' },
-              { activity: 'Medication', time: '6 hours ago', pet: 'Max', notes: 'Heartworm prevention' },
-              { activity: 'Water', time: '1 day ago', pet: 'Buddy', notes: 'Refilled water bowl' }
-            ].map((log, index) => {
-              const activity = quickActivities.find(a => a.label === log.activity)
-              const Icon = activity?.icon || Clock
-              
-              return (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg opacity-75">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                      <Icon className="h-4 w-4 text-indigo-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">{log.activity}</p>
-                      <p className="text-sm text-gray-600">{log.pet} • {log.time}</p>
-                      {log.notes && (
-                        <p className="text-xs text-gray-500 mt-1 italic">"{log.notes}"</p>
-                      )}
-                    </div>
+                <div className="flex items-center space-x-2">
+                  <button 
+                    onClick={() => handleEditLog(log)}
+                    className="p-2 text-gray-400 hover:text-indigo-600 transition-colors"
+                    title="Edit log"
+                  >
+                    <FileText className="h-4 w-4" />
+                  </button>
+                  <button 
+                    onClick={() => handleDeleteLog(log.id)}
+                    className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                    title="Delete log"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )
+          })}
+          
+          {/* Always show demo data below actual logs */}
+          {[
+            { activity: 'Feeding', time: '2 hours ago', pet: 'Buddy', notes: 'Ate all his kibble' },
+            { activity: 'Walk', time: '4 hours ago', pet: 'Luna', notes: '30 minute walk in the park' },
+            { activity: 'Medication', time: '6 hours ago', pet: 'Max', notes: 'Heartworm prevention' },
+            { activity: 'Water', time: '1 day ago', pet: 'Buddy', notes: 'Refilled water bowl' }
+          ].map((log, index) => {
+            const activity = quickActivities.find(a => a.label === log.activity)
+            const Icon = activity?.icon || Clock
+            
+            return (
+              <div key={`demo-${index}`} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg shadow-sm opacity-75">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                    <Icon className="h-4 w-4 text-indigo-600" />
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs text-gray-400 bg-gray-200 px-2 py-1 rounded">
-                      Demo
-                    </span>
+                  <div>
+                    <p className="font-medium text-gray-900">{log.activity}</p>
+                    <p className="text-sm text-gray-600">{log.pet} • {log.time}</p>
+                    {log.notes && (
+                      <p className="text-xs text-gray-500 mt-1 italic">"{log.notes}"</p>
+                    )}
                   </div>
                 </div>
-              )
-            })
-          )}
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded font-medium">
+                    Demo
+                  </span>
+                </div>
+              </div>
+            )
+          })}
         </div>
         {logs.length === 0 && (
           <div className="mt-4 p-3 bg-blue-50 rounded-lg">

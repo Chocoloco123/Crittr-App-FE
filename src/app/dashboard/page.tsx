@@ -212,7 +212,7 @@ export default function Dashboard() {
                       </Link>
                       <Link 
                         href="/auth/signin" 
-                        className="inline-flex items-center px-6 py-3 text-blue-600 font-semibold hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-blue-200 hover:border-blue-300"
+                        className="inline-flex items-center px-8 py-4 text-blue-600 font-semibold hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-blue-200 hover:border-blue-300"
                       >
                         Sign In
                       </Link>

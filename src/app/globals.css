@@ -522,9 +522,16 @@ body, html {
   color: #171717;
 }
 
-/* Ensure sections have proper backgrounds */
+/* Ensure sections have proper backgrounds - allow gradients */
 section {
-  background-color: #ffffff;
+  background-color: transparent;
+}
+
+/* Allow specific sections to have their gradient backgrounds */
+section[id="pricing"],
+section[id="about"],
+section[id="faq"] {
+  background-color: transparent !important;
 }
 
 /* Allow hero section to have gradient background */

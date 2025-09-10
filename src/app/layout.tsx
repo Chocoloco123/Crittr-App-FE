@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/components/providers/ReduxProvider";
 import AuthProvider from "@/components/providers/AuthProvider";
+import { NotificationProvider } from "@/components/providers/NotificationProvider";
 import StructuredData from "@/components/seo/StructuredData";
 import Footer from "@/components/layout/Footer";
 
@@ -116,10 +117,12 @@ export default function RootLayout({
       <body className="antialiased" suppressHydrationWarning={true}>
         <AuthProvider>
           <ReduxProvider>
-            <main className="content-area">
-              {children}
-            </main>
-            <Footer />
+            <NotificationProvider>
+              <main className="content-area">
+                {children}
+              </main>
+              <Footer />
+            </NotificationProvider>
           </ReduxProvider>
         </AuthProvider>
       </body>

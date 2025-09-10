@@ -73,12 +73,12 @@ export default function FeaturesSection() {
   ]
 
   const quickActions = [
-    { icon: Heart, label: 'Feeding', color: 'bg-gradient-to-br from-red-100 to-red-200 text-red-700' },
-    { icon: Weight, label: 'Water', color: 'bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700' },
-    { icon: Calendar, label: 'Walk', color: 'bg-gradient-to-br from-green-100 to-green-200 text-green-700' },
-    { icon: Pill, label: 'Medication', color: 'bg-gradient-to-br from-purple-100 to-purple-200 text-purple-700' },
-    { icon: Users, label: 'Training', color: 'bg-gradient-to-br from-primary-100 to-primary-200 text-primary-700' },
-    { icon: Heart, label: 'Grooming', color: 'bg-gradient-to-br from-pink-100 to-pink-200 text-pink-700' },
+    { icon: Heart, label: 'Feeding', color: 'bg-primary-200 text-primary-800' },
+    { icon: Weight, label: 'Water', color: 'bg-secondary-200 text-secondary-800' },
+    { icon: Calendar, label: 'Walk', color: 'bg-accent-200 text-accent-800' },
+    { icon: Pill, label: 'Medication', color: 'bg-primary-300 text-primary-900' },
+    { icon: Users, label: 'Training', color: 'bg-secondary-300 text-secondary-900' },
+    { icon: Heart, label: 'Grooming', color: 'bg-accent-300 text-accent-900' },
   ]
 
   const additionalFeatures = [

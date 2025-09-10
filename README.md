@@ -13,7 +13,7 @@ A comprehensive pet care tracking application built with Next.js, TypeScript, Re
 - 🤖 **AI Insights**: OpenAI-powered health summaries and care recommendations
 - 👥 **Social Features**: Connect with other pet owners and share experiences
 - 📱 **Mobile Friendly**: Responsive design that works on all devices
-- 🔐 **Secure Authentication**: Magic link authentication without passwords
+- 🔐 **Secure Authentication**: Google OAuth authentication
 
 ## Tech Stack
 
@@ -189,7 +189,7 @@ critter-app/
 ## Key Features Implementation
 
 ### Authentication
-- Magic link authentication using email
+- Google OAuth authentication
 - JWT tokens for session management
 - Admin role support
 

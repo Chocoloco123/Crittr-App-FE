@@ -137,17 +137,6 @@ model UserConnection {
   @@map("user_connections")
 }
 
-model MagicLink {
-  id        Int      @id @default(autoincrement())
-  email     String
-  token     String   @unique
-  expiresAt DateTime @map("expires_at")
-  createdAt DateTime @default(now()) @map("created_at")
-  isUsed    Boolean  @default(false) @map("is_used")
-
-  @@map("magic_links")
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String  @map("user_id")

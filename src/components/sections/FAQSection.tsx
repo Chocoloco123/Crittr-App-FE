@@ -9,10 +9,6 @@ export default function FAQSection() {
 
   const faqs = [
     {
-      question: "How does the magic link authentication work?",
-      answer: "Magic link authentication eliminates the need for passwords. When you sign in, we send a secure link to your email address. Click the link and you're automatically signed in. This is more secure than traditional passwords and much more convenient."
-    },
-    {
       question: "Can I track multiple pets?",
       answer: "Yes! Our Free plan allows up to 2 pets, while Pro and Family plans support unlimited pets. Each pet has their own profile with separate journal entries, health data, and reminders."
     },
@@ -55,8 +51,15 @@ export default function FAQSection() {
   }
 
   return (
-    <section id="faq" className="section-padding bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="faq" className="section-padding bg-gradient-to-br from-secondary-50 via-white to-accent-50 relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 left-20 text-6xl">❓</div>
+        <div className="absolute bottom-20 right-20 text-6xl">💡</div>
+        <div className="absolute top-1/2 left-1/4 text-4xl">🤔</div>
+      </div>
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -65,6 +68,12 @@ export default function FAQSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
+          <div className="inline-flex items-center justify-center gap-3 mb-6">
+            <span className="text-4xl">❓</span>
+            <span className="text-sm font-semibold text-primary-600 bg-primary-100 px-4 py-2 rounded-full">
+              Got Questions?
+            </span>
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Frequently Asked Questions
           </h2>
@@ -82,11 +91,11 @@ export default function FAQSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-gray-50 rounded-xl border border-gray-200"
+              className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-100 transition-colors rounded-xl"
+                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50/50 transition-colors rounded-xl"
               >
                 <span className="font-semibold text-gray-900 pr-4">
                   {faq.question}
@@ -95,7 +104,7 @@ export default function FAQSection() {
                   {openIndex === index ? (
                     <Minus className="h-5 w-5 text-primary-600" />
                   ) : (
-                    <Plus className="h-5 w-5 text-gray-400" />
+                    <Plus className="h-5 w-5 text-gray-500" />
                   )}
                 </div>
               </button>
@@ -127,23 +136,25 @@ export default function FAQSection() {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <div className="card p-8 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <span className="text-3xl">💬</span>
-              <h3 className="text-2xl font-bold text-gray-900">
-                Still have questions?
-              </h3>
-            </div>
-            <p className="text-gray-600 mb-8 text-lg">
-              Can't find the answer you're looking for? Our support team is here to help.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn btn-primary px-8 py-3 text-lg font-semibold">
-                Contact Support
-              </button>
-              <button className="btn btn-secondary px-8 py-3 text-lg font-semibold">
-                View Documentation
-              </button>
+          <div className="bg-gradient-to-br from-primary-500 via-secondary-500 to-accent-500 rounded-3xl p-8 max-w-2xl mx-auto shadow-xl">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <span className="text-3xl">💬</span>
+                <h3 className="text-2xl font-bold text-white">
+                  Still have questions?
+                </h3>
+              </div>
+              <p className="text-white/90 mb-8 text-lg">
+                Can't find the answer you're looking for? Our support team is here to help.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="bg-white text-primary-600 hover:bg-white/90 px-8 py-3 text-lg font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+                  Contact Support
+                </button>
+                <button className="bg-white/20 text-white hover:bg-white/30 px-8 py-3 text-lg font-semibold rounded-xl transition-all duration-300 backdrop-blur-sm">
+                  View Documentation
+                </button>
+              </div>
             </div>
           </div>
         </motion.div>
