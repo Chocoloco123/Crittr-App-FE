@@ -195,6 +195,23 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Disclaimer */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mb-6"
+        >
+          <div className="text-center">
+            <p className="text-xs text-gray-500 leading-relaxed">
+              <strong>Disclaimer:</strong> Crittr is not a licensed veterinary service. AI insights are for informational purposes only. 
+              Always consult a licensed veterinarian for medical advice. We are not liable for health decisions 
+              made based on our platform's information.
+            </p>
+          </div>
+        </motion.div>
+
         {/* Bottom Section */}
         <motion.div
           initial={{ opacity: 0 }}

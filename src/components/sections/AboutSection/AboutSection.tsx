@@ -7,8 +7,8 @@ import './AboutSection.scss'
 export default function AboutSection() {
   const stats = [
     { icon: '/images/icons/dog.png', number: '50K+', label: 'Happy Pet Parents' },
-    { icon: '/images/icons/heart-pink.png', number: '100K+', label: 'Pets Tracked' },
-    { icon: '/images/icons/cat.png', number: '4.9/5', label: 'App Store Rating' },
+    { icon: '/images/icons/guineapig.png', number: '100K+', label: 'Pets Tracked' },
+    { icon: '/images/icons/heart-red.png', number: '4.9/5', label: 'App Store Rating' },
     { icon: '/images/icons/paw.png', number: '99.9%', label: 'Uptime Guarantee' }
   ]
 
@@ -19,8 +19,8 @@ export default function AboutSection() {
       icon: '/images/icons/paw.png'
     },
     {
-      title: 'Veterinary Expertise',
-      description: 'Our team includes licensed veterinarians who ensure our health tracking features are accurate and helpful.',
+      title: 'AI-Powered Insights',
+      description: 'Our advanced AI technology provides intelligent health insights and recommendations to help you better understand your pet\'s wellbeing.',
       icon: '/images/icons/stethescope.png'
     },
     {
