@@ -47,7 +47,7 @@ A comprehensive pet care tracking application built with Next.js, TypeScript, Re
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd critter-app-FE
+   cd critter-app
    ```
 
 2. **Install dependencies**
@@ -98,7 +98,7 @@ A comprehensive pet care tracking application built with Next.js, TypeScript, Re
 
 3. **Start the frontend** (in a new terminal)
    ```bash
-   cd critter-app-FE
+   cd critter-app
    npm run dev
    ```
 
@@ -171,7 +171,7 @@ A comprehensive pet care tracking application built with Next.js, TypeScript, Re
 
 ```
 critter-app/
-├── critter-app-FE/        # Next.js frontend
+├── critter-app/        # Next.js frontend
 │   ├── src/
 │   │   ├── app/           # Next.js app directory
 │   │   ├── components/    # React components
