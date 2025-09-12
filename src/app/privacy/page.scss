@@ -1,0 +1,160 @@
+// Privacy Policy page styles
+.privacy-page {
+  font-family: 'Poppins', sans-serif;
+  color: #1f2937;
+  background-color: #FEFBEE;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.privacy-container {
+  width: 100%;
+  max-width: 4xl;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  flex: 1;
+
+  @media (min-width: 640px) {
+    padding: 2rem 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 2rem 2rem;
+  }
+}
+
+.privacy-content {
+  background-color: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border: 1px solid rgba(229, 229, 229, 0.5);
+
+  @media (min-width: 768px) {
+    padding: 3rem;
+  }
+}
+
+.privacy-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.privacy-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #14504E;
+  margin-bottom: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.privacy-last-updated {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.privacy-body {
+  max-width: none;
+}
+
+.privacy-section {
+  margin-bottom: 2.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.privacy-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #14504E;
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.privacy-subsection-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c8d9b;
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.privacy-text {
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.privacy-list {
+  color: #374151;
+  line-height: 1.7;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  strong {
+    color: #14504E;
+    font-weight: 600;
+  }
+}
+
+.privacy-warning-box {
+  background-color: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid #ef4444;
+}
+
+.privacy-warning-text {
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+// Brand color utilities
+.text-primary {
+  color: #14504E;
+}
+
+.text-secondary {
+  color: #2c8d9b;
+}
+
+.text-accent {
+  color: #FE9F72;
+}
+
+.bg-primary {
+  background-color: #14504E;
+}
+
+.bg-secondary {
+  background-color: #2c8d9b;
+}
+
+.bg-accent {
+  background-color: #FE9F72;
+}
+
+.bg-page {
+  background-color: #FEFBEE;
+}
