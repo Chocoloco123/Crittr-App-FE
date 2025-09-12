@@ -75,8 +75,8 @@ export default function NewHeader() {
                       onClick={handleSignOut}
                       className="text-white px-5 py-2.5 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins"
                       style={{ backgroundColor: '#2c8d9b' }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = '#247a85'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = '#2c8d9b'}
+                      onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#247a85'}
+                      onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2c8d9b'}
                     >
                       Sign Out
                     </button>
@@ -86,8 +86,8 @@ export default function NewHeader() {
                     onClick={toggleAuthModal}
                     className="text-white px-5 py-2.5 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins"
                     style={{ backgroundColor: '#2c8d9b' }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = '#247a85'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = '#2c8d9b'}
+                    onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#247a85'}
+                    onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2c8d9b'}
                   >
                     Login
                   </button>
@@ -169,8 +169,8 @@ export default function NewHeader() {
                         onClick={handleSignOut}
                         className="w-full text-white px-5 py-2.5 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins"
                         style={{ backgroundColor: '#2c8d9b' }}
-                        onMouseEnter={(e) => e.target.style.backgroundColor = '#247a85'}
-                        onMouseLeave={(e) => e.target.style.backgroundColor = '#2c8d9b'}
+                        onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#247a85'}
+                        onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2c8d9b'}
                       >
                         Sign Out
                       </button>
@@ -180,8 +180,8 @@ export default function NewHeader() {
                       onClick={toggleAuthModal}
                       className="w-full text-white px-5 py-2.5 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins"
                       style={{ backgroundColor: '#2c8d9b' }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = '#247a85'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = '#2c8d9b'}
+                      onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#247a85'}
+                      onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2c8d9b'}
                     >
                       Login
                     </button>

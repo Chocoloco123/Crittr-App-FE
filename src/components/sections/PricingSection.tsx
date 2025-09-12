@@ -132,8 +132,8 @@ export default function PricingSection() {
                 <button 
                   className="w-full text-white px-5 py-2.5 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins"
                   style={{ backgroundColor: plan.buttonColor }}
-                  onMouseEnter={(e) => e.target.style.opacity = '0.9'}
-                  onMouseLeave={(e) => e.target.style.opacity = '1'}
+                  onMouseEnter={(e) => (e.target as HTMLButtonElement).style.opacity = '0.9'}
+                  onMouseLeave={(e) => (e.target as HTMLButtonElement).style.opacity = '1'}
                 >
                   {plan.buttonText}
                 </button>
