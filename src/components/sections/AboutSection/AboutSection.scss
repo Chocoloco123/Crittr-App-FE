@@ -1,7 +1,15 @@
 // AboutSection.scss
 .about-section {
-  padding: 2rem 2rem 4rem 2rem;
+  padding: 1.5rem 1rem 3rem 1rem;
   background-color: #FEFBEE;
+
+  @media (min-width: 640px) {
+    padding: 2rem 1.5rem 4rem 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 2rem 2rem 4rem 2rem;
+  }
 }
 
 .about-container {
@@ -14,28 +22,45 @@
 }
 
 .about-title {
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
   color: #14504E;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (min-width: 640px) {
+    font-size: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1.875rem;
+  }
 }
 
 .about-description {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #4b5563;
   max-width: 48rem;
   margin: 0 auto;
   text-align: center;
+
+  @media (min-width: 640px) {
+    font-size: 1.125rem;
+  }
 }
 
 .about-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  margin-bottom: 4rem;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+
+  @media (min-width: 640px) {
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);

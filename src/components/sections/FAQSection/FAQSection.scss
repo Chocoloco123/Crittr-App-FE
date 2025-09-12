@@ -1,9 +1,17 @@
 // FAQSection.scss
 .faq-section {
-  padding: 2rem 2rem 4rem 2rem;
+  padding: 1.5rem 1rem 3rem 1rem;
   background-color: white;
   position: relative;
   overflow: hidden;
+
+  @media (min-width: 640px) {
+    padding: 2rem 1.5rem 4rem 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 2rem 2rem 4rem 2rem;
+  }
 }
 
 // Force consistent width with high specificity
@@ -17,34 +25,52 @@
 
 // Target the motion.div specifically
 .faq-section .faq-list > div {
-  width: 48rem !important;
-  min-width: 48rem !important;
+  width: 20rem !important;
+  min-width: 20rem !important;
+  max-width: 20rem !important;
   display: block !important;
 
+  @media (min-width: 640px) {
+    width: 28rem !important;
+    min-width: 28rem !important;
+    max-width: 28rem !important;
+  }
+
   @media (min-width: 768px) {
-    width: 56rem !important;
-    min-width: 56rem !important;
+    width: 40rem !important;
+    min-width: 40rem !important;
+    max-width: 40rem !important;
   }
 
   @media (min-width: 1024px) {
-    width: 64rem !important;
-    min-width: 64rem !important;
+    width: 48rem !important;
+    min-width: 48rem !important;
+    max-width: 48rem !important;
   }
 }
 
 // Ensure the motion.div doesn't have any inline styles affecting width
 .faq-section .faq-list > div[style] {
-  width: 48rem !important;
-  min-width: 48rem !important;
+  width: 20rem !important;
+  min-width: 20rem !important;
+  max-width: 20rem !important;
+
+  @media (min-width: 640px) {
+    width: 28rem !important;
+    min-width: 28rem !important;
+    max-width: 28rem !important;
+  }
 
   @media (min-width: 768px) {
-    width: 56rem !important;
-    min-width: 56rem !important;
+    width: 40rem !important;
+    min-width: 40rem !important;
+    max-width: 40rem !important;
   }
 
   @media (min-width: 1024px) {
-    width: 64rem !important;
-    min-width: 64rem !important;
+    width: 48rem !important;
+    min-width: 48rem !important;
+    max-width: 48rem !important;
   }
 }
 
@@ -83,15 +109,31 @@
 
 
 .faq-title {
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #14504E;
   margin-bottom: 1rem;
+
+  @media (min-width: 640px) {
+    font-size: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1.875rem;
+  }
 }
 
 .faq-subtitle {
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: #4b5563;
+
+  @media (min-width: 640px) {
+    font-size: 1.125rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1.25rem;
+  }
 }
 
 .faq-list {
@@ -104,7 +146,7 @@
   flex-shrink: 0;
 }
 
-// Set fixed widths for FAQ items
+// Set FIXED widths for FAQ items - SAME WIDTH OPENED OR CLOSED
 .faq-item {
   background-color: white;
   border-radius: 1rem;
@@ -114,18 +156,27 @@
   display: block !important;
   flex-shrink: 0 !important;
   
-  // Fixed widths - no max-width constraints
-  width: 48rem !important;
-  min-width: 48rem !important;
+  // FIXED widths - EXACT same width opened or closed
+  width: 20rem !important;
+  min-width: 20rem !important;
+  max-width: 20rem !important;
+
+  @media (min-width: 640px) {
+    width: 28rem !important;
+    min-width: 28rem !important;
+    max-width: 28rem !important;
+  }
 
   @media (min-width: 768px) {
-    width: 56rem !important;
-    min-width: 56rem !important;
+    width: 40rem !important;
+    min-width: 40rem !important;
+    max-width: 40rem !important;
   }
 
   @media (min-width: 1024px) {
-    width: 64rem !important;
-    min-width: 64rem !important;
+    width: 48rem !important;
+    min-width: 48rem !important;
+    max-width: 48rem !important;
   }
 
   &:hover {
@@ -134,9 +185,10 @@
 }
 
 .faq-question-button {
-  width: 48rem !important;
-  min-width: 48rem !important;
-  padding: 1.5rem;
+  width: 20rem !important;
+  min-width: 20rem !important;
+  max-width: 20rem !important;
+  padding: 1rem;
   text-align: left;
   display: flex;
   align-items: center;
@@ -147,15 +199,26 @@
   border: none;
   background: none;
   cursor: pointer;
+  min-height: 48px;
+
+  @media (min-width: 640px) {
+    width: 28rem !important;
+    min-width: 28rem !important;
+    max-width: 28rem !important;
+    padding: 1.25rem;
+  }
 
   @media (min-width: 768px) {
-    width: 56rem !important;
-    min-width: 56rem !important;
+    width: 40rem !important;
+    min-width: 40rem !important;
+    max-width: 40rem !important;
+    padding: 1.5rem;
   }
 
   @media (min-width: 1024px) {
-    width: 64rem !important;
-    min-width: 64rem !important;
+    width: 48rem !important;
+    min-width: 48rem !important;
+    max-width: 48rem !important;
   }
 
   &:hover {
@@ -188,27 +251,44 @@
 
 .faq-answer {
   overflow: hidden;
-  width: 48rem !important;
-  min-width: 48rem !important;
+  width: 20rem !important;
+  min-width: 20rem !important;
+  max-width: 20rem !important;
+
+  @media (min-width: 640px) {
+    width: 28rem !important;
+    min-width: 28rem !important;
+    max-width: 28rem !important;
+  }
 
   @media (min-width: 768px) {
-    width: 56rem !important;
-    min-width: 56rem !important;
+    width: 40rem !important;
+    min-width: 40rem !important;
+    max-width: 40rem !important;
   }
 
   @media (min-width: 1024px) {
-    width: 64rem !important;
-    min-width: 64rem !important;
+    width: 48rem !important;
+    min-width: 48rem !important;
+    max-width: 48rem !important;
   }
 }
 
 .faq-answer-content {
-  padding: 0 1.5rem 1.5rem 1.5rem;
+  padding: 0 1rem 1rem 1rem;
   color: #4b5563;
   line-height: 1.625;
   word-wrap: break-word;
   overflow-wrap: break-word;
   width: 100%;
   box-sizing: border-box;
+
+  @media (min-width: 640px) {
+    padding: 0 1.25rem 1.25rem 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+  }
 }
 

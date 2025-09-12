@@ -60,7 +60,7 @@ export default function Footer() {
                   🐾 Crittr
                 </h3>
                 <p className="text-gray-600 text-lg leading-relaxed max-w-md">
-                  Pet health tracking & journaling. Monitor your pet's health, track daily activities, and maintain detailed records for better veterinary care.
+                  Pet health & journaling. Monitor your pet's health, track daily activities, and maintain detailed records for better veterinary care.
                 </p>
               </div>
 

@@ -103,14 +103,12 @@ export default function AboutSection() {
                   It started with Teddy, my golden retriever. Between vet appointments, 
                   medication schedules, and wanting to capture every adorable moment, I was drowning in sticky notes and scattered photos.
                 </p>
-                <br/>
                 <p className="about-story-paragraph">
                   I knew there had to be a better way. So I built Crittr - a comprehensive 
                   platform that combines health tracking, memory keeping, and AI-powered 
                   insights to help pet parents like me give our furry family members the 
                   best care possible.
                 </p>
-                <br/>
                 <p className="about-story-paragraph">
                   Today, Crittr helps thousands of pet parents stay organized, informed, 
                   and connected to their pets' wellbeing. Because every pet deserves to 
