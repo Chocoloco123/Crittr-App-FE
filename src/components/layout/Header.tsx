@@ -57,8 +57,8 @@ export default function Header() {
 
   const navItems = [
     { href: '#features', label: 'Features' },
-    { href: '/journal', label: 'Journal' },
-    { href: '/analytics', label: 'Health' },
+    { href: '/dashboard/journal', label: 'Journal' },
+    { href: '/dashboard/analytics', label: 'Health' },
     { href: '#about', label: 'About' }
   ]
 
@@ -108,7 +108,7 @@ export default function Header() {
                     <span>Dashboard</span>
                   </a>
                   <a
-                    href="/settings"
+                    href="/dashboard/settings"
                     className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200 hover:shadow-sm"
                   >
                     <User className="h-4 w-4" />
@@ -203,7 +203,7 @@ export default function Header() {
                     // Authenticated user mobile
                     <>
                       <a
-                        href="/settings"
+                        href="/dashboard/settings"
                         className="flex items-center space-x-2 px-4 py-3 text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200"
                         onClick={() => setIsMenuOpen(false)}
                       >

@@ -158,14 +158,12 @@ export default function SocialFeatures({ petId, petName }: SocialFeaturesProps) 
 
   const handleLike = (postId: string) => {
     // In a real app, this would update the backend
-    console.log('Liked post:', postId)
   }
 
   const handleShare = () => {
     if (!shareContent.trim()) return
     
     // In a real app, this would create a new post
-    console.log('Sharing:', shareContent)
     setShowShareModal(false)
     setShareContent('')
     alert('Post shared successfully!')
@@ -173,7 +171,6 @@ export default function SocialFeatures({ petId, petName }: SocialFeaturesProps) 
 
   const handleConnect = (userId: string) => {
     // In a real app, this would send a connection request
-    console.log('Connecting to user:', userId)
     alert('Connection request sent!')
   }
 

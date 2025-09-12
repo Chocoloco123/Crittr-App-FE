@@ -12,10 +12,9 @@ export const usePerformanceMonitoring = () => {
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'largest-contentful-paint') {
-            console.log('LCP:', entry.startTime)
             // Send to analytics service
             if (entry.startTime > 2500) {
-              console.warn('LCP is slow:', entry.startTime)
+              // LCP is slow - could send to analytics service
             }
           }
         }
@@ -28,7 +27,7 @@ export const usePerformanceMonitoring = () => {
         for (const entry of list.getEntries()) {
           const fidEntry = entry as any
           if (fidEntry.processingStart && fidEntry.startTime) {
-            console.log('FID:', fidEntry.processingStart - fidEntry.startTime)
+            // FID measured - could send to analytics service
             // Send to analytics service
           }
         }
@@ -45,7 +44,7 @@ export const usePerformanceMonitoring = () => {
             clsValue += clsEntry.value
           }
         }
-        console.log('CLS:', clsValue)
+        // CLS measured - could send to analytics service
         // Send to analytics service
       })
       
@@ -57,7 +56,6 @@ export const usePerformanceMonitoring = () => {
         clsObserver.disconnect()
       }
       } catch (error) {
-        console.warn('Performance monitoring error:', error)
       }
     }
   }, [])
@@ -69,7 +67,7 @@ export const preloadCriticalResources = () => {
     // Preload critical images
     const imageLink = document.createElement('link')
     imageLink.rel = 'preload'
-    imageLink.href = '/images/pets/hero/shiba.jpg'
+    imageLink.href = '/images/icons/catdog.png'
     imageLink.as = 'image'
     document.head.appendChild(imageLink)
   }

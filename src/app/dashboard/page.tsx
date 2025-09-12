@@ -74,12 +74,25 @@ export default function Dashboard() {
 
   const toggleAuthModal = () => setIsAuthModalOpen(!isAuthModalOpen)
 
+  // Helper function to format time ago
+  const formatTimeAgo = (dateString: string) => {
+    const now = new Date()
+    const date = new Date(dateString)
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
+    
+    if (diffInSeconds < 60) return 'Just now'
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} min ago`
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hr ago`
+    if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} day${Math.floor(diffInSeconds / 86400) > 1 ? 's' : ''} ago`
+    return date.toLocaleDateString()
+  }
+
   // Demo data for unauthenticated users
   const demoStats = [
-    { label: 'Total Pets', value: '3', icon: Heart, color: 'text-red-500', bgColor: 'bg-red-50' },
-    { label: 'Journal Entries', value: '12', icon: Calendar, color: 'text-blue-500', bgColor: 'bg-blue-50' },
-    { label: 'Quick Logs', value: '28', icon: Activity, color: 'text-green-500', bgColor: 'bg-green-50' },
-    { label: 'Active Reminders', value: '5', icon: Bell, color: 'text-purple-500', bgColor: 'bg-purple-50' }
+    { label: 'Total Pets', value: '3', icon: Heart, color: 'text-2c8d9b', bgColor: 'bg-teal-50' },
+    { label: 'Journal Entries', value: '12', icon: Calendar, color: 'text-FE9F72', bgColor: 'bg-orange-50' },
+    { label: 'Quick Logs', value: '28', icon: Activity, color: 'text-2c8d9b', bgColor: 'bg-teal-50' },
+    { label: 'Active Reminders', value: '5', icon: Bell, color: 'text-FE9F72', bgColor: 'bg-orange-50' }
   ]
 
   const demoRecentActivities = [
@@ -95,15 +108,36 @@ export default function Dashboard() {
     { id: 3, title: 'Grooming appointment', pet: 'Max', time: 'Friday 2 PM' }
   ]
 
+  // Fetch journal entries for recent activities
+  const [journalEntries, setJournalEntries] = useState<any[]>([])
+  
+  useEffect(() => {
+    if (mounted) {
+      // Fetch journal entries from demo storage
+      const entries = DemoStorage.getItem<any[]>('journal-entries') || []
+      setJournalEntries(entries)
+    }
+  }, [mounted])
+
   // Real user data - will be fetched from API in the future
   const userStats = [
-    { label: 'Total Pets', value: '0', icon: Heart, color: 'text-red-500', bgColor: 'bg-red-50' },
-    { label: 'Journal Entries', value: '0', icon: Calendar, color: 'text-blue-500', bgColor: 'bg-blue-50' },
-    { label: 'Quick Logs', value: '0', icon: Activity, color: 'text-green-500', bgColor: 'bg-green-50' },
-    { label: 'Active Reminders', value: '0', icon: Bell, color: 'text-purple-500', bgColor: 'bg-purple-50' }
+    { label: 'Total Pets', value: '0', icon: Heart, color: 'text-2c8d9b', bgColor: 'bg-teal-50' },
+    { label: 'Journal Entries', value: journalEntries.length.toString(), icon: Calendar, color: 'text-FE9F72', bgColor: 'bg-orange-50' },
+    { label: 'Quick Logs', value: '0', icon: Activity, color: 'text-2c8d9b', bgColor: 'bg-teal-50' },
+    { label: 'Active Reminders', value: '0', icon: Bell, color: 'text-FE9F72', bgColor: 'bg-orange-50' }
   ]
 
-  const userRecentActivities: any[] = []
+  // Convert journal entries to recent activities format
+  const userRecentActivities = journalEntries
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 5) // Show only the 5 most recent
+    .map(entry => ({
+      id: entry.id,
+      description: entry.title,
+      time: formatTimeAgo(entry.createdAt),
+      icon: Activity
+    }))
+
   const userUpcomingReminders: any[] = []
 
   // Use demo data if not authenticated, user data if authenticated
@@ -226,7 +260,7 @@ export default function Dashboard() {
                       </>
                     ) : (
                       <Link 
-                        href="/quick-log" 
+                        href="/dashboard/quick-log" 
                         className="dashboard-primary-button"
                       >
                         <span>Log Activity</span>
@@ -248,9 +282,10 @@ export default function Dashboard() {
                       height={400}
                       className="dashboard-welcome-pet-image"
                       priority
-                      quality={95}
+                      quality={50}
                       placeholder="blur"
                       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                      sizes="(max-width: 768px) 200px, (max-width: 1024px) 300px, 400px"
                     />
                   </div>
                 </div>
@@ -349,7 +384,7 @@ export default function Dashboard() {
                 <h2 className="dashboard-section-title">
                   Recent Activities
                 </h2>
-                <Link href="/journal" className="group inline-flex items-center px-4 py-2 text-sm font-semibold text-2c8d9b hover:text-247a85 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 whitespace-nowrap">
+                <Link href="/dashboard/journal" className="group inline-flex items-center px-4 py-2 text-sm font-semibold text-2c8d9b hover:text-247a85 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 whitespace-nowrap">
                   <span>View All</span>
                   <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </Link>
@@ -414,7 +449,7 @@ export default function Dashboard() {
                 <h2 className="dashboard-section-title">
                   Upcoming Reminders
                 </h2>
-                <Link href="/reminders" className="group inline-flex items-center px-4 py-2 text-sm font-semibold text-2c8d9b hover:text-247a85 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 whitespace-nowrap">
+                <Link href="/dashboard/reminders" className="group inline-flex items-center px-4 py-2 text-sm font-semibold text-2c8d9b hover:text-247a85 hover:bg-blue-50 rounded-lg transition-all duration-200 border border-transparent hover:border-blue-200 whitespace-nowrap">
                   <span>Manage</span>
                   <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-0.5 transition-transform duration-200" />
                 </Link>
@@ -452,7 +487,7 @@ export default function Dashboard() {
                     <h3 className="dashboard-empty-title">No reminders set</h3>
                     <p className="dashboard-empty-description">Set up reminders to keep track of your pet's schedule.</p>
                     <Link 
-                      href="/reminders" 
+                      href="/dashboard/reminders" 
                       className="dashboard-empty-button"
                     >
                       <Clock className="h-4 w-4" />

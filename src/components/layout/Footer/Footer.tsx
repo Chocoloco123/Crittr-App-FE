@@ -74,6 +74,7 @@ export default function Footer() {
                       src="/images/icons/heart-red.png" 
                       alt="Love" 
                       fill 
+                      sizes="24px"
                       className="object-contain" 
                     />
                   </div>
@@ -216,6 +217,7 @@ export default function Footer() {
                   src="/images/icons/heart-pink.png" 
                   alt="Heart" 
                   fill 
+                  sizes="20px"
                   className="object-contain" 
                 />
               </div>

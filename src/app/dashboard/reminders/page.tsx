@@ -107,7 +107,6 @@ export default function RemindersPage() {
 
   const handleSaveReminder = (reminderData: Omit<Reminder, 'id' | 'createdAt'>) => {
     // In a real app, this would save to the backend
-    console.log('Saving reminder:', reminderData)
     
     // Mock save - generate ID and timestamp
     const newReminder: Reminder = {
@@ -133,7 +132,6 @@ export default function RemindersPage() {
   const handleDeleteReminder = (reminderId: string) => {
     if (confirm('Are you sure you want to delete this reminder?')) {
       // In a real app, this would delete from the backend
-      console.log('Deleting reminder:', reminderId)
       removeReminder(reminderId)
       success('Reminder Deleted!', 'Reminder deleted successfully', 3000)
     }
@@ -141,7 +139,6 @@ export default function RemindersPage() {
 
   const handleToggleReminder = (reminderId: string) => {
     // In a real app, this would update the backend
-    console.log('Toggling reminder:', reminderId)
     const reminder = reminders.find(r => r.id === reminderId)
     if (reminder) {
       const updatedReminder = { ...reminder, isActive: !reminder.isActive }

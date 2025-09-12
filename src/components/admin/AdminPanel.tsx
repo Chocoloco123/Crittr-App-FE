@@ -125,7 +125,6 @@ export default function AdminPanel({ isAdmin }: AdminPanelProps) {
   }
 
   const handleUserAction = (userId: string, action: string) => {
-    console.log(`${action} user:`, userId)
     alert(`User ${action} successfully!`)
   }
 

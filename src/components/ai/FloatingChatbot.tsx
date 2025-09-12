@@ -174,6 +174,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                 src="/images/icons/robot.png"
                 alt="Crittr AI Assistant"
                 fill
+                sizes="32px"
                 className="object-contain"
               />
             </div>

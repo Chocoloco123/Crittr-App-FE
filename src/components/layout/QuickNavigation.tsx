@@ -29,7 +29,7 @@ export default function QuickNavigation({ currentPage }: QuickNavigationProps) {
       description: 'Overview'
     },
     {
-      href: '/journal',
+      href: '/dashboard/journal',
       icon: Calendar,
       label: 'Journal',
       color: 'bg-indigo-100 hover:bg-indigo-200',
@@ -37,7 +37,7 @@ export default function QuickNavigation({ currentPage }: QuickNavigationProps) {
       description: 'Entries'
     },
     {
-      href: '/quick-log',
+      href: '/dashboard/quick-log',
       icon: Activity,
       label: 'Quick Log',
       color: 'bg-green-100 hover:bg-green-200',
@@ -45,7 +45,7 @@ export default function QuickNavigation({ currentPage }: QuickNavigationProps) {
       description: 'Fast Log'
     },
     {
-      href: '/reminders',
+      href: '/dashboard/reminders',
       icon: Bell,
       label: 'Reminders',
       color: 'bg-purple-100 hover:bg-purple-200',
@@ -53,7 +53,7 @@ export default function QuickNavigation({ currentPage }: QuickNavigationProps) {
       description: 'Alerts'
     },
     {
-      href: '/analytics',
+      href: '/dashboard/analytics',
       icon: BarChart3,
       label: 'Analytics',
       color: 'bg-orange-100 hover:bg-orange-200',
@@ -70,7 +70,7 @@ export default function QuickNavigation({ currentPage }: QuickNavigationProps) {
     //   description: 'AI Help'
     // },
     {
-      href: '/social',
+      href: '/dashboard/social',
       icon: Users,
       label: 'Community',
       color: 'bg-pink-100 hover:bg-pink-200',
@@ -78,7 +78,7 @@ export default function QuickNavigation({ currentPage }: QuickNavigationProps) {
       description: 'Social'
     },
     {
-      href: '/export',
+      href: '/dashboard/export',
       icon: ArrowRight,
       label: 'Export',
       color: 'bg-red-100 hover:bg-red-200',

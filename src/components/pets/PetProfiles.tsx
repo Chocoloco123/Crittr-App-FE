@@ -56,6 +56,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
   const [editingPet, setEditingPet] = useState<Pet | null>(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [petsPerPage] = useState(3) // Show 3 pets per page
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   // Demo pets for demo mode
   const demoPets: Pet[] = [
@@ -151,8 +152,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       }
       // Pets loaded silently
     } catch (error) {
-      console.warn('API not available, showing empty state:', error)
-      // Show empty state instead of mock data
+      // Show empty state for both demo and real users when API fails
       setPets([])
     } finally {
       setIsLoading(false)
@@ -212,7 +212,6 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       setIsAddModalOpen(false)
       addToast('success', 'Pet added successfully!')
     } catch (error) {
-      console.error('Failed to add pet:', error)
       addToast('error', `Failed to add pet: ${error instanceof ApiError ? error.message : 'Unknown error'}`)
     }
   }
@@ -263,7 +262,6 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       setEditingPet(null)
       addToast('success', 'Pet updated successfully!')
     } catch (error) {
-      console.error('Failed to update pet:', error)
       addToast('error', `Failed to update pet: ${error instanceof ApiError ? error.message : 'Unknown error'}`)
     }
   }
@@ -282,13 +280,27 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       setPets(prev => prev.filter(pet => pet.id !== petId))
       addToast('success', 'Pet deleted successfully!')
     } catch (error) {
-      console.error('Failed to delete pet:', error)
       addToast('error', `Failed to delete pet: ${error instanceof ApiError ? error.message : 'Unknown error'}`)
     }
   }
 
   const getSpeciesEmoji = (species: string) => {
     return speciesOptions.find(s => s.value === species)?.emoji || '🐾'
+  }
+
+  const getSpeciesImage = (species: string) => {
+    const speciesMap: { [key: string]: string } = {
+      'dog': '/images/icons/dog.png',
+      'cat': '/images/icons/cat.png',
+      'goldenretriever': '/images/icons/goldenretriever.png',
+      'hamster': '/images/icons/hamster.png',
+      'fish': '/images/icons/fish.png',
+      'lizard': '/images/icons/lizard.png',
+      'horse': '/images/icons/horse.png',
+      'guineapig': '/images/icons/guineapig.png'
+    }
+    
+    return speciesMap[species.toLowerCase()] || '/images/icons/paw.png'
   }
 
   const calculateAge = (birthDate: string) => {
@@ -311,11 +323,17 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
   const currentPets = pets.slice(currentPage * petsPerPage, (currentPage + 1) * petsPerPage)
   
   const goToPreviousPage = () => {
+    if (isTransitioning) return
+    setIsTransitioning(true)
     setCurrentPage((prev) => (prev > 0 ? prev - 1 : totalPages - 1))
+    setTimeout(() => setIsTransitioning(false), 150)
   }
   
   const goToNextPage = () => {
+    if (isTransitioning) return
+    setIsTransitioning(true)
     setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : 0))
+    setTimeout(() => setIsTransitioning(false), 150)
   }
 
   // Reset to first page when pets change
@@ -426,12 +444,10 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
 
           {/* Pet Cards */}
           <div className="pet-profiles-carousel">
-            <div className="pet-profiles-grid">
+            <div className={`pet-profiles-grid ${isTransitioning ? 'transitioning' : ''}`}>
             {currentPets.map((pet) => (
-              <motion.div
+              <div
                 key={pet.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
                 className="pet-card"
               >
                 {/* Pet Avatar */}
@@ -452,9 +468,11 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
                       }}
                     />
                   ) : null}
-                  <span className={`pet-card-avatar-emoji ${pet.image ? 'hidden' : ''}`}>
-                    {pet.avatar || getSpeciesEmoji(pet.species)}
-                  </span>
+                  <img 
+                    src={getSpeciesImage(pet.species)}
+                    alt={`${pet.species} icon`}
+                    className={`pet-card-avatar-icon ${pet.image ? 'hidden' : ''}`}
+                  />
                 </div>
 
                 {/* Pet Info */}
@@ -522,7 +540,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 
