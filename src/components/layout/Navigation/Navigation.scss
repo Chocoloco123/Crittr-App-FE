@@ -17,7 +17,7 @@
 }
 
 .header-content {
-  max-width: 72rem;
+  max-width: 80rem;
   margin: 0 auto;
   padding: 0 1rem;
 
@@ -40,6 +40,7 @@
 .logo-section {
   display: flex;
   align-items: center;
+  flex: 1;
 }
 
 .mobile-controls-section {
@@ -83,6 +84,7 @@
   display: none;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 
   @media (min-width: 768px) {
     display: flex;

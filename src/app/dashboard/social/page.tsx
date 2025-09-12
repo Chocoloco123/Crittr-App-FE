@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import SocialFeatures from '@/components/social/SocialFeatures'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { DemoStorage } from '@/lib/demoStorage'
+import './page.scss'
 
 export default function SocialPage() {
   const { data: session, status } = useSession()
@@ -47,17 +48,23 @@ export default function SocialPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="social-page">
       {/* Header */}
       <AppNavigation currentPage="Social" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="social-container">
+        {/* Social Header */}
+        <div className="social-header">
+          <h1 className="social-title">👥 Social</h1>
+          <p className="social-subtitle">Connect with other pet owners and share experiences</p>
+        </div>
 
         {/* Social Features */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="social-content"
         >
           <SocialFeatures
             petId={selectedPetId}

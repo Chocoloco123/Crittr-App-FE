@@ -7,6 +7,7 @@ import OneTapLogging from '@/components/logging/OneTapLogging'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
 import { useNotify } from '@/components/providers/NotificationProvider'
+import './page.scss'
 
 interface QuickLog {
   id: string
@@ -75,16 +76,23 @@ export default function QuickLogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="quick-log-page">
       {/* Header */}
       <AppNavigation currentPage="Quick Log" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="quick-log-container">
+        {/* Quick Log Header */}
+        <div className="quick-log-header">
+          <h1 className="quick-log-title">⚡ Quick Log</h1>
+          <p className="quick-log-subtitle">Log activities instantly with one tap</p>
+        </div>
+
         {/* One-Tap Logging Component */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="quick-log-content"
         >
           <OneTapLogging
             logs={logs}
@@ -100,27 +108,29 @@ export default function QuickLogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8"
+            className="quick-log-summary"
           >
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Today's Activity Summary</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="quick-log-summary-header">
+              <h3 className="quick-log-summary-title">Today's Activity Summary</h3>
+            </div>
+            <div className="quick-log-summary-content">
+              <div className="quick-log-summary-grid">
                 {logs.slice(0, 6).map((log) => (
-                  <div key={log.id} className="p-4 bg-gray-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-gray-900 capitalize">
+                  <div key={log.id} className="quick-log-summary-item">
+                    <div className="quick-log-summary-item-header">
+                      <span className="quick-log-summary-item-activity">
                         {log.activityType.replace('_', ' ')}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="quick-log-summary-item-time">
                         {new Date(log.timestamp).toLocaleTimeString('en-US', {
                           hour: '2-digit',
                           minute: '2-digit'
                         })}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600">{log.petName}</p>
+                    <p className="quick-log-summary-item-pet">{log.petName}</p>
                     {log.notes && (
-                      <p className="text-sm text-gray-500 mt-1 italic">"{log.notes}"</p>
+                      <p className="quick-log-summary-item-notes">"{log.notes}"</p>
                     )}
                   </div>
                 ))}

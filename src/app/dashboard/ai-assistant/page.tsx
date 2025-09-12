@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import AIAssistant from '@/components/ai/AIAssistant'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { DemoStorage } from '@/lib/demoStorage'
+import './page.scss'
 
 export default function AIAssistantPage() {
   const { data: session, status } = useSession()
@@ -47,16 +48,24 @@ export default function AIAssistantPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="ai-assistant-page">
       {/* Header */}
       <AppNavigation currentPage="AI Assistant" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="ai-assistant-container">
+        {/* AI Assistant Header */}
+        <div className="ai-assistant-header">
+          <h1 className="ai-assistant-title">🤖 AI Assistant</h1>
+          <p className="ai-assistant-subtitle">Get personalized pet care advice and health insights</p>
+        </div>
+
         {/* Pet Selection */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Pet</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="ai-assistant-pet-selection">
+          <div className="ai-assistant-pet-selection-header">
+            <h3 className="ai-assistant-pet-selection-title">Select Pet</h3>
+          </div>
+          <div className="ai-assistant-pet-selection-content">
+            <div className="ai-assistant-pet-grid">
               {[
                 { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
                 { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
@@ -68,20 +77,16 @@ export default function AIAssistantPage() {
                     setSelectedPetId(pet.id)
                     setSelectedPetName(pet.name)
                   }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left ${
-                    selectedPetId === pet.id
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`ai-assistant-pet-card ${
+                    selectedPetId === pet.id ? 'selected' : ''
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {pet.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
-                      <p className="text-sm text-gray-600">{pet.breed}</p>
-                    </div>
+                  <div className="ai-assistant-pet-avatar">
+                    {pet.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="ai-assistant-pet-name">{pet.name}</h4>
+                    <p className="ai-assistant-pet-breed">{pet.breed}</p>
                   </div>
                 </button>
               ))}
@@ -94,6 +99,7 @@ export default function AIAssistantPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="ai-assistant-content"
         >
           <AIAssistant
             petId={selectedPetId}

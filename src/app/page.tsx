@@ -1,3 +1,8 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import Navigation from '@/components/layout/Navigation/Navigation'
 import './page.scss'
@@ -36,6 +41,34 @@ const FloatingChatbot = dynamic(() => import('@/components/ai/FloatingChatbot'),
 })
 
 export default function Home() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    // If user is authenticated, redirect to dashboard
+    if (status === 'authenticated' && session) {
+      router.push('/dashboard')
+    }
+  }, [session, status, router])
+
+  // Show loading state while checking authentication
+  if (status === 'loading') {
+    return (
+      <div className="home-page">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-teal-600"></div>
+        </div>
+      </div>
+    )
+  }
+
+  // If user is authenticated, don't render the landing page (they'll be redirected)
+  if (status === 'authenticated' && session) {
+    return null
+  }
+
+  // Show landing page for unauthenticated users
   return (
     <div className="home-page">
       <Navigation />

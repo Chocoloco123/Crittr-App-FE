@@ -17,6 +17,7 @@ import ReminderForm from '@/components/reminders/ReminderForm'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
 import { useNotify } from '@/components/providers/NotificationProvider'
+import './page.scss'
 
 interface Reminder {
   id: string
@@ -165,37 +166,35 @@ export default function RemindersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="reminders-page">
       {/* Header */}
       <AppNavigation currentPage="Reminders" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-primary-600 mb-2">🔔 Reminders</h1>
-          <p className="text-gray-600">Never miss important pet care tasks</p>
+      <main className="reminders-container">
+        {/* Reminders Header */}
+        <div className="reminders-header">
+          <h1 className="reminders-title">🔔 Reminders</h1>
+          <p className="reminders-subtitle">Never miss important pet care tasks</p>
         </div>
 
         {/* Pet Selection */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Select Pet</h3>
-              <button
-                onClick={() => {
-                  setSelectedPetId('')
-                  setSelectedPetName('')
-                }}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-                  selectedPetId === ''
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-primary-100 text-primary-700 hover:bg-primary-200'
-                }`}
-              >
-                View All Pets
-              </button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="reminders-pet-selection">
+          <div className="reminders-pet-selection-header">
+            <h3 className="reminders-pet-selection-title">Select Pet</h3>
+            <button
+              onClick={() => {
+                setSelectedPetId('')
+                setSelectedPetName('')
+              }}
+              className={`reminders-pet-selection-button ${
+                selectedPetId === '' ? 'active' : 'inactive'
+              }`}
+            >
+              View All Pets
+            </button>
+          </div>
+          <div className="reminders-pet-selection-content">
+            <div className="reminders-pet-grid">
               {[
                 { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
                 { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
@@ -207,20 +206,16 @@ export default function RemindersPage() {
                     setSelectedPetId(pet.id)
                     setSelectedPetName(pet.name)
                   }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left cursor-pointer ${
-                    selectedPetId === pet.id
-                      ? 'border-purple-500 bg-purple-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`reminders-pet-card ${
+                    selectedPetId === pet.id ? 'selected' : ''
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {pet.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
-                      <p className="text-sm text-gray-600">{pet.breed}</p>
-                    </div>
+                  <div className="reminders-pet-avatar">
+                    {pet.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="reminders-pet-name">{pet.name}</h4>
+                    <p className="reminders-pet-breed">{pet.breed}</p>
                   </div>
                 </button>
               ))}
@@ -233,6 +228,7 @@ export default function RemindersPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="reminders-content"
         >
           <RemindersList
             petId={selectedPetId || undefined}

@@ -24,6 +24,7 @@ import JournalEditor from '@/components/journal/JournalEditor'
 import AppNavigation from '@/components/layout/AppNavigation'
 import QuickNavigation from '@/components/layout/QuickNavigation'
 import { useDemoStorageArray } from '@/lib/hooks/useDemoStorage'
+import './page.scss'
 
 interface JournalEntry {
   id: string
@@ -108,31 +109,35 @@ export default function JournalPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="journal-page">
       {/* Header */}
       <AppNavigation currentPage="Journal" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="journal-container">
+        {/* Journal Header */}
+        <div className="journal-header">
+          <h1 className="journal-title">📝 Pet Journal</h1>
+          <p className="journal-subtitle">Capture precious moments and track your pet's health journey</p>
+        </div>
+
         {/* Pet Selection */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Select Pet</h3>
-              <button
-                onClick={() => {
-                  setSelectedPetId('')
-                  setSelectedPetName('')
-                }}
-                className={`px-3 py-1 text-sm rounded-lg transition-colors ${
-                  selectedPetId === ''
-                    ? 'bg-indigo-100 text-indigo-700 border border-indigo-200'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                See All
-              </button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="journal-pet-selection">
+          <div className="journal-pet-selection-header">
+            <h3 className="journal-pet-selection-title">Select Pet</h3>
+            <button
+              onClick={() => {
+                setSelectedPetId('')
+                setSelectedPetName('')
+              }}
+              className={`journal-pet-selection-button ${
+                selectedPetId === '' ? 'active' : 'inactive'
+              }`}
+            >
+              See All
+            </button>
+          </div>
+          <div className="journal-pet-selection-content">
+            <div className="journal-pet-grid">
               {[
                 { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
                 { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
@@ -144,20 +149,16 @@ export default function JournalPage() {
                     setSelectedPetId(pet.id)
                     setSelectedPetName(pet.name)
                   }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left ${
-                    selectedPetId === pet.id
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`journal-pet-card ${
+                    selectedPetId === pet.id ? 'selected' : ''
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {pet.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
-                      <p className="text-sm text-gray-600">{pet.breed}</p>
-                    </div>
+                  <div className="journal-pet-avatar">
+                    {pet.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="journal-pet-name">{pet.name}</h4>
+                    <p className="journal-pet-breed">{pet.breed}</p>
                   </div>
                 </button>
               ))}
@@ -170,6 +171,7 @@ export default function JournalPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="journal-content"
         >
           <JournalList
             entries={entries}

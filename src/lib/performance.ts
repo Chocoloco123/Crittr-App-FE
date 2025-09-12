@@ -7,6 +7,7 @@ export const usePerformanceMonitoring = () => {
   useEffect(() => {
     // Monitor Core Web Vitals
     if (typeof window !== 'undefined' && 'performance' in window) {
+      try {
       // Monitor Largest Contentful Paint (LCP)
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
@@ -26,8 +27,10 @@ export const usePerformanceMonitoring = () => {
       const fidObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           const fidEntry = entry as any
-          console.log('FID:', fidEntry.processingStart - fidEntry.startTime)
-          // Send to analytics service
+          if (fidEntry.processingStart && fidEntry.startTime) {
+            console.log('FID:', fidEntry.processingStart - fidEntry.startTime)
+            // Send to analytics service
+          }
         }
       })
       
@@ -37,8 +40,9 @@ export const usePerformanceMonitoring = () => {
       let clsValue = 0
       const clsObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          if (!(entry as any).hadRecentInput) {
-            clsValue += (entry as any).value
+          const clsEntry = entry as any
+          if (!clsEntry.hadRecentInput && typeof clsEntry.value === 'number') {
+            clsValue += clsEntry.value
           }
         }
         console.log('CLS:', clsValue)
@@ -51,6 +55,9 @@ export const usePerformanceMonitoring = () => {
         observer.disconnect()
         fidObserver.disconnect()
         clsObserver.disconnect()
+      }
+      } catch (error) {
+        console.warn('Performance monitoring error:', error)
       }
     }
   }, [])

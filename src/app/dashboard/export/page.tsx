@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import ExportFeatures from '@/components/export/ExportFeatures'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { DemoStorage } from '@/lib/demoStorage'
+import './page.scss'
 
 export default function ExportPage() {
   const { data: session, status } = useSession()
@@ -47,16 +48,24 @@ export default function ExportPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="export-page">
       {/* Header */}
       <AppNavigation currentPage="Export" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="export-container">
+        {/* Export Header */}
+        <div className="export-header">
+          <h1 className="export-title">📤 Export Data</h1>
+          <p className="export-subtitle">Export your pet's data and records</p>
+        </div>
+
         {/* Pet Selection */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Pet</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="export-pet-selection">
+          <div className="export-pet-selection-header">
+            <h3 className="export-pet-selection-title">Select Pet</h3>
+          </div>
+          <div className="export-pet-selection-content">
+            <div className="export-pet-grid">
               {[
                 { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
                 { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
@@ -68,20 +77,16 @@ export default function ExportPage() {
                     setSelectedPetId(pet.id)
                     setSelectedPetName(pet.name)
                   }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left ${
-                    selectedPetId === pet.id
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`export-pet-card ${
+                    selectedPetId === pet.id ? 'selected' : ''
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {pet.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
-                      <p className="text-sm text-gray-600">{pet.breed}</p>
-                    </div>
+                  <div className="export-pet-avatar">
+                    {pet.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="export-pet-name">{pet.name}</h4>
+                    <p className="export-pet-breed">{pet.breed}</p>
                   </div>
                 </button>
               ))}
@@ -94,6 +99,7 @@ export default function ExportPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="export-content"
         >
           <ExportFeatures
             petId={selectedPetId}

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import NavigationDropdown from './NavigationDropdown'
 import AuthModal from '@/components/auth/AuthModal'
+import './Navigation/Navigation.scss'
 
 interface AppNavigationProps {
   currentPage: string
@@ -40,23 +41,19 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
 
   if (!mounted || status === 'loading') {
     return (
-      <header className="bg-blue-50 backdrop-blur-md sticky top-0 z-50 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-xl font-bold text-primary-600">
-                <span className="text-3xl">🐾</span>
+      <header className="header-container">
+        <div className="header-content">
+          <div className="header-inner">
+            <div className="logo-section">
+              <div className="logo-link">
+                <span className="text-4xl">🐾</span>
                 <div className="flex flex-col">
-                  <span className="text-primary-600">Crittr</span>
+                  <span className="logo-text">Crittr</span>
+                  <span className="logo-subtitle">Pet Wellness Simplified</span>
                 </div>
               </div>
-              <div className="hidden md:flex items-center space-x-2 text-sm text-gray-500">
-                <div className="w-16 h-4 bg-gray-200 rounded animate-pulse"></div>
-              </div>
             </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-8 h-8 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-8 h-8 bg-gray-200 rounded animate-pulse"></div>
+            <div className="desktop-auth-container">
               <div className="w-20 h-8 bg-gray-200 rounded animate-pulse"></div>
             </div>
           </div>
@@ -67,98 +64,100 @@ export default function AppNavigation({ currentPage }: AppNavigationProps) {
 
   return (
     <>
-    <header className="bg-blue-50 backdrop-blur-md sticky top-0 z-50 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-4">
+    <header className="header-container">
+      <div className="header-content">
+        <div className="header-inner">
+          <div className="logo-section">
             <Link 
               href="/" 
-              className="flex items-center space-x-2 text-xl font-bold text-primary-600 hover:text-primary-700 transition-colors group"
+              className="logo-link"
               aria-label="Crittr - Home"
             >
-              <span className="text-3xl group-hover:scale-110 transition-transform">🐾</span>
+              <span className="text-4xl">🐾</span>
               <div className="flex flex-col">
-                <span className="text-primary-600">Crittr</span>
+                <span className="logo-text">Crittr</span>
+                <span className="logo-subtitle">Pet Wellness Simplified</span>
               </div>
             </Link>
-            <div className="hidden md:flex items-center space-x-2 text-sm text-gray-500">
-              <Link href="/" className="flex items-center space-x-1 hover:text-primary-600 transition-colors">
+            <div className="hidden md:flex items-center space-x-2 text-sm text-gray-500 ml-8">
+              <Link href="/" className="flex items-center space-x-1 hover:text-2c8d9b transition-colors">
                 <Home className="h-4 w-4" />
                 <span>Home</span>
               </Link>
               <span className="text-gray-400">/</span>
-              <span className="text-gray-900 font-medium">{currentPage}</span>
+              <Link href="/dashboard" className="hover:text-2c8d9b transition-colors">
+                <span>Dashboard</span>
+              </Link>
+              {currentPage !== 'Dashboard' && (
+                <>
+                  <span className="text-gray-400">/</span>
+                  <span className="text-gray-900 font-medium">{currentPage}</span>
+                </>
+              )}
             </div>
           </div>
-          <div className="flex items-center space-x-1">
-            <Link
-              href="/reminders"
-              className="relative p-2 text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200"
-              aria-label="Reminders and notifications"
-            >
-              <Bell className="h-5 w-5" />
-              {/* Notification indicator - only show when there are due reminders */}
-              {/* TODO: Add logic to check for due reminders and show this conditionally */}
-              {/* <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div> */}
-            </Link>
+
+          {/* Desktop Auth Container */}
+          <div className="desktop-auth-container">
             {session ? (
-              <>
-                {/* Check if user is a demo user (no email or demo email) */}
-                {session.user?.email && !session.user.email.includes('demo') ? (
-                  <Link
-                    href="/settings"
-                    className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-primary-700 hover:text-primary-600 hover:bg-primary-100 rounded-lg transition-all duration-200 cursor-pointer"
-                    aria-label="Account settings"
-                  >
-                    <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                      <User className="h-4 w-4 text-primary-600" />
-                    </div>
-                    <span className="hidden sm:block">{session.user?.name || session.user?.email}</span>
-                  </Link>
-                ) : (
-                  <>
-                    <div className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-lg">
-                      <Shield className="h-4 w-4" />
-                      <span className="hidden sm:block">Demo Mode</span>
-                    </div>
-                    <button
-                      onClick={toggleAuthModal}
-                      className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
-                      aria-label="Sign in"
-                    >
-                      <LogIn className="h-4 w-4" />
-                      <span className="hidden sm:block">Sign In</span>
-                    </button>
-                  </>
-                )}
-                <button 
-                  onClick={handleSignOut}
-                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
-                  aria-label="Sign out"
+              <div className="flex items-center space-x-3">
+                <span className="welcome-text">Welcome, {session.user?.name || session.user?.email}</span>
+                <Link
+                  href="/dashboard/settings"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                  aria-label="Account Settings"
                 >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:block">Sign Out</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-100 rounded-lg">
-                  <Shield className="h-4 w-4" />
-                  <span className="hidden sm:block">Demo Mode</span>
-                </div>
+                  <User className="h-5 w-5 text-gray-600" />
+                </Link>
                 <button
-                  onClick={toggleAuthModal}
-                  className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
-                  aria-label="Sign in"
+                  onClick={handleSignOut}
+                  className="auth-button"
                 >
-                  <LogIn className="h-4 w-4" />
-                  <span className="hidden sm:block">Sign In</span>
+                  Sign Out
                 </button>
-              </>
+              </div>
+            ) : (
+              <button
+                onClick={toggleAuthModal}
+                className="auth-button"
+              >
+                Login
+              </button>
             )}
             
-            {/* Navigation Dropdown - only show on non-home pages, positioned at the far right */}
+            {/* Navigation Dropdown - only show on non-home pages */}
             {!isHomePage && <NavigationDropdown currentPage={currentPage} />}
+          </div>
+
+          {/* Mobile Controls Section */}
+          <div className="mobile-controls-section">
+            <div className="mobile-auth-container">
+              {session ? (
+                <div className="flex items-center gap-2">
+                  <span className="welcome-text">Welcome, {session.user?.name || session.user?.email}</span>
+                  <Link
+                    href="/dashboard/settings"
+                    className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    aria-label="Account Settings"
+                  >
+                    <User className="h-4 w-4 text-gray-600" />
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="mobile-sign-out-button"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={toggleAuthModal}
+                  className="mobile-sign-in-button"
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -21,6 +21,7 @@ import {
   Hash
 } from 'lucide-react'
 import { petApi, Pet as ApiPet, PetCreate, ApiError } from '@/lib/api'
+import './PetProfiles.scss'
 
 interface Pet {
   id: string
@@ -346,9 +347,9 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="pet-profiles-container">
       {/* Toast Notifications */}
-      <div className="fixed top-4 right-4 z-50 space-y-2">
+      <div className="pet-toast-container">
         <AnimatePresence>
           {toasts.map((toast) => (
             <motion.div
@@ -356,11 +357,7 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
               initial={{ opacity: 0, x: 300 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 300 }}
-              className={`flex items-center space-x-2 px-4 py-3 rounded-lg shadow-lg ${
-                toast.type === 'success' 
-                  ? 'bg-green-500 text-white' 
-                  : 'bg-red-500 text-white'
-              }`}
+              className={`pet-toast ${toast.type}`}
             >
               {toast.type === 'success' ? (
                 <CheckCircle className="h-5 w-5" />
@@ -374,26 +371,22 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
       </div>
 
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-gray-900 text-2xl font-bold">My Pets</h2>
-          <p className="text-gray-700">Manage your pet profiles and information</p>
-        </div>
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-            isDemoMode 
-              ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 shadow-sm hover:shadow-md' 
-              : 'bg-indigo-600 text-white hover:bg-indigo-700'
-          }`}
-        >
-          <Plus className="h-5 w-5" />
-          <span>{isDemoMode ? 'Add Demo Pet' : 'Add Pet'}</span>
-        </button>
+      <div className="pet-profiles-header">
+        <h2 className="pet-profiles-title">My Pets</h2>
+        {!isDemoMode && (
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="pet-profiles-add-button"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Pet</span>
+          </button>
+        )}
       </div>
 
-      {/* Pets Carousel */}
-      {pets.length === 0 ? (
+      {/* Pets Content */}
+      <div className="pet-profiles-content">
+        {pets.length === 0 ? (
         <div className="text-center py-16">
           <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-full flex items-center justify-center mb-6">
             <span className="text-5xl">🐾</span>
@@ -420,41 +413,34 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
           </button>
         </div>
       ) : (
-        <div className="relative">
-          {/* Navigation Arrows */}
+        <div className="pet-profiles-carousel-wrapper">
+          {/* Left Arrow */}
           {totalPages > 1 && (
-            <>
-              <button
-                onClick={goToPreviousPage}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <ChevronLeft className="h-6 w-6 text-secondary" />
-              </button>
-              <button
-                onClick={goToNextPage}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <ChevronRight className="h-6 w-6 text-secondary" />
-              </button>
-            </>
+            <button
+              onClick={goToPreviousPage}
+              className="pet-carousel-nav-button left"
+            >
+              <ChevronLeft className="h-6 w-6 text-gray-600" />
+            </button>
           )}
 
           {/* Pet Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="pet-profiles-carousel">
+            <div className="pet-profiles-grid">
             {currentPets.map((pet) => (
               <motion.div
                 key={pet.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                className="pet-card"
               >
                 {/* Pet Avatar */}
-                <div className="h-48 bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center relative overflow-hidden">
+                <div className="pet-card-avatar">
                   {pet.image ? (
                     <img 
                       src={pet.image} 
                       alt={`${pet.name} photo`}
-                      className="w-full h-full object-cover"
+                      className="pet-card-avatar-image"
                       style={{ 
                         objectPosition: pet.imagePosition 
                           ? `${pet.imagePosition.x}% ${pet.imagePosition.y}%`
@@ -466,26 +452,26 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
                       }}
                     />
                   ) : null}
-                  <span className={`text-8xl ${pet.image ? 'hidden' : ''}`}>
+                  <span className={`pet-card-avatar-emoji ${pet.image ? 'hidden' : ''}`}>
                     {pet.avatar || getSpeciesEmoji(pet.species)}
                   </span>
                 </div>
 
                 {/* Pet Info */}
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-white text-xl font-bold">{pet.name}</h3>
-                    <div className="flex space-x-2">
+                <div className="pet-card-info">
+                  <div className="pet-card-header">
+                    <h3 className="pet-card-name">{pet.name}</h3>
+                    <div className="pet-card-actions">
                       <button
                         onClick={() => setEditingPet(pet)}
-                        className="p-2 text-gray-400 dark:text-gray-500 hover:text-indigo-600 transition-colors"
+                        className="pet-card-action-button edit"
                         title={isDemoMode ? "Edit demo pet (local only)" : "Edit pet"}
                       >
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => deletePet(pet.id)}
-                        className="p-2 text-tertiary hover:text-red-600 transition-colors"
+                        className="pet-card-action-button delete"
                         title={isDemoMode ? "Delete demo pet (local only)" : "Delete pet"}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -493,45 +479,45 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2 text-white">
-                      <Tag className="h-4 w-4" />
-                      <span className="capitalize">{pet.species}</span>
-                      {pet.breed && <span>• {pet.breed}</span>}
+                  <div className="pet-card-details">
+                    <div className="pet-card-detail">
+                      <Tag className="pet-card-detail-icon" />
+                      <span className="pet-card-detail-text capitalize">{pet.species}</span>
+                      {pet.breed && <span className="pet-card-detail-text">• {pet.breed}</span>}
                     </div>
 
                     {pet.sex && (
-                      <div className="flex items-center space-x-2 text-white">
-                        <Heart className="h-4 w-4" />
-                        <span className="capitalize">{pet.sex}</span>
+                      <div className="pet-card-detail">
+                        <Heart className="pet-card-detail-icon" />
+                        <span className="pet-card-detail-text capitalize">{pet.sex}</span>
                       </div>
                     )}
 
                     {pet.birthDate && (
-                      <div className="flex items-center space-x-2 text-white">
-                        <Calendar className="h-4 w-4" />
-                        <span>{calculateAge(pet.birthDate)}</span>
+                      <div className="pet-card-detail">
+                        <Calendar className="pet-card-detail-icon" />
+                        <span className="pet-card-detail-text">{calculateAge(pet.birthDate)}</span>
                       </div>
                     )}
 
                     {pet.weight && (
-                      <div className="flex items-center space-x-2 text-white">
-                        <Weight className="h-4 w-4" />
-                        <span>{pet.weight} lbs</span>
+                      <div className="pet-card-detail">
+                        <Weight className="pet-card-detail-icon" />
+                        <span className="pet-card-detail-text">{pet.weight} lbs</span>
                       </div>
                     )}
 
                     {pet.color && (
-                      <div className="flex items-center space-x-2 text-white">
-                        <Palette className="h-4 w-4" />
-                        <span>{pet.color}</span>
+                      <div className="pet-card-detail">
+                        <Palette className="pet-card-detail-icon" />
+                        <span className="pet-card-detail-text">{pet.color}</span>
                       </div>
                     )}
 
                     {pet.microchipId && (
-                      <div className="flex items-center space-x-2 text-white">
-                        <Hash className="h-4 w-4" />
-                        <span className="text-sm">{pet.microchipId}</span>
+                      <div className="pet-card-detail">
+                        <Hash className="pet-card-detail-icon" />
+                        <span className="pet-card-detail-text text-sm">{pet.microchipId}</span>
                       </div>
                     )}
                   </div>
@@ -542,20 +528,32 @@ export default function PetProfiles({ isDemoMode = false }: PetProfilesProps) {
 
           {/* Page Indicators */}
           {totalPages > 1 && (
-            <div className="flex justify-center mt-6 space-x-2">
+            <div className="pet-card-pagination">
               {Array.from({ length: totalPages }, (_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    i === currentPage ? 'bg-indigo-600' : 'bg-gray-300'
+                  className={`pet-card-pagination-dot ${
+                    i === currentPage ? 'active' : ''
                   }`}
                 />
               ))}
             </div>
           )}
+          </div>
+
+          {/* Right Arrow */}
+          {totalPages > 1 && (
+            <button
+              onClick={goToNextPage}
+              className="pet-carousel-nav-button right"
+            >
+              <ChevronRight className="h-6 w-6 text-gray-600" />
+            </button>
+          )}
         </div>
-      )}
+        )}
+      </div>
 
       {/* Add Pet Modal */}
       {isAddModalOpen && (

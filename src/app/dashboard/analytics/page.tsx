@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import Analytics from '@/components/analytics/Analytics'
 import AppNavigation from '@/components/layout/AppNavigation'
 import { DemoStorage } from '@/lib/demoStorage'
+import './page.scss'
 
 export default function AnalyticsPage() {
   const { data: session, status } = useSession()
@@ -47,31 +48,35 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="analytics-page">
       {/* Header */}
       <AppNavigation currentPage="Analytics" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="analytics-container">
+        {/* Analytics Header */}
+        <div className="analytics-header">
+          <h1 className="analytics-title">📊 Analytics</h1>
+          <p className="analytics-subtitle">Track your pet's health trends and insights</p>
+        </div>
+
         {/* Pet Selection */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Select Pet</h3>
-              <button
-                onClick={() => {
-                  setSelectedPetId('')
-                  setSelectedPetName('')
-                }}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedPetId === ''
-                    ? 'bg-indigo-600 text-white border border-indigo-600'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'
-                }`}
-              >
-                View All Pets
-              </button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="analytics-pet-selection">
+          <div className="analytics-pet-selection-header">
+            <h3 className="analytics-pet-selection-title">Select Pet</h3>
+            <button
+              onClick={() => {
+                setSelectedPetId('')
+                setSelectedPetName('')
+              }}
+              className={`analytics-pet-selection-button ${
+                selectedPetId === '' ? 'active' : 'inactive'
+              }`}
+            >
+              View All Pets
+            </button>
+          </div>
+          <div className="analytics-pet-selection-content">
+            <div className="analytics-pet-grid">
               {[
                 { id: '1', name: 'Buddy', type: 'Dog', breed: 'Golden Retriever' },
                 { id: '2', name: 'Luna', type: 'Cat', breed: 'Maine Coon' },
@@ -89,20 +94,16 @@ export default function AnalyticsPage() {
                       setSelectedPetName(pet.name)
                     }
                   }}
-                  className={`p-4 rounded-lg border-2 transition-all text-left ${
-                    selectedPetId === pet.id
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`analytics-pet-card ${
+                    selectedPetId === pet.id ? 'selected' : ''
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {pet.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{pet.name}</h4>
-                      <p className="text-sm text-gray-600">{pet.breed}</p>
-                    </div>
+                  <div className="analytics-pet-avatar">
+                    {pet.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="analytics-pet-name">{pet.name}</h4>
+                    <p className="analytics-pet-breed">{pet.breed}</p>
                   </div>
                 </button>
               ))}
@@ -115,6 +116,7 @@ export default function AnalyticsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="analytics-content"
         >
           <Analytics
             petId={selectedPetId}
