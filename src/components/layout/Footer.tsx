@@ -66,8 +66,8 @@ export default function Footer() {
 
               {/* Tagline */}
               <div className="mb-8">
-                <p className="font-semibold text-lg flex items-center gap-2" style={{ color: '#14504E' }}>
-                  Made with love for pet parents! 
+                <div className="font-semibold text-lg flex items-center gap-2" style={{ color: '#14504E' }}>
+                  Made with love for pet parents!
                   <div className="w-5 h-5 relative">
                     <Image 
                       src="/images/icons/heart-red.png" 
@@ -76,7 +76,7 @@ export default function Footer() {
                       className="object-contain" 
                     />
                   </div>
-                </p>
+                </div>
               </div>
               
               {/* Newsletter Signup */}

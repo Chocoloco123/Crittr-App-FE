@@ -20,10 +20,9 @@ export default function NewHeader() {
 
   const navItems = [
     { href: '#features', label: 'Features' },
-    { href: '/dashboard', label: 'Dashboard' },
-    { href: '/journal', label: 'Journal' },
-    { href: '/analytics', label: 'Health' },
-    { href: '#about', label: 'About' }
+    { href: '#pricing', label: 'Pricing' },
+    { href: '#about', label: 'About' },
+    { href: '/dashboard', label: 'Dashboard' }
   ]
 
   return (
