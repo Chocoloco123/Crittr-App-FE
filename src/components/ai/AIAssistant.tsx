@@ -216,7 +216,7 @@ export default function AIAssistant({ petId, petName }: AIAssistantProps) {
             <button
               onClick={handleAskQuestion}
               disabled={isGenerating || !userQuestion.trim()}
-              className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+              className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
             >
               {isGenerating ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

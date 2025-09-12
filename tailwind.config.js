@@ -78,6 +78,10 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
+        poppins: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        'nunito-sans': ['var(--font-nunito-sans)', 'system-ui', 'sans-serif'],
+        inter: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        roboto: ['var(--font-roboto)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         'sm': 'var(--radius-sm)',

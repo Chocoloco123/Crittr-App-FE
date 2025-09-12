@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Heart, ArrowRight, Twitter, Facebook, Instagram, Github } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -35,7 +36,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-blue-50 pt-20 pb-16 relative overflow-hidden">
+    <footer className="pt-20 pb-16 relative overflow-hidden bg-gray-100">
       {/* Subtle background decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 right-20 text-8xl">🐾</div>
@@ -55,7 +56,7 @@ export default function Footer() {
             >
               {/* Logo */}
               <div className="mb-6">
-                <h3 className="text-4xl font-bold text-primary-600 mb-3">
+                <h3 className="text-4xl font-bold mb-3" style={{ color: '#14504E' }}>
                   🐾 Crittr
                 </h3>
                 <p className="text-gray-600 text-lg leading-relaxed max-w-md">
@@ -65,23 +66,35 @@ export default function Footer() {
 
               {/* Tagline */}
               <div className="mb-8">
-                <p className="text-primary-600 font-semibold text-lg">
-                  Made with love for pet parents! 💕
+                <p className="font-semibold text-lg flex items-center gap-2" style={{ color: '#14504E' }}>
+                  Made with love for pet parents! 
+                  <div className="w-5 h-5 relative">
+                    <Image 
+                      src="/images/icons/heart-red.png" 
+                      alt="Love" 
+                      fill 
+                      className="object-contain" 
+                    />
+                  </div>
                 </p>
               </div>
               
               {/* Newsletter Signup */}
               <div className="mb-12">
-                <h4 className="text-xl font-semibold mb-6 text-gray-800">Stay Updated</h4>
+                <h4 className="text-xl font-semibold mb-6" style={{ color: '#14504E' }}>Stay Updated</h4>
                 <div className="flex flex-col sm:flex-row gap-4 max-w-md">
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="flex-1 px-5 py-4 bg-white border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-base"
+                    className="flex-1 px-5 py-4 bg-white border border-gray-300 rounded-2xl text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 text-base"
                   />
-                  <button className="btn btn-primary px-8 py-4 text-base font-semibold whitespace-nowrap">
+                  <button className="text-white px-5 py-2.5 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins whitespace-nowrap flex items-center"
+                    style={{ backgroundColor: '#2c8d9b' }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#247a85'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = '#2c8d9b'}
+                  >
                     Subscribe
-                    <ArrowRight className="h-5 w-5 ml-2" />
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </button>
                 </div>
               </div>
@@ -95,9 +108,9 @@ export default function Footer() {
                     aria-label={social.label}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center hover:bg-primary-100 transition-colors shadow-sm hover:shadow-md"
+                    className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center hover:bg-teal-50 transition-colors shadow-sm hover:shadow-md"
                   >
-                    <social.icon className="h-5 w-5 text-primary-600" />
+                    <social.icon className="h-5 w-5" style={{ color: '#14504E' }} />
                   </motion.a>
                 ))}
               </div>
@@ -115,13 +128,13 @@ export default function Footer() {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   viewport={{ once: true }}
                 >
-                  <h4 className="text-lg font-semibold mb-6 text-gray-800">Product</h4>
+                  <h4 className="text-lg font-semibold mb-6" style={{ color: '#14504E' }}>Product</h4>
                   <ul className="space-y-4">
                     {footerLinks.product.map((link, index) => (
                       <li key={index}>
                         <a
                           href={link.href}
-                          className="text-gray-600 hover:text-primary-600 transition-colors text-base"
+                          className="text-gray-600 hover:text-teal-600 transition-colors text-base"
                         >
                           {link.name}
                         </a>
@@ -139,13 +152,13 @@ export default function Footer() {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   viewport={{ once: true }}
                 >
-                  <h4 className="text-lg font-semibold mb-6 text-gray-800">Support</h4>
+                  <h4 className="text-lg font-semibold mb-6" style={{ color: '#14504E' }}>Support</h4>
                   <ul className="space-y-4">
                     {footerLinks.support.map((link, index) => (
                       <li key={index}>
                         <a
                           href={link.href}
-                          className="text-gray-600 hover:text-primary-600 transition-colors text-base"
+                          className="text-gray-600 hover:text-teal-600 transition-colors text-base"
                         >
                           {link.name}
                         </a>
@@ -163,13 +176,13 @@ export default function Footer() {
                   transition={{ duration: 0.6, delay: 0.3 }}
                   viewport={{ once: true }}
                 >
-                  <h4 className="text-lg font-semibold mb-6 text-gray-800">Legal</h4>
+                  <h4 className="text-lg font-semibold mb-6" style={{ color: '#14504E' }}>Legal</h4>
                   <ul className="space-y-4">
                     {footerLinks.legal.map((link, index) => (
                       <li key={index}>
                         <a
                           href={link.href}
-                          className="text-gray-600 hover:text-primary-600 transition-colors text-base"
+                          className="text-gray-600 hover:text-teal-600 transition-colors text-base"
                         >
                           {link.name}
                         </a>
@@ -193,12 +206,19 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 text-gray-600 mb-4 md:mb-0 text-base">
               <span>Made with</span>
-              <Heart className="h-5 w-5 text-primary-500" />
+              <div className="w-5 h-5 relative">
+                <Image 
+                  src="/images/icons/heart-pink.png" 
+                  alt="Heart" 
+                  fill 
+                  className="object-contain" 
+                />
+              </div>
               <span>for pet lovers worldwide</span>
             </div>
             
             <div className="text-gray-500 text-base">
-              © {currentYear} <span className="text-primary-600 font-semibold">Crittr</span>. All rights reserved.
+              © {currentYear} <span className="font-semibold" style={{ color: '#14504E' }}>Crittr</span>. All rights reserved.
             </div>
           </div>
         </motion.div>

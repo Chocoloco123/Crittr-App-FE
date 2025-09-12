@@ -207,7 +207,7 @@ export default function Chatbot({ petId, petName }: ChatbotProps) {
                   {/* Avatar */}
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                     message.role === 'user' 
-                      ? 'bg-indigo-500' 
+                      ? 'bg-blue-500' 
                       : 'bg-gradient-to-r from-purple-500 to-indigo-500'
                   }`}>
                     {message.role === 'user' ? (
@@ -220,12 +220,12 @@ export default function Chatbot({ petId, petName }: ChatbotProps) {
                   {/* Message Content */}
                   <div className={`px-4 py-3 rounded-lg ${
                     message.role === 'user'
-                      ? 'bg-indigo-500 text-white'
+                      ? 'bg-blue-500 text-white'
                       : 'bg-gray-100 text-gray-900'
                   }`}>
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                     <div className={`flex items-center justify-between mt-2 text-xs ${
-                      message.role === 'user' ? 'text-indigo-100' : 'text-gray-500'
+                      message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
                     }`}>
                       <span>{formatTime(message.timestamp)}</span>
                       {message.modelUsed && (
@@ -298,7 +298,7 @@ export default function Chatbot({ petId, petName }: ChatbotProps) {
           <button
             type="submit"
             disabled={isLoading || !inputValue.trim()}
-            className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+            className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />

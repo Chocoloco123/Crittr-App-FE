@@ -266,7 +266,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                             {/* Avatar */}
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                               message.role === 'user' 
-                                ? 'bg-gray-500' 
+                                ? 'bg-blue-500' 
                                 : 'bg-gradient-to-r from-purple-500 to-blue-500'
                             }`}>
                               {message.role === 'user' ? (
@@ -286,12 +286,12 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                             {/* Message Content */}
                             <div className={`px-3 py-2 rounded-lg text-sm ${
                               message.role === 'user'
-                                ? 'bg-gray-500 text-white'
+                                ? 'bg-blue-500 text-white'
                                 : 'bg-gray-100 text-gray-900'
                             }`}>
                               <p className="leading-relaxed whitespace-pre-wrap">{message.content}</p>
                               <div className={`text-xs mt-1 ${
-                                message.role === 'user' ? 'text-gray-200' : 'text-gray-500'
+                                message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
                               }`}>
                                 {formatTime(message.timestamp)}
                               </div>
@@ -347,7 +347,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                     <button
                       type="submit"
                       disabled={isLoading || !inputValue.trim()}
-                      className="px-4 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+                      className="px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
                     >
                       {isLoading ? (
                         <Loader2 className="h-4 w-4 animate-spin" />

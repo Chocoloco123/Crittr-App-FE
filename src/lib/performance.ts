@@ -59,15 +59,6 @@ export const usePerformanceMonitoring = () => {
 // Preload critical resources
 export const preloadCriticalResources = () => {
   if (typeof window !== 'undefined') {
-    // Preload critical fonts
-    const fontLink = document.createElement('link')
-    fontLink.rel = 'preload'
-    fontLink.href = '/fonts/geist-sans.woff2'
-    fontLink.as = 'font'
-    fontLink.type = 'font/woff2'
-    fontLink.crossOrigin = 'anonymous'
-    document.head.appendChild(fontLink)
-    
     // Preload critical images
     const imageLink = document.createElement('link')
     imageLink.rel = 'preload'

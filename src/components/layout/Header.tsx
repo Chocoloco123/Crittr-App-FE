@@ -25,16 +25,16 @@ export default function Header() {
         <div className="container">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center">
+            <div className="flex items-center h-16">
               <a 
                 href="/" 
-                className="flex items-center space-x-3 text-xl font-bold text-primary-600 hover:text-primary-700 transition-colors group"
+                className="flex items-center space-x-3 text-xl font-bold text-primary-600 hover:text-primary-700 transition-colors group h-full"
                 aria-label="Crittr - Home"
               >
                 <span className="text-3xl">🐾</span>
-                <div className="flex flex-col">
-                  <span className="text-primary-600 font-bold text-lg">Crittr</span>
-                  <span className="text-xs text-gray-500 font-normal">Pet Care & Journaling</span>
+                <div className="flex flex-col justify-center">
+                  <span className="text-primary-600 font-bold text-lg leading-tight">Crittr</span>
+                  <span className="text-xs text-gray-500 font-normal leading-tight">Pet Care & Journaling</span>
                 </div>
               </a>
             </div>
@@ -57,8 +57,8 @@ export default function Header() {
 
   const navItems = [
     { href: '#features', label: 'Features' },
-    { href: '#pricing', label: 'Pricing' },
-    { href: '#faq', label: 'FAQ' },
+    { href: '/journal', label: 'Journal' },
+    { href: '/analytics', label: 'Health' },
     { href: '#about', label: 'About' }
   ]
 
@@ -68,16 +68,16 @@ export default function Header() {
         <div className="container">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center">
+            <div className="flex items-center h-16">
               <a 
                 href="/" 
-                className="flex items-center space-x-3 text-xl font-bold text-primary-600 hover:text-primary-700 transition-colors group"
+                className="flex items-center space-x-3 text-xl font-bold text-primary-600 hover:text-primary-700 transition-colors group h-full"
                 aria-label="Crittr - Home"
               >
                 <span className="text-3xl">🐾</span>
-                <div className="flex flex-col">
-                  <span className="text-primary-600 font-bold text-lg">Crittr</span>
-                  <span className="text-xs text-gray-500 font-normal">Pet Care & Journaling</span>
+                <div className="flex flex-col justify-center">
+                  <span className="text-primary-600 font-bold text-lg leading-tight">Crittr</span>
+                  <span className="text-xs text-gray-500 font-normal leading-tight">Pet Care & Journaling</span>
                 </div>
               </a>
             </div>
