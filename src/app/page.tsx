@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import NewHeader from '@/components/layout/NewHeader/NewHeader'
+import Navigation from '@/components/layout/Navigation/Navigation'
 import './page.scss'
 
 // Lazy load sections to improve initial page load
@@ -38,7 +38,7 @@ const FloatingChatbot = dynamic(() => import('@/components/ai/FloatingChatbot'),
 export default function Home() {
   return (
     <div className="home-page">
-      <NewHeader />
+      <Navigation />
       <HeroSection />
       <FeaturesSection />
       <PricingSection />

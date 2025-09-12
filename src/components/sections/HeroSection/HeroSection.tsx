@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { FadeInUp, FadeIn, ScaleIn } from '@/components/ui/OptimizedMotion'
 import { ArrowRight, PawPrint } from 'lucide-react'
 import Image from 'next/image'
@@ -9,8 +10,10 @@ import './HeroSection.scss'
 
 export default function HeroSection() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  const router = useRouter()
   
   const toggleAuthModal = () => setIsAuthModalOpen(!isAuthModalOpen)
+  const navigateToDashboard = () => router.push('/dashboard')
 
   return (
     <section className="hero-section" aria-labelledby="hero-heading">
@@ -46,10 +49,10 @@ export default function HeroSection() {
                 Start Free Journal
               </button>
               <button 
-                onClick={toggleAuthModal}
+                onClick={navigateToDashboard}
                 className="hero-secondary-button"
               >
-                See How It Works
+                Demo
               </button>
             </div>
           </FadeInUp>

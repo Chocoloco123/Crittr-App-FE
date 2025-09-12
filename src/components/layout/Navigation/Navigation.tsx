@@ -5,9 +5,9 @@ import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSession, signOut } from 'next-auth/react'
 import AuthModal from '@/components/auth/AuthModal'
-import './NewHeader.scss'
+import './Navigation.scss'
 
-export default function NewHeader() {
+export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isNavDropdownOpen, setIsNavDropdownOpen] = useState(false)
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
