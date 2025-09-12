@@ -1,0 +1,331 @@
+// Footer.scss
+
+.footer {
+  padding-top: 5rem;
+  padding-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+  background-color: #f3f4f6;
+}
+
+// Background decorations
+.footer-decoration {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+
+  .paw-decoration {
+    position: absolute;
+    top: 5rem;
+    right: 5rem;
+    font-size: 5rem;
+  }
+
+  .heart-decoration {
+    position: absolute;
+    bottom: 5rem;
+    left: 5rem;
+    font-size: 3.75rem;
+    animation: gentle-float 3s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+}
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.footer-container {
+  position: relative;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @media (min-width: 640px) {
+    padding: 0 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+  }
+}
+
+// Main footer content
+.footer-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 4rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    gap: 6rem;
+  }
+}
+
+// Brand section
+.footer-brand {
+  @media (min-width: 1024px) {
+    flex: 2;
+  }
+}
+
+.footer-logo {
+  margin-bottom: 1.5rem;
+
+  .logo-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #14504E;
+  }
+
+  .logo-description {
+    color: #6b7280;
+    font-size: 1.125rem;
+    line-height: 1.75;
+    max-width: 28rem;
+  }
+}
+
+.footer-tagline {
+  margin-bottom: 2rem;
+
+  .tagline-text {
+    font-weight: 600;
+    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #14504E;
+  }
+
+  .tagline-heart {
+    width: 1.25rem;
+    height: 1.25rem;
+    position: relative;
+  }
+}
+
+// Newsletter signup
+.footer-newsletter {
+  margin-bottom: 3rem;
+
+  .newsletter-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #14504E;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 28rem;
+
+    @media (min-width: 640px) {
+      flex-direction: row;
+    }
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    background-color: white;
+    border: 1px solid #d1d5db;
+    border-radius: 1rem;
+    color: #111827;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: #6b7280;
+    }
+
+    &:focus {
+      outline: none;
+      ring: 2px;
+      ring-color: #14b8a6;
+      border-color: transparent;
+    }
+  }
+
+  .newsletter-button {
+    color: white;
+    padding: 0.625rem 1.25rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: 'Poppins', sans-serif;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    background-color: #2c8d9b;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #247a85;
+    }
+
+    .button-icon {
+      width: 1rem;
+      height: 1rem;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+// Social links
+.footer-social {
+  display: flex;
+  gap: 1rem;
+
+  .social-link {
+    width: 3rem;
+    height: 3rem;
+    background-color: white;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+
+    &:hover {
+      background-color: #f0fdfa;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .social-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: #14504E;
+    }
+  }
+}
+
+// Links sections
+.footer-links {
+  @media (min-width: 1024px) {
+    flex: 3;
+  }
+
+  .links-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 2rem;
+    }
+  }
+
+  .links-section {
+    flex: 1;
+
+    .section-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #14504E;
+    }
+
+    .links-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .link-item {
+        .link {
+          color: #6b7280;
+          text-decoration: none;
+          font-size: 1rem;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: #0d9488;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Disclaimer
+.footer-disclaimer {
+  margin-bottom: 1.5rem;
+
+  .disclaimer-content {
+    text-align: center;
+
+    .disclaimer-text {
+      font-size: 0.75rem;
+      color: #6b7280;
+      line-height: 1.75;
+
+      strong {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// Bottom section
+.footer-bottom {
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+
+  .bottom-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+  }
+
+  .made-with-love {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+
+    @media (min-width: 768px) {
+      margin-bottom: 0;
+    }
+
+    .love-heart {
+      width: 1.25rem;
+      height: 1.25rem;
+      position: relative;
+    }
+  }
+
+  .copyright {
+    color: #6b7280;
+    font-size: 1rem;
+
+    .brand-name {
+      font-weight: 600;
+      color: #14504E;
+    }
+  }
+}

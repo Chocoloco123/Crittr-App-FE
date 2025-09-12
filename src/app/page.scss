@@ -8,17 +8,5 @@
   align-items: center;
   min-height: 100vh;
   overflow-x: hidden;
-  
-  // Ensure proper spacing on all devices
-  @media (max-width: 639px) {
-    padding: 0 0.5rem;
-  }
-  
-  @media (min-width: 640px) {
-    padding: 0 1rem;
-  }
-  
-  @media (min-width: 1024px) {
-    padding: 0;
-  }
+  padding: 0;
 }

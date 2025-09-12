@@ -5,7 +5,7 @@ import { ReduxProvider } from "@/components/providers/ReduxProvider";
 import AuthProvider from "@/components/providers/AuthProvider";
 import { NotificationProvider } from "@/components/providers/NotificationProvider";
 import StructuredData from "@/components/seo/StructuredData";
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/layout/Footer/Footer";
 import FloatingChatbot from "@/components/ai/FloatingChatbot";
 import { PerformanceMonitor } from "../components/ui/PerformanceMonitor";
 

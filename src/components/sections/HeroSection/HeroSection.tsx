@@ -21,6 +21,20 @@ export default function HeroSection() {
             <h1 className="hero-title">
               A Healthier, Happier Life for Your Pets
             </h1>
+            
+            {/* Mobile Image - appears below heading */}
+            <div className="hero-image-mobile">
+              <div className="hero-image-wrapper">
+                <Image 
+                  src="/images/icons/catdog.png" 
+                  alt="Happy Cat and Dog" 
+                  fill 
+                  className="hero-image" 
+                  priority
+                />
+              </div>
+            </div>
+
             <p className="hero-description">
               Track health, log memories, and keep your pets thriving — all in one place.
             </p>

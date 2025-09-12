@@ -48,8 +48,8 @@ export default function NewHeader() {
       <header className="header-container" role="banner">
         <div className="header-content">
           <div className="header-inner">
-            {/* Logo */}
-            <div className="flex items-center">
+            {/* Logo Section */}
+            <div className="logo-section">
               <a 
                 href="/" 
                 className="logo-link"
@@ -124,14 +124,39 @@ export default function NewHeader() {
               </div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMenu}
-              className="mobile-menu-button"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            {/* Mobile Controls Section */}
+            <div className="mobile-controls-section">
+              {/* Mobile Auth Button */}
+              <div className="mobile-auth-container">
+                {session ? (
+                  <div className="flex items-center gap-2">
+                    <span className="welcome-text">Welcome, {session.user?.name}</span>
+                    <button
+                      onClick={handleSignOut}
+                      className="mobile-sign-out-button"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={toggleAuthModal}
+                    className="mobile-sign-in-button"
+                  >
+                    Sign In
+                  </button>
+                )}
+              </div>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={toggleMenu}
+                className="mobile-menu-button"
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -155,26 +180,6 @@ export default function NewHeader() {
                     {item.label}
                   </a>
                 ))}
-                <div className="mobile-auth-section">
-                  {session ? (
-                    <div className="space-y-3">
-                      <p className="welcome-text">Welcome, {session.user?.name}</p>
-                      <button
-                        onClick={handleSignOut}
-                        className="mobile-auth-button"
-                      >
-                        Sign Out
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={toggleAuthModal}
-                      className="mobile-auth-button"
-                    >
-                      Login
-                    </button>
-                  )}
-                </div>
               </div>
             </motion.div>
           )}

@@ -12,6 +12,7 @@ import {
   RefreshCw
 } from 'lucide-react'
 import Image from 'next/image'
+import './FloatingChatbot.scss'
 
 interface ChatMessage {
   id: string
@@ -42,7 +43,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
     {
       id: 'welcome',
       role: 'assistant',
-      content: "Hi! I'm your Crittr AI assistant. I can help you learn about Crittr's features, pet care tracking, and how to use the app. What would you like to know? 🤖",
+      content: "Hi! I'm Clio, your Crittr AI assistant. I can help you learn about Crittr's features, pet care tracking, and how to use the app. What would you like to know?",
       timestamp: new Date()
     }
   ])
@@ -141,7 +142,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
       {
         id: 'welcome',
         role: 'assistant',
-        content: "Hi! I'm your Crittr AI assistant. I can help you learn about Crittr's features, pet care tracking, and how to use the app. What would you like to know? 🤖",
+        content: "Hi! I'm Clio, your Crittr AI assistant. I can help you learn about Crittr's features, pet care tracking, and how to use the app. What would you like to know?",
         timestamp: new Date()
       }
     ])
@@ -166,14 +167,14 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 w-16 h-16 bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
+            className="floating-chat-button"
           >
-            <div className="w-10 h-10 relative">
+            <div className="floating-chat-icon">
               <Image
                 src="/images/icons/robot.png"
                 alt="Crittr AI Assistant"
                 fill
-                className="object-contain group-hover:scale-110 transition-transform duration-200"
+                className="object-contain"
               />
             </div>
           </motion.button>
@@ -188,16 +189,13 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.3 }}
-            className={`fixed bottom-6 right-6 z-50 ${
-              isMinimized ? 'w-80 h-20' : 'w-96 h-[450px]'
-            } bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden`}
+            className={`chat-window ${isMinimized ? 'minimized' : ''}`}
           >
             {/* Header */}
-            <div className={`text-white p-4 flex items-center justify-between ${isMinimized ? 'h-full' : ''}`}
-              style={{ backgroundColor: '#2c8d9b' }}>
-              <div className="flex items-center space-x-3">
-                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center p-2">
-                  <div className="w-10 h-10 relative">
+            <div className={`chat-header ${isMinimized ? 'minimized' : ''}`}>
+              <div className="chat-header-info">
+                <div className="chat-avatar">
+                  <div className="chat-avatar-icon">
                     <Image
                       src="/images/icons/robot.png"
                       alt="Crittr AI"
@@ -207,17 +205,17 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Crittr AI</h3>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                    <p className="text-sm opacity-90">Online</p>
+                  <h3 className="chat-title">Clio</h3>
+                  <div className="chat-status">
+                    <div className="status-dot"></div>
+                    <p className="status-text">Online</p>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="chat-controls">
                 <button
                   onClick={() => setIsMinimized(!isMinimized)}
-                  className="p-1 hover:bg-white/20 rounded transition-colors"
+                  className="control-button"
                 >
                   {isMinimized ? (
                     <Maximize2 className="h-4 w-4" />
@@ -227,14 +225,14 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                 </button>
                 <button
                   onClick={clearChat}
-                  className="p-1 hover:bg-white/20 rounded transition-colors"
+                  className="control-button"
                   title="Restart chat"
                 >
                   <RefreshCw className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1 hover:bg-white/20 rounded transition-colors"
+                  className="control-button"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -244,7 +242,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
             {!isMinimized && (
               <>
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-3 h-[280px]">
+                <div className="messages-container">
                   {messages.map((message, index) => (
                         <motion.div
                           key={message.id}
@@ -252,22 +250,15 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.2 }}
-                          className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                          className={`message ${message.role}`}
                         >
-                          <div className={`flex items-start space-x-2 max-w-[80%] ${
-                            message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                          }`}>
+                          <div className={`message-content ${message.role}`}>
                             {/* Avatar */}
-                            <div className={`rounded-full flex items-center justify-center flex-shrink-0 ${
-                              message.role === 'user' 
-                                ? 'w-8 h-8' 
-                                : 'w-12 h-12'
-                            }`}
-                            style={message.role === 'user' ? { backgroundColor: '#F5E6D3' } : message.role === 'assistant' ? { backgroundColor: '#2c8d9b' } : {}}>
+                            <div className={`message-avatar ${message.role}`}>
                               {message.role === 'user' ? (
-                                <User className="h-4 w-4 text-white" />
+                                <User className="message-avatar-icon" />
                               ) : (
-                                <div className="w-8 h-8 relative">
+                                <div className={`message-avatar-icon ${message.role}`}>
                                   <Image
                                     src="/images/icons/robot.png"
                                     alt="Crittr AI"
@@ -279,16 +270,9 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                             </div>
                             
                             {/* Message Content */}
-                            <div className={`px-3 py-2 rounded-2xl text-sm ${
-                              message.role === 'user'
-                                ? 'text-gray-800'
-                                : 'text-gray-900'
-                            }`}
-                            style={message.role === 'user' ? { backgroundColor: '#F5E6D3' } : message.role === 'assistant' ? { backgroundColor: '#fed7aa' } : {}}>
+                            <div className={`message-bubble ${message.role}`}>
                               <p className="leading-relaxed whitespace-pre-wrap">{message.content}</p>
-                              <div className={`text-xs mt-1 ${
-                                message.role === 'user' ? 'text-gray-600' : 'text-gray-500'
-                              }`}>
+                              <div className="message-time">
                                 {formatTime(message.timestamp)}
                               </div>
                             </div>
@@ -301,11 +285,10 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex justify-start"
+                      className="loading-message"
                     >
-                      <div className="flex items-start space-x-3">
-                        <div className="w-12 h-12 rounded-full flex items-center justify-center p-1"
-                          style={{ backgroundColor: '#2c8d9b' }}>
+                      <div className="loading-content">
+                        <div className="loading-avatar">
                           <div className="w-8 h-8 relative">
                             <Image
                               src="/images/icons/robot.png"
@@ -315,13 +298,9 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                             />
                           </div>
                         </div>
-                        <div className="px-4 py-3 rounded-2xl"
-                          style={{ backgroundColor: '#fed7aa' }}>
-                          <div className="flex items-center space-x-2">
-                            <Loader2 className="h-4 w-4 animate-spin"
-                              style={{ color: '#2c8d9b' }} />
-                            <span className="text-sm text-gray-600">Crittr AI is typing...</span>
-                          </div>
+                        <div className="loading-bubble">
+                          <Loader2 className="loading-spinner" />
+                          <span className="loading-text">Crittr AI is typing...</span>
                         </div>
                       </div>
                     </motion.div>
@@ -331,30 +310,25 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                 </div>
 
                 {/* Input */}
-                <div className="p-4 border-t border-gray-200"
-                  style={{ backgroundColor: '#FEFBEE' }}>
-                  <form onSubmit={handleSubmit} className="flex space-x-3">
+                <div className="input-container">
+                  <form onSubmit={handleSubmit} className="input-form">
                     <input
                       type="text"
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       placeholder="Ask Clio about Crittr's features..."
-                      className="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-2xl focus:ring-2 focus:border-transparent"
-                      style={{ focusRingColor: '#2c8d9b' }}
+                      className="input-field"
                       disabled={isLoading}
                     />
                     <button
                       type="submit"
                       disabled={isLoading || !inputValue.trim()}
-                      className="px-4 py-3 text-white rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
-                      style={{ backgroundColor: '#A8E6CF' }}
-                      onMouseEnter={(e) => e.target.style.backgroundColor = '#96D4B8'}
-                      onMouseLeave={(e) => e.target.style.backgroundColor = '#A8E6CF'}
+                      className="send-button"
                     >
                       {isLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <Loader2 className="send-icon animate-spin" />
                       ) : (
-                        <Send className="h-4 w-4" />
+                        <Send className="send-icon" />
                       )}
                     </button>
                   </form>

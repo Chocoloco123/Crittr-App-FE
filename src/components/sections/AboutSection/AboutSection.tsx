@@ -93,11 +93,25 @@ export default function AboutSection() {
           viewport={{ once: true }}
           className="about-story"
         >
+          <h3 className="about-story-title">
+            Our Story
+          </h3>
+          
+          {/* Mobile/Tablet Image - appears below heading */}
+          <div className="about-story-image-mobile">
+            <div className="about-story-image">
+              <Image 
+                src="/images/icons/goldenretriever.png" 
+                alt="Teddy the Golden Retriever" 
+                width={320}
+                height={320}
+                className="object-contain bg-gradient-to-br from-teal-100 to-orange-100" 
+              />
+            </div>
+          </div>
+
           <div className="about-story-grid">
             <div className="about-story-content">
-              <h3 className="about-story-title">
-                Our Story
-              </h3>
               <div className="about-story-text">
                 <p className="about-story-paragraph">
                   It started with Teddy, my golden retriever. Between vet appointments, 
