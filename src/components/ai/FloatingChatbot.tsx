@@ -38,7 +38,14 @@ const suggestedQuestions = [
 export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 'welcome',
+      role: 'assistant',
+      content: "Hi! I'm your Crittr AI assistant. I can help you learn about Crittr's features, pet care tracking, and how to use the app. What would you like to know? 🤖",
+      timestamp: new Date()
+    }
+  ])
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -130,7 +137,14 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
   }
 
   const clearChat = () => {
-    setMessages([])
+    setMessages([
+      {
+        id: 'welcome',
+        role: 'assistant',
+        content: "Hi! I'm your Crittr AI assistant. I can help you learn about Crittr's features, pet care tracking, and how to use the app. What would you like to know? 🤖",
+        timestamp: new Date()
+      }
+    ])
     setError(null)
     setIsLoading(false)
     setInputValue('')
@@ -143,25 +157,28 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
   return (
     <>
       {/* Floating Chat Button */}
-      {!isOpen && (
-        <motion.button
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
-        >
-          <div className="w-10 h-10 relative">
-            <Image
-              src="/clio-chatbot-icon.svg"
-              alt="Clio AI Assistant"
-              fill
-              className="brightness-0 invert group-hover:scale-110 transition-transform duration-200"
-            />
-          </div>
-        </motion.button>
-      )}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsOpen(true)}
+            className="fixed bottom-6 right-6 w-16 h-16 bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center z-50 group"
+          >
+            <div className="w-10 h-10 relative">
+              <Image
+                src="/images/icons/robot.png"
+                alt="Crittr AI Assistant"
+                fill
+                className="object-contain group-hover:scale-110 transition-transform duration-200"
+              />
+            </div>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Chat Window */}
       <AnimatePresence>
@@ -173,22 +190,24 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
             transition={{ duration: 0.3 }}
             className={`fixed bottom-6 right-6 z-50 ${
               isMinimized ? 'w-80 h-20' : 'w-96 h-[450px]'
-            } bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden`}
+            } bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden`}
           >
             {/* Header */}
-            <div className={`bg-gradient-to-r from-purple-500 to-blue-500 text-white p-4 flex items-center justify-between ${isMinimized ? 'h-full' : ''}`}>
+            <div className={`text-white p-4 flex items-center justify-between ${isMinimized ? 'h-full' : ''}`}
+              style={{ backgroundColor: '#2c8d9b' }}>
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-2">
-                  <div className="w-6 h-6 relative">
+                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center p-2">
+                  <div className="w-10 h-10 relative">
                     <Image
-                      src="/clio-chatbot-icon.svg"
-                      alt="Clio"
+                      src="/images/icons/robot.png"
+                      alt="Crittr AI"
                       fill
+                      className="object-contain"
                     />
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Clio</h3>
+                  <h3 className="font-bold text-lg">Crittr AI</h3>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                     <p className="text-sm opacity-90">Online</p>
@@ -226,32 +245,7 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
               <>
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-3 h-[280px]">
-                  {messages.length === 0 ? (
-                    <div className="p-4">
-                      <div className="flex items-start space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 p-1">
-                          <div className="w-5 h-5 relative">
-                            <Image
-                              src="/clio-chatbot-icon.svg"
-                              alt="Clio"
-                              fill
-                              className="brightness-0 invert"
-                            />
-                          </div>
-                        </div>
-                        <div className="bg-gray-100 px-4 py-3 rounded-lg max-w-[80%]">
-                          <p className="text-sm text-gray-900 leading-relaxed">
-                            Hi! I'm Clio, your AI chatbot assistant for Crittr. I can help you learn about Crittr's features, pet care tracking, and how to use the app. What would you like to know? 🤖
-                          </p>
-                          <div className="text-xs text-gray-500 mt-2">
-                            {formatTime(new Date())}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      {messages.map((message, index) => (
+                  {messages.map((message, index) => (
                         <motion.div
                           key={message.id}
                           ref={message.role === 'assistant' && index === messages.length - 1 ? lastAssistantMessageRef : null}
@@ -264,43 +258,43 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                             message.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''
                           }`}>
                             {/* Avatar */}
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                            <div className={`rounded-full flex items-center justify-center flex-shrink-0 ${
                               message.role === 'user' 
-                                ? 'bg-blue-500' 
-                                : 'bg-gradient-to-r from-purple-500 to-blue-500'
-                            }`}>
+                                ? 'w-8 h-8' 
+                                : 'w-12 h-12'
+                            }`}
+                            style={message.role === 'user' ? { backgroundColor: '#F5E6D3' } : message.role === 'assistant' ? { backgroundColor: '#2c8d9b' } : {}}>
                               {message.role === 'user' ? (
                                 <User className="h-4 w-4 text-white" />
                               ) : (
-                                <div className="w-5 h-5 relative">
+                                <div className="w-8 h-8 relative">
                                   <Image
-                                    src="/clio-chatbot-icon.svg"
-                                    alt="Clio"
+                                    src="/images/icons/robot.png"
+                                    alt="Crittr AI"
                                     fill
-                                    className="brightness-0 invert"
+                                    className="object-contain brightness-0 invert"
                                   />
                                 </div>
                               )}
                             </div>
                             
                             {/* Message Content */}
-                            <div className={`px-3 py-2 rounded-lg text-sm ${
+                            <div className={`px-3 py-2 rounded-2xl text-sm ${
                               message.role === 'user'
-                                ? 'bg-blue-500 text-white'
-                                : 'bg-gray-100 text-gray-900'
-                            }`}>
+                                ? 'text-gray-800'
+                                : 'text-gray-900'
+                            }`}
+                            style={message.role === 'user' ? { backgroundColor: '#F5E6D3' } : message.role === 'assistant' ? { backgroundColor: '#fed7aa' } : {}}>
                               <p className="leading-relaxed whitespace-pre-wrap">{message.content}</p>
                               <div className={`text-xs mt-1 ${
-                                message.role === 'user' ? 'text-blue-100' : 'text-gray-500'
+                                message.role === 'user' ? 'text-gray-600' : 'text-gray-500'
                               }`}>
                                 {formatTime(message.timestamp)}
                               </div>
                             </div>
                           </div>
                         </motion.div>
-                      ))}
-                    </>
-                  )}
+                  ))}
                   
                   {/* Loading indicator */}
                   {isLoading && (
@@ -310,20 +304,23 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                       className="flex justify-start"
                     >
                       <div className="flex items-start space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center p-1">
-                          <div className="w-5 h-5 relative">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center p-1"
+                          style={{ backgroundColor: '#2c8d9b' }}>
+                          <div className="w-8 h-8 relative">
                             <Image
-                              src="/clio-chatbot-icon.svg"
-                              alt="Clio"
+                              src="/images/icons/robot.png"
+                              alt="Crittr AI"
                               fill
-                              className="brightness-0 invert"
+                              className="object-contain brightness-0 invert"
                             />
                           </div>
                         </div>
-                        <div className="bg-gray-100 px-4 py-3 rounded-lg">
+                        <div className="px-4 py-3 rounded-2xl"
+                          style={{ backgroundColor: '#fed7aa' }}>
                           <div className="flex items-center space-x-2">
-                            <Loader2 className="h-4 w-4 animate-spin text-purple-600" />
-                            <span className="text-sm text-gray-600">Clio is typing...</span>
+                            <Loader2 className="h-4 w-4 animate-spin"
+                              style={{ color: '#2c8d9b' }} />
+                            <span className="text-sm text-gray-600">Crittr AI is typing...</span>
                           </div>
                         </div>
                       </div>
@@ -334,20 +331,25 @@ export default function FloatingChatbot({ petId, petName }: FloatingChatbotProps
                 </div>
 
                 {/* Input */}
-                <div className="p-4 border-t border-gray-200 bg-white">
+                <div className="p-4 border-t border-gray-200"
+                  style={{ backgroundColor: '#FEFBEE' }}>
                   <form onSubmit={handleSubmit} className="flex space-x-3">
                     <input
                       type="text"
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       placeholder="Ask Clio about Crittr's features..."
-                      className="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-2xl focus:ring-2 focus:border-transparent"
+                      style={{ focusRingColor: '#2c8d9b' }}
                       disabled={isLoading}
                     />
                     <button
                       type="submit"
                       disabled={isLoading || !inputValue.trim()}
-                      className="px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+                      className="px-4 py-3 text-white rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+                      style={{ backgroundColor: '#A8E6CF' }}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = '#96D4B8'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = '#A8E6CF'}
                     >
                       {isLoading ? (
                         <Loader2 className="h-4 w-4 animate-spin" />

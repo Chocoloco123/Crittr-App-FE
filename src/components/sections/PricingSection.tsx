@@ -62,7 +62,7 @@ export default function PricingSection() {
 
   return (
     <section id="pricing" className="px-8 py-16 bg-white">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -73,7 +73,7 @@ export default function PricingSection() {
           <h2 className="text-3xl font-bold mb-4" style={{ color: '#14504E' }}>
             Simple, Transparent Pricing
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-4xl mx-auto">
             Choose the plan that's right for you and your pets. No hidden fees, cancel anytime.
           </p>
         </motion.div>
