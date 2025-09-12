@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import './FeaturesSection.scss'
 
 export default function FeaturesSection() {
   const mainFeatures = [
@@ -9,36 +10,36 @@ export default function FeaturesSection() {
       title: 'Health Tracking',
       description: 'Monitor vet visits, vaccinations, weight, and medications with clean charts.',
       icon: '/images/icons/stethescope.png',
-      iconColor: '#FEFBEE'
+      iconColor: 'cream'
     },
     {
       title: 'Pet Journal',
       description: 'Capture daily moments, milestones, and memories.',
       icon: '/images/icons/journal.png',
-      iconColor: '#FE9F72'
+      iconColor: 'orange'
     },
     {
       title: 'AI Assistant',
       description: 'Get reminders, tips, and answers tailored to your pet.',
       icon: '/images/icons/robot.png',
-      iconColor: '#FEFBEE'
+      iconColor: 'cream'
     }
   ]
 
   return (
-    <section id="features" className="px-8 py-16 bg-white">
-      <div className="max-w-6xl mx-auto">
+    <section id="features" className="features-section">
+      <div className="features-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="features-header"
         >
-          <h2 className="text-3xl font-bold mb-12" style={{ color: '#14504E' }}>Why Crittr?</h2>
+          <h2 className="features-title">Why Crittr?</h2>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="features-grid">
           {mainFeatures.map((feature, index) => (
             <motion.div
               key={index}
@@ -46,14 +47,11 @@ export default function FeaturesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300"
+              className="feature-card"
             >
-              <div className="p-6 text-center">
-                <div 
-                  className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: feature.iconColor }}
-                >
-                  <div className="w-16 h-16 relative">
+              <div className="feature-content">
+                <div className={`feature-icon-container ${feature.iconColor}`}>
+                  <div className="feature-icon">
                     <Image 
                       src={feature.icon} 
                       alt={feature.title}
@@ -62,8 +60,8 @@ export default function FeaturesSection() {
                     />
                   </div>
                 </div>
-                <h3 className="font-semibold text-xl mb-2" style={{ color: '#14504E' }}>{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="feature-title">{feature.title}</h3>
+                <p className="feature-description">{feature.description}</p>
               </div>
             </motion.div>
           ))}

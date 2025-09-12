@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
+import './FAQSection.scss'
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
@@ -51,39 +52,32 @@ export default function FAQSection() {
   }
 
   return (
-    <section id="faq" className="section-padding bg-gradient-to-br from-secondary-50 via-white to-accent-50 relative overflow-hidden">
+    <section id="faq" className="faq-section">
       {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-20 text-6xl">❓</div>
-        <div className="absolute bottom-20 right-20 text-6xl">💡</div>
-        <div className="absolute top-1/2 left-1/4 text-4xl">🤔</div>
+      <div className="faq-background-pattern">
+        <div className="faq-pattern-2">💡</div>
+        <div className="faq-pattern-3">🤔</div>
       </div>
       
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="faq-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="faq-header"
         >
-          <div className="inline-flex items-center justify-center gap-3 mb-6">
-            <span className="text-4xl">❓</span>
-            <span className="text-sm font-semibold text-primary-600 bg-primary-100 px-4 py-2 rounded-full">
-              Got Questions?
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="faq-title">
             Frequently Asked Questions
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="faq-subtitle">
             Everything you need to know about Crittr
           </p>
         </motion.div>
 
         {/* FAQ Items */}
-        <div className="space-y-4">
+        <div className="faq-list">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
@@ -91,20 +85,21 @@ export default function FAQSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
+              className="faq-item"
+              style={{ width: '100%', maxWidth: '100%' }}
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50/50 transition-colors rounded-xl"
+                className="faq-question-button"
               >
-                <span className="font-semibold text-gray-900 pr-4">
+                <span className="faq-question-text">
                   {faq.question}
                 </span>
                 <div className="flex-shrink-0">
                   {openIndex === index ? (
-                    <Minus className="h-5 w-5 text-primary-600" />
+                    <Minus className={`faq-icon open`} />
                   ) : (
-                    <Plus className="h-5 w-5 text-gray-500" />
+                    <Plus className={`faq-icon closed`} />
                   )}
                 </div>
               </button>
@@ -116,9 +111,9 @@ export default function FAQSection() {
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
+                    className="faq-answer"
                   >
-                    <div className="px-6 pb-4 text-gray-600 leading-relaxed">
+                    <div className="faq-answer-content">
                       {faq.answer}
                     </div>
                   </motion.div>
@@ -128,36 +123,6 @@ export default function FAQSection() {
           ))}
         </div>
 
-        {/* Contact CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
-          <div className="bg-gradient-to-br from-primary-500 via-secondary-500 to-accent-500 rounded-3xl p-8 max-w-2xl mx-auto shadow-xl">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <span className="text-3xl">💬</span>
-                <h3 className="text-2xl font-bold text-white">
-                  Still have questions?
-                </h3>
-              </div>
-              <p className="text-white/90 mb-8 text-lg">
-                Can't find the answer you're looking for? Our support team is here to help.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-white text-primary-600 hover:bg-white/90 px-8 py-3 text-lg font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
-                  Contact Support
-                </button>
-                <button className="bg-white/20 text-white hover:bg-white/30 px-8 py-3 text-lg font-semibold rounded-xl transition-all duration-300 backdrop-blur-sm">
-                  View Documentation
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   )

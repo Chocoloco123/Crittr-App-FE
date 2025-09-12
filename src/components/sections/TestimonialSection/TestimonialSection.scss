@@ -1,0 +1,32 @@
+// TestimonialSection.scss
+.testimonial-section {
+  padding: 2rem 2rem 4rem 2rem;
+  text-align: center;
+  margin: 0 2rem;
+  border-radius: 1rem;
+  background-color: #fed7aa;
+}
+
+.testimonial-content {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.testimonial-quote {
+  font-size: 1.25rem;
+  font-style: italic;
+  max-width: 32rem;
+  margin: 0 auto 1.5rem auto;
+  color: #1f2937;
+}
+
+.testimonial-author {
+  font-weight: 600;
+  color: #374151;
+}
+
+.testimonial-subtitle {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-top: 0.5rem;
+}

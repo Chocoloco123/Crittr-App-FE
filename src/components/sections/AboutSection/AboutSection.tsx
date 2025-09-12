@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import './about.css'
+import './AboutSection.scss'
 
 export default function AboutSection() {
   const stats = [
@@ -36,20 +36,20 @@ export default function AboutSection() {
   ]
 
   return (
-    <section id="about" className="px-8 py-16" style={{ backgroundColor: '#FEFBEE' }}>
-      <div className="max-w-6xl mx-auto aboutContainer">
+    <section id="about" className="about-section">
+      <div className="about-container">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-16"
+          className="about-header"
         >
-          <h2 className="text-3xl font-bold mb-4 " style={{ color: '#14504E', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <h2 className="about-title">
             About Crittr
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto text-center">
+          <p className="about-description">
             We're passionate pet parents who believe every pet deserves the best care. 
             Crittr was born from our own struggles to keep track of our pets' health, 
             appointments, and precious memories.
@@ -62,24 +62,23 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16"
+          className="about-stats"
         >
           {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-white shadow-md">
-                <div className="w-12 h-12 relative">
-                  <Image 
-                    src={stat.icon} 
-                    alt={stat.label}
-                    fill 
-                    className="object-contain" 
-                  />
-                </div>
+            <div key={index} className="about-stat">
+              <div className="about-stat-icon">
+                <Image 
+                  src={stat.icon} 
+                  alt={stat.label}
+                  width={48}
+                  height={48}
+                  className="object-contain" 
+                />
               </div>
-              <div className="text-3xl font-bold mb-2" style={{ color: '#14504E' }}>
+              <div className="about-stat-number">
                 {stat.number}
               </div>
-              <div className="text-gray-600 font-medium">
+              <div className="about-stat-label">
                 {stat.label}
               </div>
             </div>
@@ -92,44 +91,42 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mb-16 p-8 rounded-2xl"
-          style={{ backgroundColor: '#fed7aa' }}
+          className="about-story"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left">
-              <h3 className="text-2xl font-bold mb-6" style={{ color: '#14504E' }}>
+          <div className="about-story-grid">
+            <div className="about-story-content">
+              <h3 className="about-story-title">
                 Our Story
               </h3>
-              <div className="space-y-4 text-gray-600 leading-relaxed">
-                <p className="mb-6 text-lg">
+              <div className="about-story-text">
+                <p className="about-story-paragraph">
                   It started with Teddy, my golden retriever. Between vet appointments, 
                   medication schedules, and wanting to capture every adorable moment, I was drowning in sticky notes and scattered photos.
                 </p>
                 <br/>
-                <p className="mb-6 text-lg">
+                <p className="about-story-paragraph">
                   I knew there had to be a better way. So I built Crittr - a comprehensive 
                   platform that combines health tracking, memory keeping, and AI-powered 
                   insights to help pet parents like me give our furry family members the 
                   best care possible.
                 </p>
                 <br/>
-                <p className="mb-6 text-lg">
+                <p className="about-story-paragraph">
                   Today, Crittr helps thousands of pet parents stay organized, informed, 
                   and connected to their pets' wellbeing. Because every pet deserves to 
                   live their healthiest, happiest life.
                 </p>
               </div>
             </div>
-            <div className="flex justify-center">
-              <div className="w-80 h-80 rounded-2xl shadow-lg overflow-hidden">
-                <div className="w-full h-full relative">
-                  <Image 
-                    src="/images/icons/goldenretriever.png" 
-                    alt="Teddy the Golden Retriever" 
-                    fill 
-                    className="object-contain bg-gradient-to-br from-teal-100 to-orange-100" 
-                  />
-                </div>
+            <div className="about-story-image-container">
+              <div className="about-story-image">
+                <Image 
+                  src="/images/icons/goldenretriever.png" 
+                  alt="Teddy the Golden Retriever" 
+                  width={320}
+                  height={320}
+                  className="object-contain bg-gradient-to-br from-teal-100 to-orange-100" 
+                />
               </div>
             </div>
           </div>
@@ -142,26 +139,27 @@ export default function AboutSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-2xl font-bold mb-8 text-center" style={{ color: '#14504E' }}>
+          <h3 className="about-values-title">
             Our Values
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="about-values-grid">
             {teamValues.map((value, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 relative flex-shrink-0">
+              <div key={index} className="about-value-card">
+                <div className="about-value-content">
+                  <div className="about-value-icon">
                     <Image 
                       src={value.icon} 
                       alt={value.title}
-                      fill 
+                      width={48}
+                      height={48}
                       className="object-contain" 
                     />
                   </div>
-                  <div>
-                    <h4 className="text-xl font-semibold mb-3" style={{ color: '#14504E' }}>
+                  <div className="about-value-text">
+                    <h4 className="about-value-title">
                       {value.title}
                     </h4>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="about-value-description">
                       {value.description}
                     </p>
                   </div>
@@ -177,21 +175,16 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="about-cta"
         >
-          <h3 className="text-2xl font-bold !mb-6" style={{ color: '#14504E' }}>
+          <h3 className="about-cta-title">
             Join Our Pet Parent Community
           </h3>
-          <p className="text-gray-600 !mb-5 max-w-2xl mx-auto">
+          <p className="about-cta-description">
             Ready to give your pets the care they deserve? Start your free trial today 
             and join thousands of happy pet parents who trust Crittr.
           </p>
-          <button 
-            className="text-white px-6 py-3 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins"
-            style={{ backgroundColor: '#2c8d9b' }}
-            onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#247a85'}
-            onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2c8d9b'}
-          >
+          <button className="about-cta-button">
             Start Your Free Trial
           </button>
         </motion.div>

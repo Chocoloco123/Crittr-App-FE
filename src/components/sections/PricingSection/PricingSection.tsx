@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import Image from 'next/image'
+import './PricingSection.scss'
 
 export default function PricingSection() {
   const plans = [
@@ -20,7 +21,7 @@ export default function PricingSection() {
       ],
       popular: false,
       buttonText: 'Get Started Free',
-      buttonColor: '#2c8d9b'
+      buttonClass: 'teal'
     },
     {
       name: 'Pro',
@@ -38,7 +39,7 @@ export default function PricingSection() {
       ],
       popular: true,
       buttonText: 'Start Pro Trial',
-      buttonColor: '#FE9F72'
+      buttonClass: 'orange'
     },
     {
       name: 'Family',
@@ -56,29 +57,29 @@ export default function PricingSection() {
       ],
       popular: false,
       buttonText: 'Choose Family',
-      buttonColor: '#2c8d9b'
+      buttonClass: 'teal'
     }
   ]
 
   return (
-    <section id="pricing" className="px-8 py-16 bg-white">
-      <div className="max-w-6xl mx-auto flex flex-col items-center">
+    <section id="pricing" className="pricing-section">
+      <div className="pricing-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="pricing-header"
         >
-          <h2 className="text-3xl font-bold mb-4" style={{ color: '#14504E' }}>
+          <h2 className="pricing-title">
             Simple, Transparent Pricing
           </h2>
-          <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+          <p className="pricing-description">
             Choose the plan that's right for you and your pets. No hidden fees, cancel anytime.
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="pricing-grid">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -86,14 +87,12 @@ export default function PricingSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className={`bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 relative ${
-                plan.popular ? 'ring-2 ring-teal-500 scale-105' : ''
-              }`}
+              className={`pricing-card ${plan.popular ? 'popular' : ''}`}
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-teal-500 text-white px-4 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                    <div className="w-4 h-4 relative">
+                <div className="pricing-badge">
+                  <div className="pricing-badge-content">
+                    <div className="pricing-badge-icon">
                       <Image 
                         src="/images/icons/heart-pink.png" 
                         alt="Star" 
@@ -106,35 +105,30 @@ export default function PricingSection() {
                 </div>
               )}
               
-              <div className="p-8">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold mb-2" style={{ color: '#14504E' }}>
+              <div className="pricing-card-content">
+                <div className="pricing-card-header">
+                  <h3 className="pricing-plan-name">
                     {plan.name}
                   </h3>
-                  <div className="mb-2">
-                    <span className="text-4xl font-bold" style={{ color: '#14504E' }}>
+                  <div className="pricing-price-container">
+                    <span className="pricing-price">
                       {plan.price}
                     </span>
-                    <span className="text-gray-500 ml-1">/{plan.period}</span>
+                    <span className="pricing-period">/{plan.period}</span>
                   </div>
-                  <p className="text-gray-600 text-sm">{plan.description}</p>
+                  <p className="pricing-plan-description">{plan.description}</p>
                 </div>
                 
-                <ul className="space-y-3 mb-8">
+                <ul className="pricing-features">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-teal-500 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
+                    <li key={featureIndex} className="pricing-feature">
+                      <Check className="pricing-feature-icon" />
+                      <span className="pricing-feature-text">{feature}</span>
                     </li>
                   ))}
                 </ul>
                 
-                <button 
-                  className="w-full text-white px-5 py-2.5 rounded-2xl shadow-md transition-colors font-semibold text-sm font-poppins"
-                  style={{ backgroundColor: plan.buttonColor }}
-                  onMouseEnter={(e) => (e.target as HTMLButtonElement).style.opacity = '0.9'}
-                  onMouseLeave={(e) => (e.target as HTMLButtonElement).style.opacity = '1'}
-                >
+                <button className={`pricing-button ${plan.buttonClass}`}>
                   {plan.buttonText}
                 </button>
               </div>
@@ -147,13 +141,13 @@ export default function PricingSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="pricing-footer"
         >
-          <p className="text-gray-600 mb-4">
+          <p className="pricing-footer-text">
             All plans include a 14-day free trial. No credit card required.
           </p>
-          <p className="text-sm text-gray-500">
-            Questions? <a href="#contact" className="text-teal-600 hover:text-teal-700">Contact our support team</a>
+          <p className="pricing-footer-link">
+            Questions? <a href="#contact">Contact our support team</a>
           </p>
         </motion.div>
       </div>
