@@ -14,7 +14,8 @@ import {
   BarChart3, 
   Bot, 
   ArrowRight,
-  User
+  User,
+  Camera
 } from 'lucide-react'
 
 interface NavigationDropdownProps {
@@ -42,6 +43,14 @@ export default function NavigationDropdown({ currentPage }: NavigationDropdownPr
       color: 'text-indigo-700',
       bgColor: 'bg-indigo-50 hover:bg-indigo-100',
       description: 'Entries'
+    },
+    {
+      href: '/dashboard/albums',
+      icon: Camera,
+      label: 'Photo Albums',
+      color: 'text-teal-700',
+      bgColor: 'bg-teal-50 hover:bg-teal-100',
+      description: 'Photos'
     },
     {
       href: '/dashboard/quick-log',

@@ -406,7 +406,7 @@ export default function Dashboard() {
                       </div>
                       <div className="dashboard-activity-content">
                         <p className="dashboard-activity-title">
-                          {activity.activity} - {activity.pet}
+                          {(activity as any).activity || (activity as any).description} - {(activity as any).pet || 'Your Pet'}
                         </p>
                         <p className="dashboard-activity-time">
                           {activity.time}

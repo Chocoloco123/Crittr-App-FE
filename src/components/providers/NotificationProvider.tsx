@@ -50,5 +50,9 @@ export function useNotify() {
     addNotification({ type: 'info', title, message, duration })
   }
 
-  return { success, error, warning, info }
+  const journal = (title: string, message?: string, duration?: number) => {
+    addNotification({ type: 'journal', title, message, duration })
+  }
+
+  return { success, error, warning, info, journal }
 }
